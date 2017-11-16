@@ -27,6 +27,12 @@
       "js": ["kanaMap.js", "substitute.js"]
     }
   ],
+  
+  "background": {
+        "scripts": [
+            "background.js"
+        ]
+    },
 
   "applications": {
     "gecko": {
