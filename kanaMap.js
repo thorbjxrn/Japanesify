@@ -19,6 +19,47 @@ dictionary.set('ya', 'や');
 dictionary.set('ra', 'ら');
 dictionary.set('wa', 'わ');
 
+dictionary.set('i', 'い');
+dictionary.set('ki', 'き');
+dictionary.set('si', 'し');
+dictionary.set('ti', 'ち');
+dictionary.set('ni', 'に');
+dictionary.set('hi', 'ひ');
+dictionary.set('mi', 'み');
+dictionary.set('ri', 'り');
+//dictionary.set('wi', 'ゐ'); //outdated character
+
+dictionary.set('u', 'う');
+dictionary.set('ku', 'く');
+dictionary.set('su', 'す');
+dictionary.set('tu', 'つ');
+dictionary.set('nu', 'ぬ');
+dictionary.set('hu', 'ふ');
+dictionary.set('mu', 'む');
+dictionary.set('ru', 'る');
+dictionary.set('yu', 'ゆ');
+
+dictionary.set('e', 'え');
+dictionary.set('ke', 'け');
+dictionary.set('se', 'せ');
+dictionary.set('te', 'て');
+dictionary.set('ne', 'ね');
+dictionary.set('he', 'へ');
+dictionary.set('me', 'め');
+dictionary.set('re', 'れ');
+//dictionary.set('we', 'ゑ'); //outdated character
+
+dictionary.set('o', 'お');
+dictionary.set('ko', 'こ');
+dictionary.set('so', 'そ');
+dictionary.set('to', 'と');
+dictionary.set('no', 'の');
+dictionary.set('ho', 'ほ');
+dictionary.set('mo', 'も');
+dictionary.set('ro', 'ろ');
+dictionary.set('yo', 'よ');
+dictionary.set('wo', 'を');
+
 dictionary.set('n', 'ん');
 
 /*
