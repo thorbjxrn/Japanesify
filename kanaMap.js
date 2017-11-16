@@ -7,7 +7,19 @@
 /* exported sortedEmojiMap */
 
 let dictionary = new Map();
-dictionary.set('apple', '🍎');
+
+dictionary.set('a', 'あ');
+dictionary.set('ka', 'か');
+dictionary.set('sa', 'さ');
+dictionary.set('ta', 'た');
+dictionary.set('na', 'な');
+dictionary.set('ha', 'は');
+dictionary.set('ma', 'ま');
+dictionary.set('ya', 'や');
+dictionary.set('ra', 'ら');
+dictionary.set('wa', 'わ');
+
+dictionary.set('n', 'ん');
 
 /*
  * After all the dictionary entries have been set, sort them by length.
