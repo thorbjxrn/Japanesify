@@ -13,8 +13,8 @@
 
   "content_scripts": [
     {
-      "matches": ["*://*.nytimes.com/*"],
-      "js": ["readGuides.js"]
+      "matches": ["<all_urls>"],
+      "js": ["kanaMap.js", "substitute.js"]
     }
   ],
 
