@@ -1,0 +1,27 @@
+{
+  "description": "Learn the kana by gradually substituting latin letters",
+  "manifest_version": 2,
+  "name": "Kana",
+  "version": "1.0",
+
+
+
+  "icons": {
+    "48": "icons/icon-48.png",
+    "96": "icons/icon-96.png"
+  },
+
+  "content_scripts": [
+    {
+      "matches": ["*://*.nytimes.com/*"],
+      "js": ["readGuides.js"]
+    }
+  ],
+
+  "applications": {
+    "gecko": {
+      "id": "tbonvik@gmail.com"
+    }
+  }
+
+}
