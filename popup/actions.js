@@ -1,5 +1,5 @@
 document.addEventListener("click", function(e) {
-  if (e.target.classList.contains("toggle")) {
+  if (e.target.classList.contains("toggleBtn")) {
       browserAction.enable();
     });
   }
