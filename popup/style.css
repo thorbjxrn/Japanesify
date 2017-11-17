@@ -8,12 +8,14 @@ h3{
 }
 
 .toggleBtn {
+    background-color: white;
     margin:2px 2px;
     border-radius:10px;
     -webkit-border-radius:10px;
     box-shadow:0 1px 2px #5e5d5b;
     text-align: center;
     line-height: 65px;
+    cursor: pointer;
 }
 .website {
   width: 100%;
