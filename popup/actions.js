@@ -12,8 +12,12 @@ document.addEventListener("click",
     if (e.target.classList.contains("toggleBtn")) {
         console.debug("U CLICKED THE BUTTON! :O");
         if(activate == true){
-        browser.tabs.executeScript({file: "../substitute.js"});
-      }
+          browser.tabs.executeScript({file: "../substitute.js"});
+          activate = false;
+        }
+        else{
+          browser.tabs.reload();
+        }
         /*browser.tabs.sendMessage(tabs[0].id, {});
 
         cookieVal.x = "data";
