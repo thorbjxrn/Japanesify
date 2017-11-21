@@ -7,22 +7,24 @@ Based on  mozillas webextensions-examples/kana-substitution/substitute.js
 
  */
 
-browserAction.disable();
 /*global sortedKanaMap*/
 
 // kanaMap.js defines the 'sortedKanaMap' variable.
 // Referenced here to reduce confusion.
-const kanaMap = sortedKanaMap;
+
+//browser.runtime.onMessage.addListener(activate);
+
 
 /*
  * For efficiency, create a word --> search RegEx Map too.
  */
-let regexs = new Map();
-for (let word of kanaMap.keys()) {
+ const kanaMap = sortedKanaMap;
+ let regexs = new Map();
+ for (let word of kanaMap.keys()) {
   // We want a global, case-insensitive replacement.
   // @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp
   regexs.set(word, new RegExp(word, 'gi'));
-}
+  }
 
 /**
  * Substitutes kanas into text nodes.
@@ -100,5 +102,4 @@ function activate() {
     subtree: true
   });
 }
-
 activate();

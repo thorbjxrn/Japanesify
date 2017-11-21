@@ -8,9 +8,8 @@ function getActiveTab() {
 
 function cookieUpdate() {
   getActiveTab().then((tabs) => {
-    console.debug("Tab = " + tabs);
     // get any previously set cookie for the current tab
-    var gettingCookies = browser.cookies.get({
+    var gettingCookies = browser.cookies.get({ //TODO
       url: tabs[0].url,
       name: "kana"
     });
