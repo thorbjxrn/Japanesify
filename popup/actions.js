@@ -1,6 +1,7 @@
 var activate = true;
-var cookieVal = { x : '',
-                  y : '' };
+
+var sliderInput = document.querySelector('input');
+var cookieVal = { x : '', y : '' };
 
 function getActiveTab() {
   return browser.tabs.query({active: true, currentWindow: true});
@@ -10,27 +11,37 @@ function getActiveTab() {
 document.addEventListener("click",
   function(e) {
     if (e.target.classList.contains("toggleBtn")) {
-        console.debug("U CLICKED THE BUTTON! :O");
-        if(activate == true){
-          browser.tabs.executeScript({file: "../substitute.js"});
-          activate = false;
-        }
-        else{
-          activate = true;
-          browser.tabs.reload();
-        }
-        /*browser.tabs.sendMessage(tabs[0].id, {});
-
-        cookieVal.x = "data";
-          console.debug("COOKIE DATA: " + cookieVal.x);
-        browser.cookies.set({
-          url: tabs[0].url,
-          name: "kana",
-          value: JSON.stringify(cookieVal)
-        })
-    }
-    else if (e.target.classList.contains("website")){
-        var chosenPage = "http://" + e.target.textContent;
-    */}
+        console.debug("U CLICKED THE BUTTON! :O " + sliderInput);
+        refresh();
   }
+  else if (e.target.classList.contains("website")){
+    var chosenPage = "http://" + e.target.textContent;
+  }
+}
 );
+//SLIDER HANDLER
+sliderInput.onchange = function(e) {
+  getActiveTab().then((tabs) => {
+    var sliderAt = e.target.value;
+    browser.tabs.sendMessage(tabs[0].id, {activeCharacters: sliderAt});
+
+    cookieVal.x = sliderAt;
+    browser.cookies.set({
+      url: tabs[0].url,
+      name: "kana",
+      value: JSON.stringify(cookieVal)
+    })
+  });
+}
+
+//UPDATE THE page
+function refresh(){
+  if(activate == true){
+    browser.tabs.executeScript({file: "../substitute.js"});
+    activate = false;
+  }
+  else{
+    browser.tabs.reload();
+    activate = true;
+  }
+}

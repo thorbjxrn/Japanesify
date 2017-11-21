@@ -2,7 +2,6 @@
 // Based on Cookie-bg-picker example by Mozilla
 
 function getActiveTab() {
-  console.debug("Aquiring tab...")
   return browser.tabs.query({active: true, currentWindow: true});
 }
 
@@ -15,10 +14,9 @@ function cookieUpdate() {
     });
     gettingCookies.then((cookie) => {
       if (cookie) {
-        console.debug("Cookie exist");
         var cookieVal = JSON.parse(cookie.value);
-        browser.tabs.sendMessage(tabs[0].id, {x: cookieVal.x});
-        browser.tabs.sendMessage(tabs[0].id, {y: cookieVal.y});
+        console.debug("Cookie exist. x = " + cookieVal.x);
+        browser.tabs.sendMessage(tabs[0].id, {activeCharacters: cookieVal.x});
       }
     });
   });
