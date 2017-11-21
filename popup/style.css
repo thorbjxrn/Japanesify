@@ -9,12 +9,12 @@ h3{
 
 .toggleBtn {
     background-color: white;
-    margin:2px 2px;
-    border-radius:10px;
-    -webkit-border-radius:10px;
+    margin:10px 10px;
+    border-radius:5px;
+    -webkit-border-radius:5px;
     box-shadow:0 1px 2px #5e5d5b;
     text-align: center;
-    line-height: 65px;
+    line-height: 20px;
     cursor: pointer;
 }
 .website {

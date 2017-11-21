@@ -16,6 +16,7 @@ document.addEventListener("click",
           activate = false;
         }
         else{
+          activate = true;
           browser.tabs.reload();
         }
         /*browser.tabs.sendMessage(tabs[0].id, {});
