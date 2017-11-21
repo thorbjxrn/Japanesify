@@ -1,7 +1,8 @@
-var activate = true;
+var active = false;
 
 var sliderInput = document.querySelector('input');
-var cookieVal = { x : '', y : '' };
+var cookieVal = { x : '1', dictionary : 'null', enabled : 'no' };
+
 
 function getActiveTab() {
   return browser.tabs.query({active: true, currentWindow: true});
@@ -23,9 +24,10 @@ document.addEventListener("click",
 sliderInput.onchange = function(e) {
   getActiveTab().then((tabs) => {
     var sliderAt = e.target.value;
-    browser.tabs.sendMessage(tabs[0].id, {activeCharacters: sliderAt});
+    //browser.tabs.sendMessage(tabs[0].id, {activeCharacters: sliderAt});
 
     cookieVal.x = sliderAt;
+    console.debug("Slider at: " + cookieVal.x);
     browser.cookies.set({
       url: tabs[0].url,
       name: "kana",
@@ -36,12 +38,14 @@ sliderInput.onchange = function(e) {
 
 //UPDATE THE page
 function refresh(){
-  if(activate == true){
+  if(active == false){
+    browser.tabs.executeScript({file: "../kanaMap.js"});
     browser.tabs.executeScript({file: "../substitute.js"});
-    activate = false;
+    console.debug("AND COOKIE = " + cookieVal.x);
+    active = true;
   }
   else{
     browser.tabs.reload();
-    activate = true;
+    active = false;
   }
 }

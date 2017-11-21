@@ -12,9 +12,6 @@ Based on  mozillas webextensions-examples/kana-substitution/substitute.js
 // kanaMap.js defines the 'sortedKanaMap' variable.
 // Referenced here to reduce confusion.
 
-//browser.runtime.onMessage.addListener(activate);
-
-
 /*
  * For efficiency, create a word --> search RegEx Map too.
  */
@@ -102,4 +99,5 @@ function activate() {
     subtree: true
   });
 }
+
 activate();

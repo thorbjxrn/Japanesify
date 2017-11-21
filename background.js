@@ -16,7 +16,8 @@ function cookieUpdate() {
       if (cookie) {
         var cookieVal = JSON.parse(cookie.value);
         console.debug("Cookie exist. x = " + cookieVal.x);
-        browser.tabs.sendMessage(tabs[0].id, {activeCharacters: cookieVal.x});
+        activeCharacters = cookieVal.x;
+        //browser.tabs.sendMessage(tabs[0].id, {activeCharacters: cookieVal.x});
       }
     });
   });
