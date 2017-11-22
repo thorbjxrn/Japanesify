@@ -19,6 +19,7 @@ webLink.onclick = function(e) {
 //TOGGLE BUTTON FUNCTION
 toggleBtn.onclick = function(e) {
   console.debug("U CLICKED THE BUTTON! :O " + sliderInput.value + " kanas toggled");
+  refresh();
 }
 
 //SLIDER HANDLER
