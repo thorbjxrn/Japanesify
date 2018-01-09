@@ -7,7 +7,7 @@ h3{
   text-align: center;
 }
 
-.toggleBtn {
+button {
     background-color: white;
     margin:10px 10px;
     border-radius:5px;

@@ -1,15 +1,20 @@
 {
-  "description": "Learn the kana by gradually substituting latin letters",
+
   "manifest_version": 2,
   "name": "Kana",
-  "version": "1.0",
+  "version": "1.5",
 
+  "description": "Learn the kana by gradually substituting latin letters",
+    "icons": {
+      "48": "icons/icon-48.png",
+      "96": "icons/icon-96.png"
+    },
 
-
-  "icons": {
-    "48": "icons/icon-48.png",
-    "96": "icons/icon-96.png"
-  },
+  "permissions": [
+      "tabs",
+      "cookies",
+      "<all_urls>"
+  ],
 
   "browser_action": {
       "browser_style": true,
@@ -21,22 +26,14 @@
       "default_popup": "popup/popup.html"
     },
 
-  
-
   "background": {
-        "scripts": ["background.js"]
-    },
-
-  "applications": {
-    "gecko": {
-      "id": "tbonvik@gmail.com"
-    }
+    "scripts": ["background_scripts/background.js"]
   },
-  "permissions": [
-    "activeTab",
-    "tabs",
-    "cookies",
-    "<all_urls>"
-  ]
 
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content_scripts/update.js"]
+    }
+  ]
 }

@@ -1,56 +1,58 @@
-var active = false;
+/* initialise variables */
 
 var sliderInput = document.querySelector('input');
-var toggleBtn = document.querySelector('.toggleBtn');
-var webLink = document.querySelector('.website');
-
-var cookieVal = { x : '1', dictionary : 'null', enabled : 'no' };
-
+var toggleButton = document.querySelector('button');
+var cookieVal = { nr : '1',
+                  enabled : 'false'}; //add hiregana/katakana here.
 
 function getActiveTab() {
   return browser.tabs.query({active: true, currentWindow: true});
 }
 
-//WEBSITE LINK
-webLink.onclick = function(e) {
-  console.debug("$$$!");
-}
+  sliderInput.onchange = function(e) {
+    getActiveTab().then((tabs) => {
+      var sliderAt = e.target.value;
+      browser.tabs.sendMessage(tabs[0].id, {nr: sliderAt});
 
-//TOGGLE BUTTON FUNCTION
-toggleBtn.onclick = function(e) {
-  console.debug("U CLICKED THE BUTTON! :O " + sliderInput.value + " kanas toggled");
-  refresh();
-}
+      cookieVal.nr = sliderAt;
+      console.debug("Slider at: " + cookieVal.nr);
+      browser.cookies.set({
+        url: tabs[0].url,
+        name: "kanaCookie",
+        value: JSON.stringify(cookieVal)
+      })
+    });
+  }
 
-//SLIDER HANDLER
-console.debug("WTF: " + cookieVal);
-sliderInput.value = cookieVal;
+/* reset background */
 
-sliderInput.onchange = function(e) {
+toggleButton.onclick = function() {
   getActiveTab().then((tabs) => {
-    var sliderAt = e.target.value;
-    browser.tabs.sendMessage(tabs[0].id, {activeCharacters: sliderAt});
+    var status;
+    if(cookieVal.enabled){
+      status = false;
+    }
+    else{
+      status = true;
+    }
+    browser.tabs.sendMessage(tabs[0].id, {enabled: status});
 
-    cookieVal.x = sliderAt;
-    console.debug("Slider at: " + cookieVal.x);
+    cookieVal.enabled = status;
+    console.debug("Enabled = " + status);
     browser.cookies.set({
       url: tabs[0].url,
-      name: "kana",
+      name: "kanaCookie",
       value: JSON.stringify(cookieVal)
     })
+
   });
 }
 
-//UPDATE THE page
-function refresh(){
-  if(active == false){
-    browser.tabs.executeScript({file: "../kanaMap.js"});
-    browser.tabs.executeScript({file: "../substitute.js"});
-    console.debug("AND COOKIE = " + cookieVal.x);
-    active = true;
-  }
-  else{
-    browser.tabs.reload();
-    active = false;
-  }
-}
+/* Report cookie changes to the console */
+
+browser.cookies.onChanged.addListener((changeInfo) => {
+  console.log(`Cookie changed:\n
+              * Cookie: ${JSON.stringify(changeInfo.cookie)}\n
+              * Cause: ${changeInfo.cause}\n
+              * Removed: ${changeInfo.removed}`);
+});
