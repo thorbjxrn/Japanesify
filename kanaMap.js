@@ -33,7 +33,7 @@ dictionary.set('ri', 'り');
 dictionary.set('u', 'う');
 dictionary.set('ku', 'く');
 dictionary.set('su', 'す');
-dictionary.set('tu', 'つ');
+dictionary.set('tsu', 'つ');
 dictionary.set('nu', 'ぬ');
 dictionary.set('hu', 'ふ');
 dictionary.set('mu', 'む');
