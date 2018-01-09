@@ -22,8 +22,8 @@ dictionary.set('wa', 'わ');
 
 dictionary.set('i', 'い');
 dictionary.set('ki', 'き');
-dictionary.set('si', 'し');
-dictionary.set('ti', 'ち');
+dictionary.set('shi', 'し');
+dictionary.set('chi', 'ち');
 dictionary.set('ni', 'に');
 dictionary.set('hi', 'ひ');
 dictionary.set('mi', 'み');
