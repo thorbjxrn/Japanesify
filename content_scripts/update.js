@@ -2,8 +2,11 @@ browser.runtime.onMessage.addListener(updateCharacters);
 
 function updateCharacters(request, sender, sendResponse) {
 
-  if (request.enabled) {
+  if (request.enabled == true) {
     activate();
+  }
+  if (request.enabled == false) {
+    window.location.reload(false);
   }
 /*  if (request.nr) {
     console.debug("There is now " + request.nr + "Kanas active");

@@ -3,7 +3,7 @@
 var sliderInput = document.querySelector('input');
 var toggleButton = document.querySelector('button');
 var cookieVal = { nr : '1',
-                  enabled : 'false'}; //add hiregana/katakana here.
+                  enabled : 'true'}; //add hiregana/katakana here.
 
 function getActiveTab() {
   return browser.tabs.query({active: true, currentWindow: true});
