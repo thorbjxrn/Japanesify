@@ -5,7 +5,7 @@ function updateCharacters(request, sender, sendResponse) {
   if (request.enabled == true) {
     activate();
   }
-  if (request.enabled == false) {
+  else if (request.enabled == false) {
     window.location.reload(false);
   }
 /*  if (request.nr) {
