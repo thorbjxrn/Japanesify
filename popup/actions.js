@@ -49,10 +49,11 @@ toggleButton.onclick = function() {
 }
 
 /* Report cookie changes to the console */
-
+/* disabled as it seems to work good.
 browser.cookies.onChanged.addListener((changeInfo) => {
   console.log(`Cookie changed:\n
               * Cookie: ${JSON.stringify(changeInfo.cookie)}\n
               * Cause: ${changeInfo.cause}\n
               * Removed: ${changeInfo.removed}`);
 });
+*/

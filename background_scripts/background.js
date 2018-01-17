@@ -9,7 +9,7 @@ function cookieUpdate() {
     // get any previously set cookie for the current tab
     var gettingCookies = browser.cookies.get({
       url: tabs[0].url,
-      name: "bgpicker"
+      name: "kanaCookie"
     });
     gettingCookies.then((cookie) => {
       if (cookie) {
