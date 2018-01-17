@@ -7,7 +7,6 @@
 /* exported sortedEmojiMap */
 
 let dictionary = new Map();
-var activeCharacters = 5;
 
 dictionary.set('a', 'あ');
 dictionary.set('ka', 'か');
@@ -75,7 +74,7 @@ dictionary.set('n', 'ん');
  * would become 'kゃ', and the search for 'kya' would not find any matches.
  */
 let tempArray = Array.from(dictionary);
-tempArray.slice(0, activeCharacters); //limit the number of active japanese characters
+//tempArray.slice(0, activeCharacters); //limit the number of active japanese characters
 tempArray.sort((pair1, pair2) => {
   const firstWord = pair1[0];
   const secondWord = pair2[0];
