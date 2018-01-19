@@ -14,9 +14,9 @@ function cookieUpdate() {
     gettingCookies.then((cookie) => {
       if (cookie) {
         var cookieVal = JSON.parse(cookie.value);
-        browser.tabs.sendMessage(tabs[0].id, {color: cookieVal.nr});
-        browser.tabs.sendMessage(tabs[0].id, {color: cookieVal.enabled});
-        console.debug("Cookie exist. Nr = " + cookieVal.nr + ", and enabled = " + cookieVal.enabled);
+        browser.tabs.sendMessage(tabs[0].id, {nr: cookieVal.nr});
+        browser.tabs.sendMessage(tabs[0].id, {enabled: cookieVal.enabled});
+        console.debug("Cookie exist. Nr = " + cookieVal.nr + ", and enabled = " + cookieVal.enabled + ". Message sent.");
       }
     });
   });
