@@ -6,18 +6,20 @@
 
 /* exported sortedEmojiMap */
 
+let dictionaryN = new Map();
+let dictionaryA = new Map();
 let dictionary = new Map();
 
-dictionary.set('a', 'あ');
-dictionary.set('ka', 'か');
-dictionary.set('sa', 'さ');
-dictionary.set('ta', 'た');
-dictionary.set('na', 'な');
-dictionary.set('ha', 'は');
-dictionary.set('ma', 'ま');
-dictionary.set('ya', 'や');
-dictionary.set('ra', 'ら');
-dictionary.set('wa', 'わ');
+dictionaryA.set('a', 'あ');
+dictionaryA.set('ka', 'か');
+dictionaryA.set('sa', 'さ');
+dictionaryA.set('ta', 'た');
+dictionaryA.set('na', 'な');
+dictionaryA.set('ha', 'は');
+dictionaryA.set('ma', 'ま');
+dictionaryA.set('ya', 'や');
+dictionaryA.set('ra', 'ら');
+dictionaryA.set('wa', 'わ');
 
 dictionary.set('i', 'い');
 dictionary.set('ki', 'き');
@@ -60,10 +62,10 @@ dictionary.set('ro', 'ろ');
 dictionary.set('yo', 'よ');
 dictionary.set('wo', 'を');
 
-dictionary.set('n', 'ん');
+dictionaryN.set('n', 'ん');
 
 /*
- * After all the dictionary entries have been set, sort them by length.
+ * After all the dictionary entries have been set in kanaMap, sort them by length.
  *
  * Because iteration over Maps happens by insertion order, this avoids
  * scenarios where words that are substrings of other words get substituted
@@ -73,7 +75,7 @@ dictionary.set('n', 'ん');
  * if the 'ya' substitution happens first because the input term 'kya'
  * would become 'kゃ', and the search for 'kya' would not find any matches.
  */
-let tempArray = Array.from(dictionary);
+let tempArray = Array.from(dictionaryA);
 //tempArray.slice(0, activeCharacters); //limit the number of active japanese characters
 tempArray.sort((pair1, pair2) => {
   const firstWord = pair1[0];
