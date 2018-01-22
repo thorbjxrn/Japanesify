@@ -22,7 +22,7 @@ function getActiveTab() {
 
 checkboxes.forEach(function(value, key) {
   value.onchange = function(e) {
-      console.debug("A");
+      console.debug(key);
   }
 });
 
