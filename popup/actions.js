@@ -13,8 +13,6 @@ var checkboxes = new Map([
 ]);
 
 var toggleButton = document.querySelector('button');
-var cookieVal = { nr : '1',
-                  enabled : 'true'}; //add hiregana/katakana here.
 
 function getActiveTab() {
   return browser.tabs.query({active: true, currentWindow: true});
@@ -23,10 +21,10 @@ function getActiveTab() {
 checkboxes.forEach(function(value, key) {
   value.onchange = function(e) {
       console.debug(key);
+      updatePage();
   }
 });
 
-/* reset background */
 
 toggleButton.onclick = function() {
   getActiveTab().then((tabs) => {
@@ -37,6 +35,19 @@ toggleButton.onclick = function() {
     console.debug("Enabled = " + status);
 
   });
+}
+
+function updatePage(){
+  console.debug("UPDATE PAGE");
+}
+
+function toggle(status){
+  if(status){
+    return false;
+  }
+  else {
+    return true;
+  }
 }
 
 /* Report cookie changes to the console */
