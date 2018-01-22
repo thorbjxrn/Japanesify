@@ -3,9 +3,27 @@
 function getActiveTab() {
   return browser.tabs.query({active: true, currentWindow: true});
 }
-
-function cookieUpdate() {
+/*
+function configUpdate() {
   getActiveTab().then((tabs) => {
+
+    var gettingItem = browser.storage.local.get("appStatus");
+    gettingItem.then(onGot, onError);
+
+    console.debug("DEBUGG" + gettingItem);
+    browser.storage.local.set({
+        appStatus:  {enabled:true}
+    });
+
+    function onGot(item) {
+      console.log(item);
+    }
+
+    function onError(error) {
+      console.log(`Error: ${error}`);
+    }
+
+
     // get any previously set cookie for the current tab
     var gettingCookies = browser.cookies.get({
       url: tabs[0].url,
@@ -23,6 +41,7 @@ function cookieUpdate() {
 }
 
 // update when the tab is updated
-browser.tabs.onUpdated.addListener(cookieUpdate);
+//browser.tabs.onUpdated.addListener(cookieUpdate);
 // update when the tab is activated
 browser.tabs.onActivated.addListener(cookieUpdate);
+*/

@@ -1,51 +1,85 @@
 /* initialise variables */
+let appEnabled = false;
 
-var sliderInput = document.querySelector('input');
+var checkboxes = new Map([
+  ['n', document.querySelector("input[name='activeSubsN'")],
+  ['a', document.querySelector("input[name='activeSubsA'")],
+  ['i', document.querySelector("input[name='activeSubsI'")],
+  ['u', document.querySelector("input[name='activeSubsU'")],
+  ['e', document.querySelector("input[name='activeSubsE'")],
+  ['o', document.querySelector("input[name='activeSubsO'")],
+  ['da', document.querySelector("input[name='activeSubsDA'")],
+  ['ha', document.querySelector("input[name='activeSubsHA'")],
+  ['yo', document.querySelector("input[name='activeSubsYO'")]
+]);
+
 var toggleButton = document.querySelector('button');
-var cookieVal = { nr : '1',
-                  enabled : 'true'}; //add hiregana/katakana here.
+
+/* storage */
+/*
+let gettingItem = browser.storage.local.get("appStatus");
+gettingItem.then(onGot, onError);
+
+console.debug("DEBUGG" + gettingItem);
+browser.storage.local.set({
+    appStatus:  {enabled:true}
+});
+*/
+function onGot(item) {
+  console.log(item);
+}
+
+function onError(error) {
+  console.log(`Error: ${error}`);
+}
+
+// Browser tab communication.
 
 function getActiveTab() {
   return browser.tabs.query({active: true, currentWindow: true});
 }
 
-  sliderInput.onchange = function(e) {
-    getActiveTab().then((tabs) => {
-      var sliderAt = e.target.value;
-      browser.tabs.sendMessage(tabs[0].id, {nr: sliderAt});
+// settings
 
-      cookieVal.nr = sliderAt;
-      console.debug("Slider at: " + cookieVal.nr);
-      browser.cookies.set({
-        url: tabs[0].url,
-        name: "kanaCookie",
-        value: JSON.stringify(cookieVal)
-      })
-    });
+checkboxes.forEach(function(value, key) {
+  value.onchange = function(e) {
+      console.debug(key);
+      browser.storage.local.set({
+        key:  {enabled:true}
+      });
+      if(appEnabled){
+        updatePage(false);
+      }
   }
+});
 
-/* reset background */
 
 toggleButton.onclick = function() {
-  getActiveTab().then((tabs) => {
-    var status;
-    if(cookieVal.enabled){
-      status = false;
-    }
-    else{
-      status = true;
-    }
-    browser.tabs.sendMessage(tabs[0].id, {enabled: status});
+  updatePage(true);
+}
 
-    cookieVal.enabled = status;
-    console.debug("Enabled = " + status);
-    browser.cookies.set({
-      url: tabs[0].url,
-      name: "kanaCookie",
-      value: JSON.stringify(cookieVal)
-    })
+// Functions
+
+function updatePage(toggleActive){ // false for update, true for toggle
+  console.debug("UPDATE PAGE! Toggle = " + toggleActive.toString());
+  getActiveTab().then((tabs) => {
+    if(toggleActive){
+      appEnabled = toggle(appEnabled);
+    }
+    browser.tabs.sendMessage(tabs[0].id, {enabled: appEnabled});
+
+    console.debug("Enabled = " + appEnabled.toString());
 
   });
+}
+
+function toggle(status){
+  if(status){
+    return false;
+  }
+  else {
+    return true;
+  }
 }
 
 /* Report cookie changes to the console */
