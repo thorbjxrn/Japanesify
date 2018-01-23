@@ -4,6 +4,12 @@
   "name": "Kana",
   "version": "1.5",
 
+  "applications": {
+    "gecko": {
+      "id": "kana@thorbonvik.com"
+    }
+  },
+
   "description": "Learn the kana by gradually substituting latin letters",
     "icons": {
       "48": "icons/icon-48.png",
