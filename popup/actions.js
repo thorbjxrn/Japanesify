@@ -15,29 +15,6 @@ var checkboxes = new Map([
 
 var toggleButton = document.querySelector('button');
 
-/* storage */
-/*
-let gettingItem = browser.storage.local.get("appStatus");
-gettingItem.then(onGot, onError);
-
-console.debug("DEBUGG" + gettingItem);
-browser.storage.local.set({
-    appStatus:  {enabled:true}
-});
-*/
-function onGot(item) {
-  console.log(item);
-}
-
-function onError(error) {
-  console.log(`Error: ${error}`);
-}
-
-// Browser tab communication.
-
-function getActiveTab() {
-  return browser.tabs.query({active: true, currentWindow: true});
-}
 
 // settings
 
@@ -53,15 +30,49 @@ checkboxes.forEach(function(value, key) {
   }
 });
 
+/* storage */
+
+function restoreOptions() {
+  var storageItem = browser.storage.managed.get('appStatus');
+  storageItem.then((res) => {
+    n.checked = res.enabled;
+  });
+
+  var gettingItem = browser.storage.sync.get('appStatus');
+  gettingItem.then((res) => {
+    document.querySelector("#colour").value = res.colour || 'Firefox red';
+  });
+}
+
+document.addEventListener('DOMContentLoaded', restoreOptions);
+
+// Browser tab communication.
+
+function getActiveTab() {
+  return browser.tabs.query({active: true, currentWindow: true});
+}
+
+
 
 toggleButton.onclick = function() {
   updatePage(true);
+}
+// restore settings at load
+document.addEventListener('DOMContentLoaded', restoreOptions);
+
+function restoreOptions() {
+  console.debug("RESTORE OPTIONS ACTIVATED")
+  var storageItem = browser.storage.managed.get('appStatus');
+  storageItem.then((res) => {
+    n.checked = true;
+  });
 }
 
 // Functions
 
 function updatePage(toggleActive){ // false for update, true for toggle
-  console.debug("UPDATE PAGE! Toggle = " + toggleActive.toString());
+  var data = browser.storage.local.get("appStatus").enabled;
+  console.debug("UPDATE PAGE! Toggle = " + toggleActive.toString() + ". Data: " + data);
   getActiveTab().then((tabs) => {
     if(toggleActive){
       appEnabled = toggle(appEnabled);
@@ -69,6 +80,7 @@ function updatePage(toggleActive){ // false for update, true for toggle
     browser.tabs.sendMessage(tabs[0].id, {enabled: appEnabled});
 
     console.debug("Enabled = " + appEnabled.toString());
+
 
   });
 }
