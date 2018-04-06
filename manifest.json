@@ -9,10 +9,7 @@
       "id": "kana@thorbonvik.com"
     }
   },
-
-  "description": "Learn the kana by gradually substituting latin letters. Try to
-  keep it enabled as often as possible, and not to add another character set before
-  the previous is *easy* to read.",
+  "description": "Learn the kana by gradually substituting latin letters",
     "icons": {
       "48": "icons/icon-48.png",
       "96": "icons/icon-96.png"
