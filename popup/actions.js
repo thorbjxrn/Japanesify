@@ -15,9 +15,8 @@ var checkboxes = new Map([
 
 var toggleButton = document.querySelector('button');
 
-
 // settings
-
+/*
 checkboxes.forEach(function(value, key) {
   value.onchange = function(e) {
       console.debug(key);
@@ -31,20 +30,30 @@ checkboxes.forEach(function(value, key) {
 });
 
 /* storage */
+checkboxes.forEach(function(value, key){
+  value.onchange = function(e){
+    console.debug(key);
+
+  }
+})
+
+function saveOptions(e) {
+  browser.storage.sync.set({
+    n: document.querySelector("#n").checked
+  });
+  e.preventDefault();
+}
 
 function restoreOptions() {
-  var storageItem = browser.storage.managed.get('appStatus');
-  storageItem.then((res) => {
-    n.checked = res.enabled;
-  });
-
-  var gettingItem = browser.storage.sync.get('appStatus');
+  var gettingItem = browser.storage.sync.get('n');
   gettingItem.then((res) => {
-    document.querySelector("#colour").value = res.colour || 'Firefox red';
+    document.querySelector("#n").checked = res.n;
   });
 }
 
 document.addEventListener('DOMContentLoaded', restoreOptions);
+document.querySelector("#n").addEventListener('change', saveOptions);
+
 
 // Browser tab communication.
 
@@ -58,16 +67,17 @@ toggleButton.onclick = function() {
   updatePage(true);
 }
 // restore settings at load
+/*
 document.addEventListener('DOMContentLoaded', restoreOptions);
 
 function restoreOptions() {
   console.debug("RESTORE OPTIONS ACTIVATED")
-  var storageItem = browser.storage.managed.get('appStatus');
+  var storageItem = browser.storage.local.get('appStatus');
   storageItem.then((res) => {
     n.checked = true;
   });
 }
-
+*/
 // Functions
 
 function updatePage(toggleActive){ // false for update, true for toggle
