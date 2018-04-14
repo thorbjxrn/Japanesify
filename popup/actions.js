@@ -32,27 +32,83 @@ checkboxes.forEach(function(value, key) {
 /* storage */
 checkboxes.forEach(function(value, key){
   value.onchange = function(e){
-    console.debug(key);
-
+    console.debug(key + " triggered");
   }
 })
 
 function saveOptions(e) {
   browser.storage.sync.set({
-    n: document.querySelector("#n").checked
+    n: document.querySelector("#n").checked,
+    a: document.querySelector("#a").checked,
+    i: document.querySelector("#i").checked,
+    u: document.querySelector("#u").checked,
+    e: document.querySelector("#e").checked,
+    o: document.querySelector("#o").checked,
+    da: document.querySelector("#da").checked,
+    ha: document.querySelector("#ha").checked,
+    yo: document.querySelector("#yo").checked
   });
   e.preventDefault();
 }
 
 function restoreOptions() {
-  var gettingItem = browser.storage.sync.get('n');
-  gettingItem.then((res) => {
+    var gettingItem = browser.storage.sync.get('n');
+    gettingItem.then((res) => {
     document.querySelector("#n").checked = res.n;
+    });
+
+    var gettingItem1 = browser.storage.sync.get('a');
+    gettingItem1.then((res) => {
+      document.querySelector("#a").checked = res.a;
+    });
+
+  var gettingItem2 = browser.storage.sync.get('i');
+  gettingItem2.then((res) => {
+  document.querySelector("#i").checked = res.i;
   });
+
+  var gettingItem3 = browser.storage.sync.get('u');
+  gettingItem3.then((res) => {
+  document.querySelector("#u").checked = res.u;
+  });
+
+  var gettingItem4 = browser.storage.sync.get('e');
+  gettingItem4.then((res) => {
+  document.querySelector("#e").checked = res.e;
+  });
+
+  var gettingItem5 = browser.storage.sync.get('o');
+  gettingItem5.then((res) => {
+  document.querySelector("#o").checked = res.o;
+  });
+
+  var gettingItem6 = browser.storage.sync.get('da');
+  gettingItem6.then((res) => {
+  document.querySelector("#da").checked = res.da;
+  });
+
+  var gettingItem7 = browser.storage.sync.get('ha');
+  gettingItem7.then((res) => {
+  document.querySelector("#ha").checked = res.ha;
+  });
+
+  var gettingItem8 = browser.storage.sync.get('yo');
+  gettingItem8.then((res) => {
+  document.querySelector("#yo").checked = res.yo;
+  });
+
 }
 
 document.addEventListener('DOMContentLoaded', restoreOptions);
+document.querySelector("#o").addEventListener('change', saveOptions);
 document.querySelector("#n").addEventListener('change', saveOptions);
+document.querySelector("#a").addEventListener('change', saveOptions);
+document.querySelector("#i").addEventListener('change', saveOptions);
+document.querySelector("#u").addEventListener('change', saveOptions);
+document.querySelector("#e").addEventListener('change', saveOptions);
+document.querySelector("#da").addEventListener('change', saveOptions);
+document.querySelector("#ha").addEventListener('change', saveOptions);
+document.querySelector("#yo").addEventListener('change', saveOptions);
 
 
 // Browser tab communication.
