@@ -15,7 +15,8 @@ Based on  mozillas webextensions-examples/kana-substitution/substitute.js
 /*
  * For efficiency, create a word --> search RegEx Map too.
  */
- const kanaMap = sortedKanaMap;
+
+ let kanaMap = updateMap();
  let regexs = new Map();
  for (let word of kanaMap.keys()) {
   // We want a global, case-insensitive replacement.
@@ -31,7 +32,47 @@ Based on  mozillas webextensions-examples/kana-substitution/substitute.js
  * @param  {Node} node    - The target DOM Node.
  * @return {void}         - Note: the kana substitution is done inline.
  */
+function updateMap(){
+  /*
+   * After all the dictionary entries have been set in kanaMap, sort them by length.
+   *
+   * Because iteration over Maps happens by insertion order, this avoids
+   * scenarios where words that are substrings of other words get substituted
+   * first, leading to the longer word's substitution never triggering.
+   *
+   * For example, the 'kya' substitution would never get triggered
+   * if the 'ya' substitution happens first because the input term 'kya'
+   * would become 'kゃ', and the search for 'kya' would not find any matches.
+   */
+  let tempArray = Array.from(dictionaryA);
+  tempArray = tempArray.concat(Array.from(dictionaryN));
+  //tempArray.slice(0, activeCharacters); //limit the number of active japanese characters
+  tempArray.sort((pair1, pair2) => {
+    const firstWord = pair1[0];
+    const secondWord = pair2[0];
+
+    if (firstWord.length > secondWord.length) {
+      // The first word should come before the second word.
+      return -1;
+    }
+    if (secondWord.length > firstWord.length) {
+      // The second word should come before the first word.
+      return 1;
+    }
+
+    // The words have the same length, it doesn't matter which comes first.
+    return 0;
+  });
+
+  // Now that the entries are sorted, put them back into a Map.
+  return( new Map(tempArray));
+
+}
+
 function replaceText (node) {
+
+
+
   // Setting textContent on a node removes all of its children and replaces
   // them with a single text node. Since we don't want to alter the DOM aside
   // from substituting text, we only substitute on single text nodes.

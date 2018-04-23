@@ -63,36 +63,3 @@ dictionary.set('yo', 'よ');
 dictionary.set('wo', 'を');
 
 dictionaryN.set('n', 'ん');
-
-/*
- * After all the dictionary entries have been set in kanaMap, sort them by length.
- *
- * Because iteration over Maps happens by insertion order, this avoids
- * scenarios where words that are substrings of other words get substituted
- * first, leading to the longer word's substitution never triggering.
- *
- * For example, the 'kya' substitution would never get triggered
- * if the 'ya' substitution happens first because the input term 'kya'
- * would become 'kゃ', and the search for 'kya' would not find any matches.
- */
-let tempArray = Array.from(dictionaryA);
-//tempArray.slice(0, activeCharacters); //limit the number of active japanese characters
-tempArray.sort((pair1, pair2) => {
-  const firstWord = pair1[0];
-  const secondWord = pair2[0];
-
-  if (firstWord.length > secondWord.length) {
-    // The first word should come before the second word.
-    return -1;
-  }
-  if (secondWord.length > firstWord.length) {
-    // The second word should come before the first word.
-    return 1;
-  }
-
-  // The words have the same length, it doesn't matter which comes first.
-  return 0;
-});
-
-// Now that the entries are sorted, put them back into a Map.
-let sortedKanaMap = new Map(tempArray);
