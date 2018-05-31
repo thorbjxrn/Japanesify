@@ -10,6 +10,7 @@ let dictionaryN = new Map();
 let dictionaryA = new Map();
 let dictionary = new Map();
 
+dictionaryA.set('enabled', true);
 dictionaryA.set('a', 'あ');
 dictionaryA.set('ka', 'か');
 dictionaryA.set('sa', 'さ');
@@ -63,3 +64,4 @@ dictionary.set('yo', 'よ');
 dictionary.set('wo', 'を');
 
 dictionaryN.set('n', 'ん');
+dictionaryN.set('enabled', false);

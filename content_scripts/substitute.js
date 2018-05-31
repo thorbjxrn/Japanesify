@@ -44,10 +44,9 @@ function updateMap(){
    * if the 'ya' substitution happens first because the input term 'kya'
    * would become 'kゃ', and the search for 'kya' would not find any matches.
    */
-  let tempArray = Array.from(dictionaryA);
-  tempArray = tempArray.concat(Array.from(dictionaryN));
-  //tempArray.slice(0, activeCharacters); //limit the number of active japanese characters
-  tempArray.sort((pair1, pair2) => {
+  let activeArray = getActive();
+
+  activeArray.sort((pair1, pair2) => {
     const firstWord = pair1[0];
     const secondWord = pair2[0];
 
@@ -65,12 +64,25 @@ function updateMap(){
   });
 
   // Now that the entries are sorted, put them back into a Map.
-  return( new Map(tempArray));
+  return( new Map(activeArray));
 
 }
 
-function replaceText (node) {
+function getActive(){
+    var tempArray = new Array();
+    if(dictionaryA.get('enabled')){
+      console.debug("A is active");
+      tempArray = tempArray.concat(Array.from(dictionaryA));
+    }
+    if(dictionaryN.get('enabled')){
+      tempArray = tempArray.concat(Array.from(dictionaryN));
+    }
+    return tempArray;
+}
 
+
+function replaceText (node) {
+kanaMap = updateMap(); //this could become a observable?
 
 
   // Setting textContent on a node removes all of its children and replaces

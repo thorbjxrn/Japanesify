@@ -52,9 +52,15 @@ function saveOptions(e) {
 }
 
 function restoreOptions() {
+  var boolean = false;
+  var charMap = new Map();
     var gettingItem = browser.storage.sync.get('n');
     gettingItem.then((res) => {
     document.querySelector("#n").checked = res.n;
+    //charMap.set('n', true);//res.n);
+    getActiveTab().then((tabs) => {
+      console.debug("SENDING N")
+        browser.tabs.sendMessage(tabs[0].id, {n: true});
     });
 
     var gettingItem1 = browser.storage.sync.get('a');
@@ -97,6 +103,11 @@ function restoreOptions() {
   document.querySelector("#yo").checked = res.yo;
   });
 
+
+
+
+
+  });
 }
 
 document.addEventListener('DOMContentLoaded', restoreOptions);
