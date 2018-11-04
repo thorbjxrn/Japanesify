@@ -19,23 +19,112 @@ var toggleButton = document.querySelector('button');
 var alsoN = true; //checkboxes.get('n').checked;
 console.log("ALSO N : " + alsoN);
 
-/* storage */
-
-let gettingItem = browser.storage.local.get("appStatus");
-gettingItem.then(onGot, onError);
-
-console.debug("DEBUGG" + gettingItem);
-browser.storage.local.set({
-    appStatus:  {enabled:true}
+// settings
+/*
+checkboxes.forEach(function(value, key) {
+  value.onchange = function(e) {
+      console.debug(key);
+      browser.storage.local.set({
+        key:  {enabled:true}
+      });
+      if(appEnabled){
+        updatePage(false);
+      }
+  }
 });
 
-function onGot(item) {
-  console.log(item);
+/* storage */
+checkboxes.forEach(function(value, key){
+  value.onchange = function(e){
+    console.debug(key + " triggered");
+  }
+})
+
+function saveOptions(e) {
+  browser.storage.sync.set({
+    n: document.querySelector("#n").checked,
+    a: document.querySelector("#a").checked,
+    i: document.querySelector("#i").checked,
+    u: document.querySelector("#u").checked,
+    e: document.querySelector("#e").checked,
+    o: document.querySelector("#o").checked,
+    da: document.querySelector("#da").checked,
+    ha: document.querySelector("#ha").checked,
+    yo: document.querySelector("#yo").checked
+  });
+  e.preventDefault();
 }
 
-function onError(error) {
-  console.log(`Error: ${error}`);
+function restoreOptions() {
+  var boolean = false;
+  var charMap = new Map();
+    var gettingItem = browser.storage.sync.get('n');
+    gettingItem.then((res) => {
+    document.querySelector("#n").checked = res.n;
+    //charMap.set('n', true);//res.n);
+    getActiveTab().then((tabs) => {
+      console.debug("SENDING N")
+        browser.tabs.sendMessage(tabs[0].id, {n: true});
+    });
+
+    var gettingItem1 = browser.storage.sync.get('a');
+    gettingItem1.then((res) => {
+      document.querySelector("#a").checked = res.a;
+    });
+
+  var gettingItem2 = browser.storage.sync.get('i');
+  gettingItem2.then((res) => {
+  document.querySelector("#i").checked = res.i;
+  });
+
+  var gettingItem3 = browser.storage.sync.get('u');
+  gettingItem3.then((res) => {
+  document.querySelector("#u").checked = res.u;
+  });
+
+  var gettingItem4 = browser.storage.sync.get('e');
+  gettingItem4.then((res) => {
+  document.querySelector("#e").checked = res.e;
+  });
+
+  var gettingItem5 = browser.storage.sync.get('o');
+  gettingItem5.then((res) => {
+  document.querySelector("#o").checked = res.o;
+  });
+
+  var gettingItem6 = browser.storage.sync.get('da');
+  gettingItem6.then((res) => {
+  document.querySelector("#da").checked = res.da;
+  });
+
+  var gettingItem7 = browser.storage.sync.get('ha');
+  gettingItem7.then((res) => {
+  document.querySelector("#ha").checked = res.ha;
+  });
+
+  var gettingItem8 = browser.storage.sync.get('yo');
+  gettingItem8.then((res) => {
+  document.querySelector("#yo").checked = res.yo;
+  });
+
+
+
+
+
+  });
 }
+
+document.addEventListener('DOMContentLoaded', restoreOptions);
+document.querySelector("#o").addEventListener('change', saveOptions);
+document.querySelector("#n").addEventListener('change', saveOptions);
+document.querySelector("#a").addEventListener('change', saveOptions);
+document.querySelector("#i").addEventListener('change', saveOptions);
+document.querySelector("#u").addEventListener('change', saveOptions);
+document.querySelector("#e").addEventListener('change', saveOptions);
+document.querySelector("#da").addEventListener('change', saveOptions);
+document.querySelector("#ha").addEventListener('change', saveOptions);
+document.querySelector("#yo").addEventListener('change', saveOptions);
+
 
 // Browser tab communication.
 
@@ -43,26 +132,28 @@ function getActiveTab() {
   return browser.tabs.query({active: true, currentWindow: true});
 }
 
-// settings
-
-checkboxes.forEach(function(value, key) {
-  value.onchange = function(e) {
-      console.debug(key);
-      if(appEnabled){
-        updatePage(false);
-      }
-  }
-});
 
 
 toggleButton.onclick = function() {
   updatePage(true);
 }
+// restore settings at load
+/*
+document.addEventListener('DOMContentLoaded', restoreOptions);
 
+function restoreOptions() {
+  console.debug("RESTORE OPTIONS ACTIVATED")
+  var storageItem = browser.storage.local.get('appStatus');
+  storageItem.then((res) => {
+    n.checked = true;
+  });
+}
+*/
 // Functions
 
 function updatePage(toggleActive){ // false for update, true for toggle
-  console.debug("UPDATE PAGE! Toggle = " + toggleActive.toString());
+  var data = browser.storage.local.get("appStatus").enabled;
+  console.debug("UPDATE PAGE! Toggle = " + toggleActive.toString() + ". Data: " + data);
   getActiveTab().then((tabs) => {
     if(toggleActive){
       appEnabled = toggle(appEnabled);
@@ -70,6 +161,7 @@ function updatePage(toggleActive){ // false for update, true for toggle
     browser.tabs.sendMessage(tabs[0].id, {enabled: appEnabled, characters: characters, alphabet: alphabet});
 
     console.debug("Enabled = " + appEnabled.toString());
+
 
   });
 }
