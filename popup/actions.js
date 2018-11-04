@@ -1,5 +1,7 @@
 /* initialise variables */
 let appEnabled = false;
+let alphabet = "hiregana";
+let characters = 1;
 
 var checkboxes = new Map([
   ['n', document.querySelector("input[name='activeSubsN'")],
@@ -14,9 +16,11 @@ var checkboxes = new Map([
 ]);
 
 var toggleButton = document.querySelector('button');
+var alsoN = true; //checkboxes.get('n').checked;
+console.log("ALSO N : " + alsoN);
 
 /* storage */
-/*
+
 let gettingItem = browser.storage.local.get("appStatus");
 gettingItem.then(onGot, onError);
 
@@ -24,7 +28,7 @@ console.debug("DEBUGG" + gettingItem);
 browser.storage.local.set({
     appStatus:  {enabled:true}
 });
-*/
+
 function onGot(item) {
   console.log(item);
 }
@@ -44,9 +48,6 @@ function getActiveTab() {
 checkboxes.forEach(function(value, key) {
   value.onchange = function(e) {
       console.debug(key);
-      browser.storage.local.set({
-        key:  {enabled:true}
-      });
       if(appEnabled){
         updatePage(false);
       }
@@ -66,7 +67,7 @@ function updatePage(toggleActive){ // false for update, true for toggle
     if(toggleActive){
       appEnabled = toggle(appEnabled);
     }
-    browser.tabs.sendMessage(tabs[0].id, {enabled: appEnabled});
+    browser.tabs.sendMessage(tabs[0].id, {enabled: appEnabled, characters: characters, alphabet: alphabet});
 
     console.debug("Enabled = " + appEnabled.toString());
 
@@ -81,13 +82,3 @@ function toggle(status){
     return true;
   }
 }
-
-/* Report cookie changes to the console */
-/* disabled as it seems to work good.
-browser.cookies.onChanged.addListener((changeInfo) => {
-  console.log(`Cookie changed:\n
-              * Cookie: ${JSON.stringify(changeInfo.cookie)}\n
-              * Cause: ${changeInfo.cause}\n
-              * Removed: ${changeInfo.removed}`);
-});
-*/
