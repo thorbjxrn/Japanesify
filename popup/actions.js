@@ -2,6 +2,7 @@
 let appEnabled = false;
 let alphabet = "hiregana";
 let characters = 1;
+var status = false;
 
 var checkboxes = new Map([
   ['n', document.querySelector("input[name='activeSubsN'")],
@@ -50,7 +51,8 @@ function saveOptions(e) {
     o: document.querySelector("#o").checked,
     da: document.querySelector("#da").checked,
     ha: document.querySelector("#ha").checked,
-    yo: document.querySelector("#yo").checked
+    yo: document.querySelector("#yo").checked,
+    status: status
   });
   e.preventDefault();
 }
@@ -107,6 +109,8 @@ function restoreOptions() {
   document.querySelector("#yo").checked = res.yo;
   });
 
+  status = browser.storage.sync.get('status');
+
 
 
 
@@ -136,6 +140,8 @@ function getActiveTab() {
 
 toggleButton.onclick = function() {
   updatePage(true);
+  status = toggle(status);
+  browser.tabs.sendMessage(tabs[0].id, {enabled: status});
 }
 // restore settings at load
 /*
