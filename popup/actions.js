@@ -1,7 +1,7 @@
 /* initialise variables */
 let appEnabled = false;
 let alphabet = "hiregana";
-let characters = 1;
+let characters = [1,0,0,0,0,0];
 var status = false;
 
 var checkboxes = new Map([
@@ -138,7 +138,7 @@ function getActiveTab() {
 toggleButton.onclick = function() {
   updatePage(true);
   status = toggle(status);
-  browser.tabs.sendMessage(tabs[0].id, {enabled: status});
+  //browser.tabs.sendMessage(tabs[0].id, {enabled: status});
 }
 // restore settings at load
 /*

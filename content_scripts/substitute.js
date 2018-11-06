@@ -17,11 +17,7 @@ Based on  mozillas webextensions-examples/kana-substitution/substitute.js
  */
  let kanaMap = getSortedMap();
  let regexs = new Map();
- for (let word of kanaMap.keys()) {
-  // We want a global, case-insensitive replacement.
-  // @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp
-  regexs.set(word, new RegExp(word, 'gi'));
-  }
+
 
 /**
  * Substitutes kanas into text nodes.
@@ -78,6 +74,12 @@ function replaceText (node) {
 
 // Start the recursion from the body tag.
 function activate() {
+  for (let word of kanaMap.keys()) {
+   // We want a global, case-insensitive replacement.
+   // @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp
+   regexs.set(word, new RegExp(word, 'gi'));
+   }
+
   replaceText(document.body);
 
   // Now monitor the DOM for additions and substitute kana into new nodes.

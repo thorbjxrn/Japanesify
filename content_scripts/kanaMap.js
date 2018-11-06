@@ -47,7 +47,7 @@ let sortedKanaMap;; //getSortedMap();
  */
 
 function getSortedMap(){
-  console.log(dictionary[0][1].length);
+//  console.log(dictionary[0][0]);
 
   for (var i = 0; i < dictionary.length; i++) {
     if(dictionary[i][0]){
@@ -69,7 +69,7 @@ function getSortedMap(){
 
     if (firstWord.length > secondWord.length) {
       // The first word should come before the second word.
-      
+
       return -1;
     }
     if (secondWord.length > firstWord.length) {
