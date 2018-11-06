@@ -6,61 +6,33 @@
 
 /* exported sortedEmojiMap */
 
-let dictionary = new Map();
+let kanaa = new Map();
+let kanai = new Map();
+let kanao = new Map();
+let kanau = new Map();
+let kanae = new Map();
+let kanan = new Map();
 
-dictionary.set('a', 'あ');
-dictionary.set('ka', 'か');
-dictionary.set('sa', 'さ');
-dictionary.set('ta', 'た');
-dictionary.set('na', 'な');
-dictionary.set('ha', 'は');
-dictionary.set('ma', 'ま');
-dictionary.set('ya', 'や');
-dictionary.set('ra', 'ら');
-dictionary.set('wa', 'わ');
 
-dictionary.set('i', 'い');
-dictionary.set('ki', 'き');
-dictionary.set('shi', 'し');
-dictionary.set('chi', 'ち');
-dictionary.set('ni', 'に');
-dictionary.set('hi', 'ひ');
-dictionary.set('mi', 'み');
-dictionary.set('ri', 'り');
-//dictionary.set('wi', 'ゐ'); //outdated character
+kanaa.set('a', 'あ');
+kanaa.set('ka', 'か');
 
-dictionary.set('u', 'う');
-dictionary.set('ku', 'く');
-dictionary.set('su', 'す');
-dictionary.set('tsu', 'つ');
-dictionary.set('nu', 'ぬ');
-dictionary.set('hu', 'ふ');
-dictionary.set('mu', 'む');
-dictionary.set('ru', 'る');
-dictionary.set('yu', 'ゆ');
+kanai.set('i', 'い');
+kanai.set('oke', 'け');
+kanai.set('ki', 'き');
 
-dictionary.set('e', 'え');
-dictionary.set('ke', 'け');
-dictionary.set('se', 'せ');
-dictionary.set('te', 'て');
-dictionary.set('ne', 'ね');
-dictionary.set('he', 'へ');
-dictionary.set('me', 'め');
-dictionary.set('re', 'れ');
-//dictionary.set('we', 'ゑ'); //outdated character
+kanan.set('n', 'ん');
 
-dictionary.set('o', 'お');
-dictionary.set('ko', 'こ');
-dictionary.set('so', 'そ');
-dictionary.set('to', 'と');
-dictionary.set('no', 'の');
-dictionary.set('ho', 'ほ');
-dictionary.set('mo', 'も');
-dictionary.set('ro', 'ろ');
-dictionary.set('yo', 'よ');
-dictionary.set('wo', 'を');
+let dictionary = [[false, Array.from(kanaa)], [false, Array.from(kanai)], [false,Array.from(kanao)], [false, Array.from(kanau)], [false, Array.from(kanae)], [false, Array.from(kanan)]];
+//console.log(Array.from(dictionary[0][1]).toString());
 
-dictionary.set('n', 'ん');
+// let tempArray = Array.from(a); //Array to sort
+
+
+let tempArray = new Array();
+
+let sortedKanaMap;; //getSortedMap();
+
 
 /*
  * After all the dictionary entries have been set, sort them by length.
@@ -73,24 +45,44 @@ dictionary.set('n', 'ん');
  * if the 'ya' substitution happens first because the input term 'kya'
  * would become 'kゃ', and the search for 'kya' would not find any matches.
  */
-let tempArray = Array.from(dictionary);
-//tempArray.slice(0, activeCharacters); //limit the number of active japanese characters
-tempArray.sort((pair1, pair2) => {
-  const firstWord = pair1[0];
-  const secondWord = pair2[0];
 
-  if (firstWord.length > secondWord.length) {
-    // The first word should come before the second word.
-    return -1;
+function getSortedMap(){
+  console.log(dictionary[0][1].length);
+
+  for (var i = 0; i < dictionary.length; i++) {
+    if(dictionary[i][0]){
+      //console.log("ADD " + Array.from(dictionary[i][1]).toString());
+      for(var j = 0; j < dictionary[i][1].length; j++){
+        tempArray.push(Array.from(dictionary[i][1][j])); //adds all enabled kana-maps to the substitution array
+      }
+
+    }
   }
-  if (secondWord.length > firstWord.length) {
-    // The second word should come before the first word.
-    return 1;
-  }
 
-  // The words have the same length, it doesn't matter which comes first.
-  return 0;
-});
+  //tempArray = Array.from(kanai);
+console.log("TEMP ARRAY = " + tempArray[0]); //returns ka, か when working and from single pos. Has to be an two dimentional array.
 
-// Now that the entries are sorted, put them back into a Map.
-let sortedKanaMap = new Map(tempArray);
+  //tempArray.slice(0, activeCharacters); //limits the number of active japanese characters
+  tempArray.sort((pair1, pair2) => {
+    var firstWord = pair1[0];
+    var secondWord = pair2[0];
+
+    if (firstWord.length > secondWord.length) {
+      // The first word should come before the second word.
+      console.log("lefts+hift");
+      return -1;
+    }
+    if (secondWord.length > firstWord.length) {
+      // The second word should come before the first word.
+      console.log("rights+hift");
+      return 1;
+    }
+    console.log("noshift");
+    // The words have the same length, it doesn't matter which comes first.
+    return 0;
+  });
+
+  // Now that the entries are sorted, put them back into a Map.
+  return new Map(tempArray);
+
+}

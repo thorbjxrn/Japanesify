@@ -15,7 +15,7 @@ Based on  mozillas webextensions-examples/kana-substitution/substitute.js
 /*
  * For efficiency, create a word --> search RegEx Map too.
  */
- const kanaMap = sortedKanaMap;
+ let kanaMap = getSortedMap();
  let regexs = new Map();
  for (let word of kanaMap.keys()) {
   // We want a global, case-insensitive replacement.

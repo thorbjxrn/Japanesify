@@ -51,8 +51,7 @@ function saveOptions(e) {
     o: document.querySelector("#o").checked,
     da: document.querySelector("#da").checked,
     ha: document.querySelector("#ha").checked,
-    yo: document.querySelector("#yo").checked,
-    status: status
+    yo: document.querySelector("#yo").checked
   });
   e.preventDefault();
 }
@@ -108,8 +107,6 @@ function restoreOptions() {
   gettingItem8.then((res) => {
   document.querySelector("#yo").checked = res.yo;
   });
-
-  status = browser.storage.sync.get('status');
 
 
 
