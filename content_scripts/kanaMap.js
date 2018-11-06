@@ -13,15 +13,62 @@ let kanau = new Map();
 let kanae = new Map();
 let kanan = new Map();
 
-
 kanaa.set('a', 'あ');
 kanaa.set('ka', 'か');
+kanaa.set('sa', 'さ');
+kanaa.set('ta', 'た');
+kanaa.set('na', 'な');
+kanaa.set('ha', 'は');
+kanaa.set('ma', 'ま');
+kanaa.set('ya', 'や');
+kanaa.set('ra', 'ら');
+kanaa.set('wa', 'わ');
 
 kanai.set('i', 'い');
-kanai.set('oke', 'け');
 kanai.set('ki', 'き');
+kanai.set('shi', 'し');
+kanai.set('chi', 'ち');
+kanai.set('ni', 'に');
+kanai.set('hi', 'ひ');
+kanai.set('mi', 'み');
+kanai.set('ri', 'り');
+//kanai.set('wi', 'ゐ'); //outdated character
+
+kanau.set('u', 'う');
+kanau.set('ku', 'く');
+kanau.set('su', 'す');
+kanau.set('tsu', 'つ');
+kanau.set('nu', 'ぬ');
+kanau.set('hu', 'ふ');
+kanau.set('mu', 'む');
+kanau.set('ru', 'る');
+kanau.set('yu', 'ゆ');
+
+kanae.set('e', 'え');
+kanae.set('ke', 'け');
+kanae.set('se', 'せ');
+kanae.set('te', 'て');
+kanae.set('ne', 'ね');
+kanae.set('he', 'へ');
+kanae.set('me', 'め');
+kanae.set('re', 'れ');
+//kanae.set('we', 'ゑ'); //outdated character
+
+kanao.set('o', 'お');
+kanao.set('ko', 'こ');
+kanao.set('so', 'そ');
+kanao.set('to', 'と');
+kanao.set('no', 'の');
+kanao.set('ho', 'ほ');
+kanao.set('mo', 'も');
+kanao.set('ro', 'ろ');
+kanao.set('yo', 'よ');
+kanao.set('wo', 'を');
 
 kanan.set('n', 'ん');
+
+
+
 
 let dictionary = [[false, Array.from(kanaa)], [true, Array.from(kanai)], [false,Array.from(kanao)], [false, Array.from(kanau)], [false, Array.from(kanae)], [true, Array.from(kanan)]];
 //console.log(Array.from(dictionary[0][1]).toString());
