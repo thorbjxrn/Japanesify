@@ -23,7 +23,7 @@ kanai.set('ki', 'き');
 
 kanan.set('n', 'ん');
 
-let dictionary = [[false, Array.from(kanaa)], [false, Array.from(kanai)], [false,Array.from(kanao)], [false, Array.from(kanau)], [false, Array.from(kanae)], [false, Array.from(kanan)]];
+let dictionary = [[false, Array.from(kanaa)], [true, Array.from(kanai)], [false,Array.from(kanao)], [false, Array.from(kanau)], [false, Array.from(kanae)], [true, Array.from(kanan)]];
 //console.log(Array.from(dictionary[0][1]).toString());
 
 // let tempArray = Array.from(a); //Array to sort
@@ -60,7 +60,7 @@ function getSortedMap(){
   }
 
   //tempArray = Array.from(kanai);
-console.log("TEMP ARRAY = " + tempArray[0]); //returns ka, か when working and from single pos. Has to be an two dimentional array.
+//console.log("TEMP ARRAY = " + tempArray[0]); //returns ka, か when working and from single pos. Has to be an two dimentional array.
 
   //tempArray.slice(0, activeCharacters); //limits the number of active japanese characters
   tempArray.sort((pair1, pair2) => {
@@ -69,15 +69,15 @@ console.log("TEMP ARRAY = " + tempArray[0]); //returns ka, か when working and 
 
     if (firstWord.length > secondWord.length) {
       // The first word should come before the second word.
-      console.log("lefts+hift");
+      
       return -1;
     }
     if (secondWord.length > firstWord.length) {
       // The second word should come before the first word.
-      console.log("rights+hift");
+
       return 1;
     }
-    console.log("noshift");
+
     // The words have the same length, it doesn't matter which comes first.
     return 0;
   });
