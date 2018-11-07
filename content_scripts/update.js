@@ -4,7 +4,7 @@ function updateCharacters(request, sender, sendResponse) {
   var enabledKana = request.characters;
 
   for (var i = 0; i < enabledKana.length; i++) {
-      dictionary[i][0] = enabledKana[i];
+      dictionary[i][0] = enabledKana[i][1];
       console.log(dictionary[i][0]);
   }
   //console.log(dictionary[0][0]);

@@ -69,8 +69,9 @@ kanan.set('n', 'ん');
 
 
 
-
-let dictionary = [[false, Array.from(kanaa)], [true, Array.from(kanai)], [false,Array.from(kanao)], [false, Array.from(kanau)], [false, Array.from(kanae)], [true, Array.from(kanan)]];
+// ORDER: n, a, i, u, o, e, da, ha, yo
+// TODO: da, ha, yo
+let dictionary = [[false, Array.from(kanan)], [false, Array.from(kanaa)], [false,Array.from(kanai)], [false, Array.from(kanau)], [false, Array.from(kanao)], [false, Array.from(kanae)]];
 //console.log(Array.from(dictionary[0][1]).toString());
 
 // let tempArray = Array.from(a); //Array to sort

@@ -1,7 +1,7 @@
 /* initialise variables */
 let appEnabled = false;
 let alphabet = "hiregana";
-let characters = [1,0,0,0,0,0];
+let characters = [['n', 0],['a', 0],['i', 1], ['u', 0], ['o', 0], ['e', 0]]; //The order is : n, a, i, u, o, e
 var status = false;
 
 var checkboxes = new Map([
@@ -15,6 +15,7 @@ var checkboxes = new Map([
   ['ha', document.querySelector("input[name='activeSubsHA'")],
   ['yo', document.querySelector("input[name='activeSubsYO'")]
 ]);
+
 
 var toggleButton = document.querySelector('button');
 var alsoN = true; //checkboxes.get('n').checked;
@@ -161,6 +162,14 @@ function updatePage(toggleActive){ // false for update, true for toggle
     if(toggleActive){
       appEnabled = toggle(appEnabled);
     }
+    for (var i = 0; i < characters.length; i++) {
+      var string = "#" + characters[i][0];
+      console.log(string);
+      characters[i][1] = document.querySelector(string).checked;
+    }
+
+
+
     browser.tabs.sendMessage(tabs[0].id, {enabled: appEnabled, characters: characters, alphabet: alphabet});
 
     console.debug("Enabled = " + appEnabled.toString());
