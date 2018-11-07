@@ -1,10 +1,15 @@
 /*
  * File created By Thorbjørn Bonvik, 2017.
- * based on mozillas
- * This file contains the Map of word --> emoji substitutions.
+ * based on mozillas emoji substitution example
+ * This file contains the Map of latin string --> hiragana substitutions.
  */
 
-/* exported sortedEmojiMap */
+
+
+let tempArray = new Array();
+let sortedKanaMap;
+
+/* HIRAGANA MAPPINGS */
 
 let kanaa = new Map();
 let kanai = new Map();
@@ -72,14 +77,9 @@ kanan.set('n', 'ん');
 // ORDER: n, a, i, u, o, e, da, ha, yo
 // TODO: da, ha, yo
 let dictionary = [[false, Array.from(kanan)], [false, Array.from(kanaa)], [false,Array.from(kanai)], [false, Array.from(kanau)], [false, Array.from(kanao)], [false, Array.from(kanae)]];
-//console.log(Array.from(dictionary[0][1]).toString());
-
-// let tempArray = Array.from(a); //Array to sort
 
 
-let tempArray = new Array();
 
-let sortedKanaMap;; //getSortedMap();
 
 
 /*

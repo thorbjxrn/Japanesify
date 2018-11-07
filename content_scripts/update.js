@@ -8,6 +8,7 @@ function updateCharacters(request, sender, sendResponse) {
       console.log(dictionary[i][0]);
   }
   //console.log(dictionary[0][0]);
+  
   if (request.enabled == true) {
     kanaMap = getSortedMap(); //Refresh the active characters
     activate(); //do the substitution
