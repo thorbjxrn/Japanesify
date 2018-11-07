@@ -18,22 +18,6 @@ var checkboxes = new Map([
 
 
 var toggleButton = document.querySelector('button');
-var alsoN = true; //checkboxes.get('n').checked;
-console.log("ALSO N : " + alsoN);
-
-// settings
-/*
-checkboxes.forEach(function(value, key) {
-  value.onchange = function(e) {
-      console.debug(key);
-      browser.storage.local.set({
-        key:  {enabled:true}
-      });
-      if(appEnabled){
-        updatePage(false);
-      }
-  }
-});
 
 /* storage */
 checkboxes.forEach(function(value, key){
@@ -139,20 +123,9 @@ function getActiveTab() {
 toggleButton.onclick = function() {
   updatePage(true);
   status = toggle(status);
-  //browser.tabs.sendMessage(tabs[0].id, {enabled: status});
+  
 }
-// restore settings at load
-/*
-document.addEventListener('DOMContentLoaded', restoreOptions);
 
-function restoreOptions() {
-  console.debug("RESTORE OPTIONS ACTIVATED")
-  var storageItem = browser.storage.local.get('appStatus');
-  storageItem.then((res) => {
-    n.checked = true;
-  });
-}
-*/
 // Functions
 
 function updatePage(toggleActive){ // false for update, true for toggle
@@ -167,8 +140,6 @@ function updatePage(toggleActive){ // false for update, true for toggle
       console.log(string);
       characters[i][1] = document.querySelector(string).checked;
     }
-
-
 
     browser.tabs.sendMessage(tabs[0].id, {enabled: appEnabled, characters: characters, alphabet: alphabet});
 
