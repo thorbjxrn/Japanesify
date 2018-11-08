@@ -31,6 +31,9 @@
       "default_title": "Kana",
       "default_popup": "popup/popup.html"
     },
+    "background": {
+    "scripts": ["background_scripts/background.js"]
+  },
 
   "content_scripts": [
     {

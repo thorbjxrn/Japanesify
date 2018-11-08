@@ -1,8 +1,8 @@
 /* initialise variables */
-let appEnabled = false;
 let alphabet = "hiregana";
 let characters = [['n', 0],['a', 0],['i', 1], ['u', 0], ['o', 0], ['e', 0]]; //The order is : n, a, i, u, o, e
-var status = false;
+let status = false;
+
 
 var checkboxes = new Map([
   ['n', document.querySelector("input[name='activeSubsN'")],
@@ -28,78 +28,43 @@ checkboxes.forEach(function(value, key){
 
 function saveOptions(e) {
   browser.storage.sync.set({
-    n: document.querySelector("#n").checked,
-    a: document.querySelector("#a").checked,
-    i: document.querySelector("#i").checked,
-    u: document.querySelector("#u").checked,
-    e: document.querySelector("#e").checked,
-    o: document.querySelector("#o").checked,
-    da: document.querySelector("#da").checked,
-    ha: document.querySelector("#ha").checked,
-    yo: document.querySelector("#yo").checked
+    array: [
+      document.querySelector("#n").checked,
+      document.querySelector("#a").checked,
+      document.querySelector("#i").checked,
+      document.querySelector("#u").checked,
+      document.querySelector("#e").checked,
+      document.querySelector("#o").checked,
+      document.querySelector("#da").checked,
+      document.querySelector("#ha").checked,
+      document.querySelector("#yo").checked,
+    ],
+    enabled: status
   });
+console.log("SAVING OPTIONS");
+
   e.preventDefault();
 }
 
 function restoreOptions() {
   var boolean = false;
   var charMap = new Map();
-    var gettingItem = browser.storage.sync.get('n');
-    gettingItem.then((res) => {
-    document.querySelector("#n").checked = res.n;
-    //charMap.set('n', true);//res.n);
-    getActiveTab().then((tabs) => {
-      console.debug("SENDING N")
-        browser.tabs.sendMessage(tabs[0].id, {n: true});
+  var gettingItem = browser.storage.sync.get('array');
+  gettingItem.then((res) => {
+      document.querySelector("#n").checked = res.array[0];
+      document.querySelector("#a").checked = res.array[1];
+      document.querySelector("#i").checked = res.array[2];
+      document.querySelector("#u").checked = res.array[3];
+      document.querySelector("#e").checked = res.array[4];
+      document.querySelector("#o").checked = res.array[5];
+      document.querySelector("#da").checked = res.array[6];
+      document.querySelector("#ha").checked = res.array[7];
+      document.querySelector("#yo").checked = res.array[8];
     });
-
-    var gettingItem1 = browser.storage.sync.get('a');
-    gettingItem1.then((res) => {
-      document.querySelector("#a").checked = res.a;
-    });
-
-  var gettingItem2 = browser.storage.sync.get('i');
-  gettingItem2.then((res) => {
-  document.querySelector("#i").checked = res.i;
-  });
-
-  var gettingItem3 = browser.storage.sync.get('u');
-  gettingItem3.then((res) => {
-  document.querySelector("#u").checked = res.u;
-  });
-
-  var gettingItem4 = browser.storage.sync.get('e');
-  gettingItem4.then((res) => {
-  document.querySelector("#e").checked = res.e;
-  });
-
-  var gettingItem5 = browser.storage.sync.get('o');
-  gettingItem5.then((res) => {
-  document.querySelector("#o").checked = res.o;
-  });
-
-  var gettingItem6 = browser.storage.sync.get('da');
-  gettingItem6.then((res) => {
-  document.querySelector("#da").checked = res.da;
-  });
-
-  var gettingItem7 = browser.storage.sync.get('ha');
-  gettingItem7.then((res) => {
-  document.querySelector("#ha").checked = res.ha;
-  });
-
-  var gettingItem8 = browser.storage.sync.get('yo');
-  gettingItem8.then((res) => {
-  document.querySelector("#yo").checked = res.yo;
-  });
-
-
-
-
-
-  });
 }
 
+
+//add event listeners
 document.addEventListener('DOMContentLoaded', restoreOptions);
 document.querySelector("#o").addEventListener('change', saveOptions);
 document.querySelector("#n").addEventListener('change', saveOptions);
@@ -120,40 +85,33 @@ function getActiveTab() {
 
 
 
-toggleButton.onclick = function() {
-  updatePage(true);
-  status = toggle(status);
-  
+toggleButton.onclick = function(){
+  if(status == true){
+    status = false;
+  }
+  else {
+    status = true;
+  }
+
+  updatePage();
 }
+
 
 // Functions
 
-function updatePage(toggleActive){ // false for update, true for toggle
-  var data = browser.storage.local.get("appStatus").enabled;
-  console.debug("UPDATE PAGE! Toggle = " + toggleActive.toString() + ". Data: " + data);
+function updatePage(){
+
   getActiveTab().then((tabs) => {
-    if(toggleActive){
-      appEnabled = toggle(appEnabled);
-    }
+
     for (var i = 0; i < characters.length; i++) {
       var string = "#" + characters[i][0];
-      console.log(string);
       characters[i][1] = document.querySelector(string).checked;
     }
 
-    browser.tabs.sendMessage(tabs[0].id, {enabled: appEnabled, characters: characters, alphabet: alphabet});
+    //console.debug("Enabled = " + status.toString());
+    browser.tabs.sendMessage(tabs[0].id, {enabled: status, characters: characters, alphabet: alphabet});
 
-    console.debug("Enabled = " + appEnabled.toString());
 
 
   });
-}
-
-function toggle(status){
-  if(status){
-    return false;
-  }
-  else {
-    return true;
-  }
 }
