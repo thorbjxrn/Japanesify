@@ -1,9 +1,9 @@
 
+let enabledKana, enabled;
 
 browser.runtime.onMessage.addListener(setData);
 
 function setData(request, sender, sendResponse){
-  let enabledKana, enabled;
   enabledKana = request.characters;
   enabled = request.enabled;
 
