@@ -19,11 +19,12 @@ function setData(request, sender, sendResponse){
 
 
 function updatePage (){
+  var once = 0;
     if (enabled == true) {
       kanaMap = getSortedMap(); //Refresh the active characters
       activate(); //do the substitution
     }
-    else {
+    else if(once < 1){
       window.location.reload(false); //reset
     }
 }

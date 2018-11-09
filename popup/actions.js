@@ -20,9 +20,9 @@ var toggleButton = document.getElementById('toggle');
 
 /* storage */
 if(!localStorage.getItem('enabled')) {
-  localStorage.enabled = status;
+  localStorage.enabled = JSON.stringify(status);
 } else {
-  status = localStorage.enabled;
+  status = JSON.parse(localStorage.enabled);
 }
 setToggleButtonStatus(status);
 
@@ -33,7 +33,7 @@ checkboxes.forEach(function(value, key){
 })
 
 function saveOptions(e) {
-  localStorage.enabled = status;
+  localStorage.enabled = JSON.stringify(status);
   localStorage.array = JSON.stringify([
     document.querySelector("#n").checked,
     document.querySelector("#a").checked,
@@ -49,10 +49,12 @@ function saveOptions(e) {
 console.log("SAVING OPTIONS: " + localStorage.array);
 
   e.preventDefault();
+
+  updatePage();
 }
 
 function restoreOptions() {
-  status = localStorage.enabled;
+  status = JSON.parse(localStorage.enabled);
     if(!localStorage.getItem('array')) {
       saveOptions();
     } else {
@@ -96,15 +98,16 @@ function getActiveTab() {
 
 
 toggleButton.onclick = function(){
+  console.log("CLICK");
   if(status == true){
     status = false;
   }
-  else {
+  else if(status == false) {
     status = true;
   }
   setToggleButtonStatus(status);
   console.log("SAVING status AS: " + status);
-  localStorage.enabled = status;
+  localStorage.enabled = JSON.stringify(status);
 
   updatePage();
 }
