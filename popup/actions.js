@@ -17,12 +17,13 @@ var checkboxes = new Map([
 ]);
 
 
-var toggleButton = document.querySelector('button');
+//var toggleButton = document.querySelector('button');
+var toggleButton = document.getElementById('toggle');
 
 /* storage */
 checkboxes.forEach(function(value, key){
   value.onchange = function(e){
-    console.debug(key + " triggered");
+    console.debug(key + " toggle");
   }
 })
 
@@ -60,7 +61,18 @@ function restoreOptions() {
       document.querySelector("#da").checked = res.array[6];
       document.querySelector("#ha").checked = res.array[7];
       document.querySelector("#yo").checked = res.array[8];
+      status = res.enabled;
     });
+    console.log("action.js STATUS restored to: " + status);
+
+    if(status == false){
+      toggleButton.style.backgroundColor = "#d94a3c";
+      toggleButton.innerHTML = "disabled";
+    }
+    else{
+      toggleButton.style.backgroundColor = "#4b7340";
+      toggleButton.innerHTML = "enabled";
+    }
 }
 
 
@@ -88,10 +100,16 @@ function getActiveTab() {
 toggleButton.onclick = function(){
   if(status == true){
     status = false;
+    toggleButton.style.backgroundColor = "#d94a3c";
+    toggleButton.innerHTML = "disabled";
   }
   else {
-    status = true;
+    status = true;a
+    toggleButton.style.backgroundColor = "#4b7340";
+    toggleButton.innerHTML = "enabled";
   }
+  console.log("SAVING status AS: " + status);
+  browser.storage.sync.set({enabled: true});
 
   updatePage();
 }
