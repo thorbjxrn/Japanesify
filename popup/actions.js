@@ -3,7 +3,6 @@ let alphabet = "hiregana";
 let characters = [['n', 0],['a', 0],['i', 1], ['u', 0], ['o', 0], ['e', 0]]; //The order is : n, a, i, u, o, e
 let status = false;
 
-
 var checkboxes = new Map([
   ['n', document.querySelector("input[name='activeSubsN'")],
   ['a', document.querySelector("input[name='activeSubsA'")],
@@ -16,11 +15,17 @@ var checkboxes = new Map([
   ['yo', document.querySelector("input[name='activeSubsYO'")]
 ]);
 
-
 //var toggleButton = document.querySelector('button');
 var toggleButton = document.getElementById('toggle');
 
 /* storage */
+if(!localStorage.getItem('enabled')) {
+  localStorage.enabled = status;
+} else {
+  status = localStorage.enabled;
+}
+setToggleButtonStatus(status);
+
 checkboxes.forEach(function(value, key){
   value.onchange = function(e){
     console.debug(key + " toggle");
@@ -28,51 +33,44 @@ checkboxes.forEach(function(value, key){
 })
 
 function saveOptions(e) {
-  browser.storage.sync.set({
-    array: [
-      document.querySelector("#n").checked,
-      document.querySelector("#a").checked,
-      document.querySelector("#i").checked,
-      document.querySelector("#u").checked,
-      document.querySelector("#e").checked,
-      document.querySelector("#o").checked,
-      document.querySelector("#da").checked,
-      document.querySelector("#ha").checked,
-      document.querySelector("#yo").checked,
-    ],
-    enabled: status
-  });
-console.log("SAVING OPTIONS");
+  localStorage.enabled = status;
+  localStorage.array = JSON.stringify([
+    document.querySelector("#n").checked,
+    document.querySelector("#a").checked,
+    document.querySelector("#i").checked,
+    document.querySelector("#u").checked,
+    document.querySelector("#e").checked,
+    document.querySelector("#o").checked,
+    document.querySelector("#da").checked,
+    document.querySelector("#ha").checked,
+    document.querySelector("#yo").checked
+  ]);
+
+console.log("SAVING OPTIONS: " + localStorage.array);
 
   e.preventDefault();
 }
 
 function restoreOptions() {
-  var boolean = false;
-  var charMap = new Map();
-  var gettingItem = browser.storage.sync.get('array');
-  gettingItem.then((res) => {
-      document.querySelector("#n").checked = res.array[0];
-      document.querySelector("#a").checked = res.array[1];
-      document.querySelector("#i").checked = res.array[2];
-      document.querySelector("#u").checked = res.array[3];
-      document.querySelector("#e").checked = res.array[4];
-      document.querySelector("#o").checked = res.array[5];
-      document.querySelector("#da").checked = res.array[6];
-      document.querySelector("#ha").checked = res.array[7];
-      document.querySelector("#yo").checked = res.array[8];
-      status = res.enabled;
-    });
-    console.log("action.js STATUS restored to: " + status);
+  status = localStorage.enabled;
+    if(!localStorage.getItem('array')) {
+      saveOptions();
+    } else {
+      var res = JSON.parse(localStorage.array);
+      document.querySelector("#n").checked = res[0];
+      document.querySelector("#a").checked = res[1];
+      document.querySelector("#i").checked = res[2];
+      document.querySelector("#u").checked = res[3];
+      document.querySelector("#e").checked = res[4];
+      document.querySelector("#o").checked = res[5];
+      document.querySelector("#da").checked = res[6];
+      document.querySelector("#ha").checked = res[7];
+      document.querySelector("#yo").checked = res[8];
 
-    if(status == false){
-      toggleButton.style.backgroundColor = "#d94a3c";
-      toggleButton.innerHTML = "disabled";
+      console.log("action.js ARRAY restored to: " + typeof res[0]);
+
     }
-    else{
-      toggleButton.style.backgroundColor = "#4b7340";
-      toggleButton.innerHTML = "enabled";
-    }
+
 }
 
 
@@ -100,18 +98,27 @@ function getActiveTab() {
 toggleButton.onclick = function(){
   if(status == true){
     status = false;
+  }
+  else {
+    status = true;
+  }
+  setToggleButtonStatus(status);
+  console.log("SAVING status AS: " + status);
+  localStorage.enabled = status;
+
+  updatePage();
+}
+
+function setToggleButtonStatus(boolean){
+  console.log("setting button to "+ boolean);
+  if(boolean == false){
     toggleButton.style.backgroundColor = "#d94a3c";
     toggleButton.innerHTML = "disabled";
   }
   else {
-    status = true;a
     toggleButton.style.backgroundColor = "#4b7340";
     toggleButton.innerHTML = "enabled";
   }
-  console.log("SAVING status AS: " + status);
-  browser.storage.sync.set({enabled: true});
-
-  updatePage();
 }
 
 
