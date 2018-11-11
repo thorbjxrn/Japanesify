@@ -1,0 +1,5 @@
+update when unchecking a character
+
+Katakana
+
+"enable for this site" / "disable for this site"
