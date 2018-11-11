@@ -44,7 +44,7 @@ kanau.set('ku', 'く');
 kanau.set('su', 'す');
 kanau.set('tsu', 'つ');
 kanau.set('nu', 'ぬ');
-kanau.set('hu', 'ふ');
+kanau.set('fu', 'ふ');
 kanau.set('mu', 'む');
 kanau.set('ru', 'る');
 kanau.set('yu', 'ゆ');
