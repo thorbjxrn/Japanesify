@@ -73,7 +73,7 @@ function replaceText (node) {
 }
 
 // Start the recursion from the body tag.
-function activate() {
+function activate(){
   for (let word of kanaMap.keys()) {
    // We want a global, case-insensitive replacement.
    // @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp

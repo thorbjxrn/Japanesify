@@ -79,9 +79,6 @@ kanan.set('n', 'ん');
 let dictionary = [[false, Array.from(kanan)], [false, Array.from(kanaa)], [false,Array.from(kanai)], [false, Array.from(kanau)], [false, Array.from(kanao)], [false, Array.from(kanae)]];
 
 
-
-
-
 /*
  * After all the dictionary entries have been set, sort them by length.
  *
@@ -95,7 +92,7 @@ let dictionary = [[false, Array.from(kanan)], [false, Array.from(kanaa)], [false
  */
 
 function getSortedMap(){
-//  console.log(dictionary[0][0]);
+  tempArray = new Array();
 
   for (var i = 0; i < dictionary.length; i++) {
     if(dictionary[i][0]){
@@ -107,10 +104,6 @@ function getSortedMap(){
     }
   }
 
-  //tempArray = Array.from(kanai);
-//console.log("TEMP ARRAY = " + tempArray[0]); //returns ka, か when working and from single pos. Has to be an two dimentional array.
-
-  //tempArray.slice(0, activeCharacters); //limits the number of active japanese characters
   tempArray.sort((pair1, pair2) => {
     var firstWord = pair1[0];
     var secondWord = pair2[0];
