@@ -75,7 +75,7 @@ function replaceText (node) {
     for (let i = 0; i < node.childNodes.length; i++) {
       //if(excludeElements.indexOf(node.childNodes[i].tagName.toLowerCase()) > -1){
       if(node.childNodes[i].tagName && excludeElements.indexOf(node.childNodes[i].tagName.toLowerCase()) > -1){
-        console.log("Skip " + node.childNodes[i].tagName);
+        //console.log("Skip " + node.childNodes[i].tagName);
       }
       else{
         replaceText(node.childNodes[i]);
