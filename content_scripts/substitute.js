@@ -27,12 +27,17 @@ Based on  mozillas webextensions-examples/kana-substitution/substitute.js
  * @param  {Node} node    - The target DOM Node.
  * @return {void}         - Note: the kana substitution is done inline.
  */
+
 function replaceText (node) {
+  var excludeElements = ['script', 'style', 'iframe', 'canvas', 'link', 'meta'];
   // Setting textContent on a node removes all of its children and replaces
   // them with a single text node. Since we don't want to alter the DOM aside
   // from substituting text, we only substitute on single text nodes.
   // @see https://developer.mozilla.org/en-US/docs/Web/API/Node/textContent
-  if (node.nodeType === Node.TEXT_NODE) {
+
+  if (node.nodeType === Node.TEXT_NODE) { //YOU NEED TO EXCLUDE STYLE AND SCRIPTS
+  //excludeElements.indexOf(child.tagName.toLowerCase()) > -1
+
     // This node only contains text.
     // @see https://developer.mozilla.org/en-US/docs/Web/API/Node/nodeType.
 
@@ -63,9 +68,21 @@ function replaceText (node) {
     // Now that all the replacements are done, perform the DOM manipulation.
     node.textContent = content;
   }
-  else {
+  else if (node.nodeType === Node.ELEMENT_NODE){
+
     // This node contains more than just text, call replaceText() on each
     // of its children.
+    for (let i = 0; i < node.childNodes.length; i++) {
+      //if(excludeElements.indexOf(node.childNodes[i].tagName.toLowerCase()) > -1){
+      if(node.childNodes[i].tagName && excludeElements.indexOf(node.childNodes[i].tagName.toLowerCase()) > -1){
+        console.log("Skip " + node.childNodes[i].tagName);
+      }
+      else{
+        replaceText(node.childNodes[i]);
+      }
+    }
+  }
+  else{
     for (let i = 0; i < node.childNodes.length; i++) {
       replaceText(node.childNodes[i]);
     }
