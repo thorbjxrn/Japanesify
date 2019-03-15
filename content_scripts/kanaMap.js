@@ -18,6 +18,10 @@ let kanau = new Map();
 let kanae = new Map();
 let kanan = new Map();
 
+let kanad = new Map();
+let kanah = new Map();
+let kanay = new Map();
+
 kanaa.set('a', 'あ');
 kanaa.set('ka', 'か');
 kanaa.set('sa', 'さ');
@@ -72,9 +76,67 @@ kanao.set('wo', 'を');
 
 kanan.set('n', 'ん');
 
+kanad.set('ga', 'が');
+kanad.set('gi', 'ぎ');
+kanad.set('gu', 'ぐ');
+kanad.set('ge', 'げ');
+kanad.set('go', 'ご');
+
+kanad.set('za', 'ざ');
+kanad.set('ji', 'じ');
+kanad.set('zu', 'ず');
+kanad.set('ze', 'ぜ');
+kanad.set('zo', 'ぞ');
+
+kanad.set('da', 'だ');
+kanad.set('dji', 'ぢ');
+kanad.set('dzu', 'づ');
+kanad.set('de', 'で');
+kanad.set('do', 'ど');
+
+kanad.set('ba', 'ば');
+kanad.set('bi', 'び');
+kanad.set('bu', 'ぶ');
+kanad.set('be', 'べ');
+kanad.set('bo', 'ぼ');
+
+kanad.set('pa', 'ぱ');
+kanad.set('pi', 'ぴ');
+kanad.set('pu', 'ぷ');
+kanad.set('pe', 'ぺ');
+kanad.set('po', 'ぽ');
+
+//YOON
+kanay.set('kya', 'きゃ');
+kanay.set('kyu', 'きゅ');
+kanay.set('kyo', 'きょ');
+
+kanay.set('sha', 'しゃ');
+kanay.set('shu', 'しゅ');
+kanay.set('sho', 'しょ');
+
+kanay.set('cha', 'ちゃ');
+kanay.set('chu', 'ちゅ');
+kanay.set('cho', 'ちょ');
+
+kanay.set('nya', 'にゃ');
+kanay.set('nyu', 'にゅ');
+kanay.set('nyo', 'にょ');
+
+kanay.set('hya', 'ひゃ');
+kanay.set('hyu', 'ひゅ');
+kanay.set('hyo', 'ひょ');
+
+kanay.set('mya', 'みゃ');
+kanay.set('myu', 'みゅ');
+kanay.set('myo', 'みょ');
+
+kanay.set('rya', 'りゃ');
+kanay.set('ryu', 'りゅ');
+kanay.set('ryo', 'りょ');
 
 
-// ORDER: n, a, i, u, o, e, da, ha, yo
+// ORDER: n, a, i, u, o, e, da, ha, yo,
 // TODO: da, ha, yo
 let dictionary = [[false, Array.from(kanan)], [false, Array.from(kanaa)], [false,Array.from(kanai)], [false, Array.from(kanau)], [false, Array.from(kanao)], [false, Array.from(kanae)]];
 
