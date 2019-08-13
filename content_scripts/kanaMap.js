@@ -76,6 +76,8 @@ kanao.set('wo', 'を');
 
 kanan.set('n', 'ん');
 
+//How to implement: 1. Dakuten active -> all dakuten. EASY || 2. Dakuten active only additionally selected characters BETTer
+
 kanad.set('ga', 'が');
 kanad.set('gi', 'ぎ');
 kanad.set('gu', 'ぐ');
@@ -100,11 +102,11 @@ kanad.set('bu', 'ぶ');
 kanad.set('be', 'べ');
 kanad.set('bo', 'ぼ');
 
-kanad.set('pa', 'ぱ');
-kanad.set('pi', 'ぴ');
-kanad.set('pu', 'ぷ');
-kanad.set('pe', 'ぺ');
-kanad.set('po', 'ぽ');
+kanah.set('pa', 'ぱ');
+kanah.set('pu', 'ぷ');
+kanah.set('pi', 'ぴ');
+kanah.set('pe', 'ぺ');
+kanah.set('po', 'ぽ');
 
 //YOON
 kanay.set('kya', 'きゃ');
@@ -138,7 +140,8 @@ kanay.set('ryo', 'りょ');
 
 // ORDER: n, a, i, u, o, e, da, ha, yo,
 // TODO: da, ha, yo
-let dictionary = [[false, Array.from(kanan)], [false, Array.from(kanaa)], [false,Array.from(kanai)], [false, Array.from(kanau)], [false, Array.from(kanao)], [false, Array.from(kanae)]];
+let dictionary = [[false, Array.from(kanan)], [false, Array.from(kanaa)], [false,Array.from(kanai)], [false, Array.from(kanau)], [false, Array.from(kanao)], [false, Array.from(kanae)],
+                  [false, Array.from(kanad)], [false, Array.from(kanah)], [false, Array.from(kanay)]];
 
 
 /*

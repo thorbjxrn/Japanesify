@@ -1,6 +1,6 @@
 /* initialise variables */
 let alphabet = "hiregana";
-let characters = [['n', 0],['a', 0],['i', 1], ['u', 0], ['o', 0], ['e', 0]]; //The order is : n, a, i, u, o, e
+let characters = [['n', 0],['a', 0],['i', 1], ['u', 0], ['o', 0], ['e', 0], ['da',0], ['ha',0], ['yo',0]]; //The order is : n, a, i, u, o, e
 let status = false;
 
 var checkboxes = new Map([
