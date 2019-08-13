@@ -1,3 +1,5 @@
 Katakana
 
 "enable for this site" / "disable for this site"
+
+Additional standalone addon, hiragana/katakana(/kanjii?) lookup table. Add link in popup, expandable about/more... sub menu?
