@@ -11,7 +11,6 @@ This WebExtension uses local storage to save preferences.
 * Option for Katakana
 * Enable/Disable for specific pages
 * Lookup conversion chart
-* Replace 
 
 ## Acknowledgements
 
