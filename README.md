@@ -4,7 +4,6 @@ This WebExtension uses local storage to save preferences.
 
 ## What it does
 * Replaces latin letters with groups of Hiragana.
-*
 * Can quickly be enabled and disabled
 
 ## Intended future features
