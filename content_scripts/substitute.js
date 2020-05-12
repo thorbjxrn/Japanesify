@@ -103,24 +103,6 @@ const convert = (japanesify) => {
   });
 }
 
-function getCharacterMap(japanesify) {
-  if(japanesify) {
-    return sortedCharacterMap;
-  }
-  else {
-    return swap(sortedCharacterMap);
-  }
-}
-
-
-function swap(charactertMap){
-  const ret = new Map();
-  charactertMap.forEach((val, key) => {
-    ret.set(val, key);
-  });
-  return ret;
-}
-
 // var callback = function(){
 //   // Handler when the DOM is fully loaded
 //   console.log("Sending Message to popup.js")
