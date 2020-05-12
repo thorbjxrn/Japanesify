@@ -1,54 +1,41 @@
+
+const getIsEnabled = () => {
+  return JSON.parse(localStorage.getItem('japanesifyIsEnabled')) ? true : false;
+}
+
+const setIsEnabled = (isEnabled) => {
+  localStorage.japanesifyIsEnabled = JSON.stringify(isEnabled);
+}
+
 /* initialise variables */
 let alphabet = "hiregana";
-let characters = [['n', 0],['a', 0],['i', 1], ['u', 0], ['o', 0], ['e', 0], ['da',0], ['ha',0], ['yo',0]]; //The order is : n, a, i, u, o, e
-let status = false;
-
-var checkboxes = new Map([
-  ['n', document.querySelector("input[name='activeSubsN'")],
-  ['a', document.querySelector("input[name='activeSubsA'")],
-  ['i', document.querySelector("input[name='activeSubsI'")],
-  ['u', document.querySelector("input[name='activeSubsU'")],
-  ['e', document.querySelector("input[name='activeSubsE'")],
-  ['o', document.querySelector("input[name='activeSubsO'")],
-  ['da', document.querySelector("input[name='activeSubsDA'")],
-  ['ha', document.querySelector("input[name='activeSubsHA'")],
-  ['yo', document.querySelector("input[name='activeSubsYO'")]
-]);
+let characters = [
+  ['n', 0],['a', 0],
+  ['i', 1], ['u', 0], 
+  ['o', 0], ['e', 0], 
+  ['da',0], ['ha',0], 
+  ['yo',0]
+]; //The order is : n, a, i, u, o, e
+let status = getIsEnabled();
 
 //var toggleButton = document.querySelector('button');
 var toggleButton = document.getElementById('toggle');
 
-/* storage */
-if(!localStorage.getItem('enabled')) {
-  localStorage.enabled = JSON.stringify(status);
-} else {
-  status = JSON.parse(localStorage.enabled);
-}
 setToggleButtonStatus(status);
 
 function saveOptions(e) {
-  localStorage.enabled = JSON.stringify(status);
-  localStorage.array = JSON.stringify([
-    document.querySelector("#n").checked,
-    document.querySelector("#a").checked,
-    document.querySelector("#i").checked,
-    document.querySelector("#u").checked,
-    document.querySelector("#e").checked,
-    document.querySelector("#o").checked,
-    document.querySelector("#da").checked,
-    document.querySelector("#ha").checked,
-    document.querySelector("#yo").checked
-  ]);
-
-//console.log("SAVING OPTIONS: " + localStorage.array);
-
   e.preventDefault();
+
+  setIsEnabled(status)
+  localStorage.array = JSON.stringify(characters.map(
+      ([char, _]) => document.querySelector(`#${char}`).checked
+  ));
 
   updatePage();
 }
 
 function restoreOptions() {
-  status = JSON.parse(localStorage.enabled);
+  status = getIsEnabled();
     if(!localStorage.getItem('array')) {
       saveOptions();
     } else {
@@ -92,15 +79,10 @@ function getActiveTab() {
 
 
 toggleButton.onclick = function(){
-  //console.log("CLICK");
-  if(status == true){
-    status = false;
-  }
-  else if(status == false) {
-    status = true;
-  }
+  status = !status;
+
   setToggleButtonStatus(status);
-  localStorage.enabled = JSON.stringify(status);
+  setIsEnabled(status);
 
   updatePage();
 }
@@ -123,13 +105,28 @@ function updatePage(){
 
   getActiveTab().then((tabs) => {
 
-    for (var i = 0; i < characters.length; i++) {
-      var string = "#" + characters[i][0];
-      characters[i][1] = document.querySelector(string).checked;
-    }
+    // for (var i = 0; i < characters.length; i++) {
+    //   var string = "#" + characters[i][0];
+    //   characters[i][1] = document.querySelector(string).checked;
+    // }
 
     //console.debug("Enabled = " + status.toString());
-    browser.tabs.sendMessage(tabs[0].id, {enabled: status, characters: characters, alphabet: alphabet});
+    browser.tabs.sendMessage(
+      tabs[0].id, 
+      {type: "togglePlugin", enabled: status}
+    );
 
   });
 }
+
+// browser.runtime.onMessage.addListener(req => {
+//   if(req.type == "Japanesify" && status) {
+//     updatePage();
+//   }
+// });
+
+// // update when the tab is updated
+// browser.tabs.onUpdated.addListener(updatePage);
+
+// // update when the tab is activated
+// browser.tabs.onActivated.addListener(updatePage);
