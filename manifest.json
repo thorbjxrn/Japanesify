@@ -1,9 +1,16 @@
 {
   "manifest_version": 2,
-  "name": "Emoji Substitution",
-  "description": "Replaces words with emojis.",
-  "homepage_url": "https://github.com/mdn/webextensions-examples/tree/master/emoji-substitution",
-  "version": "1.0",
+  "name": "Japanesify",
+  "version": "1.1",
+
+  "applications": {
+    "gecko": {
+      "id": "Japanesify@thorbonvik.com"
+    }
+  },
+
+  "description": "Learn the japanese alphabets by gradually substituting latin letters",
+  
   "icons": {
     "16": "icons/icon-16.png",
     "48": "icons/icon-48.png",
