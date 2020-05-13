@@ -56,19 +56,27 @@ function replaceText (node, characterMap, regexs) {
   }
 }
 
-browser.runtime.onMessage.addListener(req => {
-  console.log(`Recieved message: ${req}`);
-  if (req.type == "togglePlugin") {
-    convert(req.enabled);
+browser.runtime.onMessage.addListener(({type, japanesify, characters}) => {
+  if (type == "togglePlugin") {
+    isCharacterEnabled(characters) && !japanesify ? convert(offCharacterState) : convert(characters);
   } 
 });
 
-const convert = (japanesify) => {
+const isCharacterEnabled = (characters) => {
+  for(const char in characters) {
+    if (characters[char]) {
+      return true;
+    }
+  }
+  return false;
+}
+
+const convert = (characters) => {
   /*global sortedEmojiMap*/
 
 // emojiMap.js defines the 'sortedEmojiMap' variable.
 // Referenced here to reduce confusion.
-  const characterMap = getCharacterMap(japanesify);
+  const characterMap = getCharacterMap(characters);
 
   /*
   * For efficiency, create a word --> search RegEx Map too.
@@ -103,19 +111,24 @@ const convert = (japanesify) => {
   });
 }
 
-// var callback = function(){
-//   // Handler when the DOM is fully loaded
-//   console.log("Sending Message to popup.js")
-//   browser.runtime.sendMessage({
-//     type: "Japanesify"
+// browser.tabs.onActivated.addListener((_) => {
+//   browser.runtime.sendMessage({type: "getState"})
+//   .then(({japanesify, characters}) => {
+//     if(japanesify) {
+//       convert(characters);
+//     }
 //   });
-// };
+// });
 
-// if (
-//     document.readyState === "complete" ||
-//     (document.readyState !== "loading" && !document.documentElement.doScroll)
-// ) {
-//   callback();
-// } else {
-//   document.addEventListener("DOMContentLoaded", callback);
-// }
+var domReadyCallback = function(){
+  browser.runtime.sendMessage({type: "domReady"});
+};
+
+if (
+    document.readyState === "complete" ||
+    (document.readyState !== "loading" && !document.documentElement.doScroll)
+) {
+  domReadyCallback();
+} else {
+  document.addEventListener("DOMContentLoaded", domReadyCallback);
+}

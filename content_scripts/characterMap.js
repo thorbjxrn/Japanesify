@@ -3,19 +3,8 @@
  */
 
 /* exported sortedEmojiMap */
-const getCharacterMap = (japanesify) => {
-  
-  let dictionary = new Map();
-  dictionary.set('n', 'ん');
-
-  dictionary.set('i', 'い');
-  dictionary.set('ki', 'き');
-  dictionary.set('shi', 'し');
-  dictionary.set('chi', 'ち');
-  dictionary.set('ni', 'に');
-  dictionary.set('hi', 'ひ');
-  dictionary.set('mi', 'み');
-  dictionary.set('ri', 'り');
+const getCharacterMap = (characters) => {
+  let dictionary = getHiraganaMap(characters);
 
   /*
   * After all the dictionary entries have been set, sort them by length.
@@ -52,12 +41,7 @@ const getCharacterMap = (japanesify) => {
   let sortedCharacterMap = new Map(tempArray);
 
 
-  if(japanesify) {
-    return sortedCharacterMap;
-  }
-  else {
-    return swap(sortedCharacterMap);
-  }
+  return sortedCharacterMap;
 }
 
 
@@ -68,3 +52,6 @@ const swap = (charactertMap) => {
   });
   return ret;
 }
+
+const offCharacterState = {n: false, a: false, i: false, u: false, o: false, e: false, 
+  da: false, ha: false, yo: false};

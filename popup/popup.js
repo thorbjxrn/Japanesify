@@ -1,3 +1,4 @@
+// State saving methods
 const getIsEnabled = () => {
   return JSON.parse(localStorage.getItem('japanesifyIsEnabled')) ? true : false;
 }
@@ -8,7 +9,7 @@ const saveIsEnabled = (isEnabled) => {
 
 const getCharacteSelections = () => {
   const chars = JSON.parse(localStorage.getItem('japanesifyCharacteSelections')) 
-    || {n: false, a: false, i: true, u: false, o: false, e: false, 
+      || {n: false, a: false, i: true, u: false, o: false, e: false, 
       da: false, ha: false, yo: false}; //default value if not saved to storage. The order is : n, a, i, u, o, e
 
   return chars;
@@ -17,6 +18,7 @@ const getCharacteSelections = () => {
 const saveCharacteSelections = (chars) => {
   localStorage.japanesifyCharacteSelections = JSON.stringify(chars); 
 }
+// State saving methods
 
 /* initialise variables */
 let alphabet = "hiregana";
@@ -75,28 +77,20 @@ function setToggleButtonStatus(boolean){
 // Functions
 
 function updatePage(){
-
   getActiveTab().then((tabs) => {
-
-    // for (var i = 0; i < characters.length; i++) {
-    //   var string = "#" + characters[i][0];
-    //   characters[i][1] = document.querySelector(string).checked;
-    // }
-
-    //console.debug("Enabled = " + status.toString());
     browser.tabs.sendMessage(
       tabs[0].id, 
-      {type: "togglePlugin", enabled: status}
+      {type: "togglePlugin", japanesify: status, characters}
     );
 
   });
 }
 
-// browser.runtime.onMessage.addListener(req => {
-//   if(req.type == "Japanesify" && status) {
-//     updatePage();
-//   }
-// });
+browser.runtime.onMessage.addListener(({type}) => {
+  if(type == "domReady") {
+    if(status) {updatePage();}
+  }
+});
 
 // // update when the tab is updated
 // browser.tabs.onUpdated.addListener(updatePage);
