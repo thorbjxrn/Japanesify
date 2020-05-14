@@ -1,8 +1,4 @@
-/*
- * This file contains the Map of word --> emoji substitutions.
- */
 
-/* exported sortedEmojiMap */
 const getCharacterMap = (characters) => {
   let dictionary = getHiraganaMap(characters);
 
@@ -13,14 +9,14 @@ const getCharacterMap = (characters) => {
   * scenarios where words that are substrings of other words get substituted
   * first, leading to the longer word's substitution never triggering.
   * 
-  * For example, the 'woman' substitution would never get triggered
-  * if the 'man' substitution happens first because the input term 'woman'
-  * would become 'wo👨', and the search for 'woman' would not find any matches.
+  * For example, the 'ka' substitution would never get triggered
+  * if the 'a' substitution happens first because the input term 'ka'
+  * would become 'kあ', and the search for 'ka' would not find any matches.
   */
   let tempArray = Array.from(dictionary);
   tempArray.sort((pair1, pair2) => {
-    // Each pair is an array with two entries: a word, and its emoji.
-    // Ex: ['woman', '👩']
+    // Each pair is an array with two entries: a syllable, and its japanese character.
+    // Ex: ['ka', 'か']
     const firstWord = pair1[0];
     const secondWord = pair2[0];
 
@@ -44,7 +40,7 @@ const getCharacterMap = (characters) => {
   return sortedCharacterMap;
 }
 
-
+// Reverse key, value positions i.e (map[key] = value -----> map[value] = key) 
 const swap = (charactertMap) => {
   const ret = new Map();
   charactertMap.forEach((val, key) => {

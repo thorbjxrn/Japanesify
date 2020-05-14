@@ -1,3 +1,7 @@
+/*
+ * This file contains the Map of word --> hiragana substitutions.
+ */
+
 const hiraA = new Map();
 const hiraI = new Map();
 const hiraO = new Map();
@@ -126,6 +130,7 @@ hiraYo.set('ryo', 'りょ');
 
 let prevCharacters = offCharacterState;
 
+// Compares prevCharacters to new ones and adds/removes acording to users selections
 const getHiraganaMap = (characters) => { 
     let hiraganaMap = new Map()
 

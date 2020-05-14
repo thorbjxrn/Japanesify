@@ -3,6 +3,8 @@
  * all occurrences of each mapped word with its emoji counterpart.
  */
 
+const excludeElements = new Set(['TEXTAREA', 'SCRIPT', 'STYLE', 'IFRAME', 'CANVAS', 'LINK', 'META']);
+
 /**
  * Substitutes emojis into text nodes.
  * If the node contains more than just text (ex: it has child nodes),
@@ -16,14 +18,15 @@ function replaceText (node, characterMap, regexs) {
   // them with a single text node. Since we don't want to alter the DOM aside
   // from substituting text, we only substitute on single text nodes.
   // @see https://developer.mozilla.org/en-US/docs/Web/API/Node/textContent
+  //console.log(`In node: ${node.tagName}`);
   if (node.nodeType === Node.TEXT_NODE) {
     // This node only contains text.
     // @see https://developer.mozilla.org/en-US/docs/Web/API/Node/nodeType.
 
-    // Skip textarea nodes due to the potential for accidental submission
-    // of substituted emoji where none was intended.
+    // Skip nodes that may cause problems in the web page.
     if (node.parentNode &&
-        node.parentNode.nodeName === 'TEXTAREA') {
+      excludeElements.has(node.parentNode.nodeName)) {
+      console.log(`Skip node parent: ${node.parentNode.nodeName}`);
       return;
     }
 
@@ -33,8 +36,8 @@ function replaceText (node, characterMap, regexs) {
     // once, at the end.
     let content = node.textContent;
 
-    // Replace every occurrence of 'word' in 'content' with its emoji.
-    // Use the emojiMap for replacements.
+    // Replace every occurrence of 'word' in 'content' with its character.
+    // Use the characterMap for replacements.
     for (let [word, emoji] of characterMap) {
       // Grab the search regex for this word.
       const regex = regexs.get(word);
@@ -71,11 +74,11 @@ const isCharacterEnabled = (characters) => {
   return false;
 }
 
-const convert = (characters) => {
-  /*global sortedEmojiMap*/
+// Use variable to b able to disconnect.
+let observer;
 
-// emojiMap.js defines the 'sortedEmojiMap' variable.
-// Referenced here to reduce confusion.
+const convert = (characters) => {
+
   const characterMap = getCharacterMap(characters);
 
   /*
@@ -91,9 +94,14 @@ const convert = (characters) => {
   // Start the recursion from the body tag.
   replaceText(document.body, characterMap, regexs);
 
+
+  if(observer) {
+    observer.disconnect();
+  }
+
   // Now monitor the DOM for additions and substitute emoji into new nodes.
   // @see https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver.
-  const observer = new MutationObserver((mutations) => {
+  observer = new MutationObserver((mutations) => {
     mutations.forEach((mutation) => {
       if (mutation.addedNodes && mutation.addedNodes.length > 0) {
         // This DOM change was new nodes being added. Run our substitution
@@ -111,24 +119,3 @@ const convert = (characters) => {
   });
 }
 
-// browser.tabs.onActivated.addListener((_) => {
-//   browser.runtime.sendMessage({type: "getState"})
-//   .then(({japanesify, characters}) => {
-//     if(japanesify) {
-//       convert(characters);
-//     }
-//   });
-// });
-
-var domReadyCallback = function(){
-  browser.runtime.sendMessage({type: "domReady"});
-};
-
-if (
-    document.readyState === "complete" ||
-    (document.readyState !== "loading" && !document.documentElement.doScroll)
-) {
-  domReadyCallback();
-} else {
-  document.addEventListener("DOMContentLoaded", domReadyCallback);
-}

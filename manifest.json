@@ -17,6 +17,12 @@
     "96": "icons/icon-96.png"
   },
 
+  "permissions": [
+    "tabs",
+    "<all_urls>",
+    "storage"
+  ],
+
   "browser_action": {
     "browser_style": true,
     "default_icon": {

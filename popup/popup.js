@@ -1,3 +1,4 @@
+
 // State saving methods
 const getIsEnabled = () => {
   return JSON.parse(localStorage.getItem('japanesifyIsEnabled')) ? true : false;
@@ -25,6 +26,7 @@ let alphabet = "hiregana";
 let characters = getCharacteSelections(); 
 let status = getIsEnabled();
 
+
 //add event listeners and mark selected checkboxes.
 for (const char in characters) {
   document.querySelector(`#${char}`).addEventListener('change', saveOptions);
@@ -51,8 +53,6 @@ function getActiveTab() {
   return browser.tabs.query({active: true, currentWindow: true});
 }
 
-
-
 toggleButton.onclick = function(){
   status = !status;
 
@@ -73,27 +73,11 @@ function setToggleButtonStatus(boolean){
   }
 }
 
-
-// Functions
-
 function updatePage(){
   getActiveTab().then((tabs) => {
     browser.tabs.sendMessage(
       tabs[0].id, 
       {type: "togglePlugin", japanesify: status, characters}
     );
-
   });
 }
-
-browser.runtime.onMessage.addListener(({type}) => {
-  if(type == "domReady") {
-    if(status) {updatePage();}
-  }
-});
-
-// // update when the tab is updated
-// browser.tabs.onUpdated.addListener(updatePage);
-
-// // update when the tab is activated
-// browser.tabs.onActivated.addListener(updatePage);
