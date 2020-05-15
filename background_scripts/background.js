@@ -17,3 +17,4 @@ updatePage = () => {
 }
 
 browser.tabs.onUpdated.addListener(updatePage);
+browser.tabs.onActivated.addListener(updatePage);
