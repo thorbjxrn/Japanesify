@@ -36,7 +36,7 @@
 
   "background": {
     "scripts": [
-      "background_scripts/background.js"
+      "background_scripts/background.js", "state/state.js"
     ]
   },
 
