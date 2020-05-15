@@ -1,30 +1,40 @@
 
-  function getActiveTab() {
+// State saving methods
+const getIsEnabled = () => {
+    return JSON.parse(localStorage.getItem('japanesifyIsEnabled')) ? true : false;
+}
+
+const saveIsEnabled = (isEnabled) => {
+    localStorage.japanesifyIsEnabled = JSON.stringify(isEnabled);
+}
+
+const getCharacteSelections = () => {
+    const chars = JSON.parse(localStorage.getItem('japanesifyCharacteSelections')) 
+        || {n: false, a: false, i: true, u: false, o: false, e: false, 
+        da: false, ha: false, yo: false}; //default value if not saved to storage. The order is : n, a, i, u, o, e
+
+    return chars;
+}
+
+const saveCharacteSelections = (chars) => {
+    localStorage.japanesifyCharacteSelections = JSON.stringify(chars); 
+}
+
+function getActiveTab() {
     return browser.tabs.query({active: true, currentWindow: true});
-  }
+}
 
-  function update() {
-    let charArray = new Array();
+// Send message to content scripts in active tab
+updatePage = () => {
+    japanesify = getIsEnabled();
+    characters = getCharacteSelections();
 
-    var status = JSON.parse(localStorage.getItem('enabled'));
-
-    if(status == true){
-      charArray = JSON.parse(localStorage.getItem('array'));
-      var char2Array = [['n', charArray[0]],['a', charArray[1]],['i', charArray[2]],
-        ['u', charArray[3]], ['o', charArray[4]], ['e', charArray[5]],
-        ['da', charArray[6]], ['ha', charArray[7]], ['yo', charArray[8]]]; //the format used by actions.js. Might revisit this
-
-        getActiveTab().then((tabs) => {
-            browser.tabs.sendMessage(tabs[0].id, {enabled: true, characters: char2Array});
-          }
+    getActiveTab().then((tabs) => {
+        browser.tabs.sendMessage(
+            tabs[0].id, 
+            {type: "togglePlugin", japanesify, characters}
         );
-        }
-      //updatePage(); //SND MSG
+    });
+}
 
-  }
-
-  // update when the tab is updated
-  browser.tabs.onUpdated.addListener(update);
-
-  // update when the tab is activated
-  browser.tabs.onActivated.addListener(update);
+browser.tabs.onUpdated.addListener(updatePage);
