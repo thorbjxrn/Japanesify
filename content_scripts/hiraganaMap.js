@@ -9,7 +9,12 @@ const hiraU = new Map();
 const hiraE = new Map();
 const hiraN = new Map();
 
-const hiraDa = new Map();
+const hiraDaA = new Map();
+const hiraDaI = new Map();
+const hiraDaU = new Map();
+const hiraDaE = new Map();
+const hiraDaO = new Map();
+
 const hiraHa = new Map();
 const hiraYo = new Map();
 
@@ -69,31 +74,31 @@ hiraN.set('n', 'ん');
 
 //How to implement: 1. Dakuten active -> all dakuten. EASY || 2. Dakuten active only additionally selected characters BETTer
 
-hiraDa.set('ga', 'が');
-hiraDa.set('gi', 'ぎ');
-hiraDa.set('gu', 'ぐ');
-hiraDa.set('ge', 'げ');
-hiraDa.set('go', 'ご');
+hiraDaA.set('ga', 'が'); hiraDaA.set('gあ', 'が');
+hiraDaI.set('gi', 'ぎ'); hiraDaI.set('gい', 'ぎ');
+hiraDaU.set('gu', 'ぐ'); hiraDaU.set('gう', 'ぐ');
+hiraDaE.set('ge', 'げ'); hiraDaE.set('gえ', 'げ');
+hiraDaO.set('go', 'ご'); hiraDaO.set('gお', 'ご');
 
-hiraDa.set('za', 'ざ');
-hiraDa.set('ji', 'じ');
-hiraDa.set('zu', 'ず');
-hiraDa.set('ze', 'ぜ');
-hiraDa.set('zo', 'ぞ');
+hiraDaA.set('za', 'ざ'); hiraDaA.set('zあ', 'ざ');
+hiraDaI.set('ji', 'じ'); hiraDaI.set('jい', 'じ');
+hiraDaU.set('zu', 'ず'); hiraDaU.set('zう', 'ず');
+hiraDaE.set('ze', 'ぜ'); hiraDaE.set('zえ', 'ぜ');
+hiraDaO.set('zo', 'ぞ'); hiraDaO.set('zお', 'ぞ');
 
-hiraDa.set('da', 'だ');
-hiraDa.set('dji', 'ぢ');
-hiraDa.set('dzu', 'づ');
-hiraDa.set('de', 'で');
-hiraDa.set('do', 'ど');
+hiraDaA.set('da', 'だ');  hiraDaA.set('dあ',  'だ');
+hiraDaI.set('dji', 'ぢ'); hiraDaI.set('djい', 'ぢ');
+hiraDaU.set('dzu', 'づ'); hiraDaU.set('dzう', 'づ');
+hiraDaE.set('de', 'で');  hiraDaE.set('dえ',  'で');
+hiraDaO.set('do', 'ど');  hiraDaO.set('dお',  'ど');
 
-hiraDa.set('ba', 'ば');
-hiraDa.set('bi', 'び');
-hiraDa.set('bu', 'ぶ');
-hiraDa.set('be', 'べ');
-hiraDa.set('bo', 'ぼ');
+hiraDaA.set('ba', 'ば'); hiraDaA.set('bあ', 'ば');
+hiraDaI.set('bi', 'び'); hiraDaI.set('bい', 'び');
+hiraDaU.set('bu', 'ぶ'); hiraDaU.set('bう', 'ぶ');
+hiraDaE.set('be', 'べ'); hiraDaE.set('bえ', 'べ');
+hiraDaO.set('bo', 'ぼ'); hiraDaO.set('bお', 'ぼ');
 
-hiraHa.set('pa', 'ぱ');
+hiraHa.set('pa', 'ぱ'); 
 hiraHa.set('pu', 'ぷ');
 hiraHa.set('pi', 'ぴ');
 hiraHa.set('pe', 'ぺ');
@@ -128,25 +133,18 @@ hiraYo.set('rya', 'りゃ');
 hiraYo.set('ryu', 'りゅ');
 hiraYo.set('ryo', 'りょ');
 
-let prevCharacters = offCharacterState;
-
-// Compares prevCharacters to new ones and adds/removes acording to users selections
 const getHiraganaMap = (characters) => { 
     let hiraganaMap = new Map()
 
     for (const char in characters) {
-        if(prevCharacters[char] !== characters[char]){
-            const mapToMerge = characters[char] ? mapForChar(char) : swap(mapForChar(char))
-            hiraganaMap = new Map([...hiraganaMap, ...mapToMerge])
-        }
+        const mapToMerge = characters[char] ? mapForChar(char, characters) : swap(mapForChar(char, characters))
+        hiraganaMap = new Map([...hiraganaMap, ...mapToMerge])
     }
-    
-    prevCharacters = characters;
 
     return hiraganaMap;
 }
 
-const mapForChar = (char) => {
+const mapForChar = (char, characters) => {
     switch (char) {
         case 'n':
             return hiraN;
@@ -161,6 +159,17 @@ const mapForChar = (char) => {
         case 'e':
             return hiraE;
         case 'da':
+            let hiraDa = new Map();
+            if(characters['a'])
+                hiraDa = new Map([...hiraDa, ...hiraDaA])
+            if(characters['i'])
+                hiraDa = new Map([...hiraDa, ...hiraDaI])
+            if(characters['u'])
+                hiraDa = new Map([...hiraDa, ...hiraDaU])
+            if(characters['o'])
+                hiraDa = new Map([...hiraDa, ...hiraDaO])
+            if(characters['e'])
+                hiraDa = new Map([...hiraDa, ...hiraDaE])
             return hiraDa;
         case 'ha':
             return hiraHa;
