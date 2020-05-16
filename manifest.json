@@ -45,7 +45,8 @@
       "matches": ["<all_urls>"],
       "js": [
         "./content_scripts/characterMap.js", "./content_scripts/substitute.js",
-        "./content_scripts/hiraganaMap.js"
+        "./content_scripts/hiragana/hiraganaMap.js", "./content_scripts/hiragana/dakuten.js", 
+        "./content_scripts/hiragana/handakuten.js"
       ]
     }
   ]

@@ -26,7 +26,6 @@ function replaceText (node, characterMap, regexs) {
     // Skip nodes that may cause problems in the web page.
     if (node.parentNode &&
       excludeElements.has(node.parentNode.nodeName)) {
-      console.log(`Skip node parent: ${node.parentNode.nodeName}`);
       return;
     }
 
