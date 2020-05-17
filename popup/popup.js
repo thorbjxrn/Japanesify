@@ -42,11 +42,13 @@ toggleButton.onclick = function(){
 
 function setToggleButtonStatus(boolean){
   if(boolean == false){
-    toggleButton.style.backgroundColor = "#d94a3c";
+    toggleButton.classList.remove("btn-success");
+    toggleButton.classList.add("btn-danger");
     toggleButton.innerHTML = "disabled";
   }
   else {
-    toggleButton.style.backgroundColor = "#4b7340";
+    toggleButton.classList.remove("btn-danger");
+    toggleButton.classList.add("btn-success");
     toggleButton.innerHTML = "enabled";
   }
 }
