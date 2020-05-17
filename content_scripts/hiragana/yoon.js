@@ -6,6 +6,8 @@ const hiraYoU = new Map();
 //YOON
 const generateHiraYoA = (characters) => {
     //Reset map
+    // Add 'kiゃ' versions to deal with problems 
+    // when toggleing the 'い' when yoon is active
     hiraYoA.set('kya', 'きゃ'); hiraYoA.set('kや', 'きゃ'); hiraYoA.set('kiゃ',  'きゃ');
     hiraYoA.set('sha', 'しゃ'); hiraYoA.set('sは', 'しゃ'); hiraYoA.set('shiゃ', 'しゃ');
     hiraYoA.set('cha', 'ちゃ'); hiraYoA.set('cは', 'ちゃ'); hiraYoA.set('chiゃ', 'ちゃ');
