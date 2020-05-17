@@ -9,8 +9,6 @@ const hiraU = new Map();
 const hiraE = new Map();
 const hiraN = new Map();
 
-const hiraYo = new Map();
-
 hiraA.set('a', 'あ');
 hiraA.set('ka', 'か');
 hiraA.set('sa', 'さ');
@@ -65,43 +63,20 @@ hiraO.set('wo', 'を');
 
 hiraN.set('n', 'ん');
 
-
-//YOON
-hiraYo.set('kya', 'きゃ');
-hiraYo.set('kyu', 'きゅ');
-hiraYo.set('kyo', 'きょ');
-
-hiraYo.set('sha', 'しゃ');
-hiraYo.set('shu', 'しゅ');
-hiraYo.set('sho', 'しょ');
-
-hiraYo.set('cha', 'ちゃ');
-hiraYo.set('chu', 'ちゅ');
-hiraYo.set('cho', 'ちょ');
-
-hiraYo.set('nya', 'にゃ');
-hiraYo.set('nyu', 'にゅ');
-hiraYo.set('nyo', 'にょ');
-
-hiraYo.set('hya', 'ひゃ');
-hiraYo.set('hyu', 'ひゅ');
-hiraYo.set('hyo', 'ひょ');
-
-hiraYo.set('mya', 'みゃ');
-hiraYo.set('myu', 'みゅ');
-hiraYo.set('myo', 'みょ');
-
-hiraYo.set('rya', 'りゃ');
-hiraYo.set('ryu', 'りゅ');
-hiraYo.set('ryo', 'りょ');
+let prevChars = offCharacterState
 
 const getHiraganaMap = (characters) => { 
     let hiraganaMap = new Map()
 
     for (const char in characters) {
-        const mapToMerge = characters[char] ? mapForChar(char, characters) : swap(mapForChar(char, characters))
-        hiraganaMap = new Map([...hiraganaMap, ...mapToMerge])
+        if(prevChars[char] !== characters[char] 
+            || char === 'da' || char === 'ha' || char === 'yo') {
+            const mapToMerge = characters[char] ? mapForChar(char, characters) : swap(mapForChar(char, characters))
+            hiraganaMap = new Map([...hiraganaMap, ...mapToMerge])
+        }
     }
+
+    prevChars = characters;
 
     return hiraganaMap;
 }
@@ -130,7 +105,8 @@ const mapForChar = (char, characters) => {
                             ...generateHiraHaU(characters), ...generateHiraHaE(characters),
                             ...generateHiraHaO(characters)]);
         case 'yo':
-            return hiraYo;
+            return new Map([...generateHiraYoA(characters), ...generateHiraYoO(characters),
+                            ...generateHiraYoU(characters)]);
         default:
             return hiraN;
     }
