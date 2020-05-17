@@ -93,11 +93,6 @@ const convert = (characters) => {
   // Start the recursion from the body tag.
   replaceText(document.body, characterMap, regexs);
 
-
-  if(observer) {
-    observer.disconnect();
-  }
-
   // Now monitor the DOM for additions and substitute emoji into new nodes.
   // @see https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver.
   observer = new MutationObserver((mutations) => {
