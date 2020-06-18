@@ -14,3 +14,5 @@ This WebExtension uses local storage to save preferences.
 ## Acknowledgements
 
 * This WebExtension is built upon Mozilla's "emoji-substitute" WebExtension example.
+
+Big thanks to hcortizcolon for his development on video sites and Reddit compability.
