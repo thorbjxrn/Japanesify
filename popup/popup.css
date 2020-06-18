@@ -1,0 +1,20 @@
+html, body {
+  border-radius:5px;
+  width: 225px;
+}
+
+h3{
+  text-align: center;
+}
+
+
+.website {
+  width: 100%;
+  font-size: 1.5em;
+  text-align: center;
+  cursor: pointer;
+}
+
+.website:hover {
+  background-color: #CFF2F2;
+}
