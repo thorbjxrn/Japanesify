@@ -1,4 +1,4 @@
-#Japanesify
+# Japanesify
 A WebExtension that will replace latin letters with selected Japanese characters. The idea is to gradually expand and practice the Japanese alphabets without intense study sessions.
 This WebExtension uses local storage to save preferences.
 
