@@ -31,10 +31,11 @@ describe('Japanesify', () => {
         const page = await browser.newPage();
         await page.goto(`chrome-extension://${extensionId}/popup.html`)
 
-        const title = await page.title()
-        expect(title).toBe('Japanesify')
+        const h2 = await page.$eval('h2', el => el.textContent)
+        expect(h2).toBe('Japanesify')
 
         // He opens a new page but since none of the conversions are selected nothing happens.
+        fail('Finish the test!')
 
         // He then decides to enable 'ん' character. 
         // He goes back to the tab and notices that all the 'n's are replaced by 'ん's
