@@ -25,14 +25,21 @@ describe('Japanesify', () => {
         // Robert is learning japanese. He stumbles across an extension called Japanesify
         // and decides to install it.
 
-
-        // He opens the extension popup and sees the title 'Japanesify' after that
-        // he decides to enable it.
+        // He opens the extension popup and sees the title 'Japanesify'.
         const page = await browser.newPage();
         await page.goto(`chrome-extension://${extensionId}/popup.html`)
 
         const h2 = await page.$eval('h2', el => el.textContent)
         expect(h2).toBe('Japanesify')
+
+        // Then he sees an enable button and decides to click it.
+        let enableToggleText = await page.$eval('[test-id="enable-button"]', el => el.textContent)
+        expect(enableToggleText).toBe('enable')
+        await page.click('[test-id="enable-button"]')
+
+        // After clicking the button he notices the text changes to disable
+        enableToggleText = await page.$eval('[test-id="enable-button"]', el => el.textContent)
+        expect(enableToggleText).toBe('disable')
 
         // He opens a new page but since none of the conversions are selected nothing happens.
         fail('Finish the test!')
