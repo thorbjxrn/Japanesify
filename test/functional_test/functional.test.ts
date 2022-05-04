@@ -15,7 +15,7 @@ describe('Japanesify', () => {
               `--load-extension=${pathToExtension}`,
             ],
         });
-    })
+    }, 10000)
 
     afterEach(async () => {
         await browser.close()
