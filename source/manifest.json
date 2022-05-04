@@ -1,6 +1,7 @@
 {
   "manifest_version": 2,
   "name": "Sample WebExtension",
+  "__chrome__key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAsXZxtciMcSTsiPK0BHaGsi1tWO/B4GLx62IfwwYwwkwmB1EI8GPVzy3iahguVzaePldtqhZ8rsf65jTW5VsD5Vx00yvWnjjZDoXZ5C2iN/P3UNZOOtt2qwYsKr2HD/1LDwIiUkymUqfHrz6Lt8/p+mB6Q4y6EsIlkkH+Ee9x8i53dpQP71/anZkUTsL6scT6wbjfMKRMJJIw/rTQPVAb6tJUpZHElme+uxKCr5xETyS1DM00zVXxhp4fSYz4/OMkfTAfguwShIO1MK8HuF98xOCizTVyR865Sq+gPe2iqG0p2DI8u6Oip/8xFx5DhAxaKTv4Uj0iSkebMxZddr89gwIDAQAB",
   "version": "0.0.0",
 
   "icons": {
