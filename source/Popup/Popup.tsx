@@ -1,14 +1,19 @@
 import * as React from 'react';
-import './styles.scss';
 
 const Popup: React.FC = () => {
+
+  const [isEnabled, setIsEnabled] = React.useState(false)
+  
   return (
     <section id="popup">
       <h2>Japanesify</h2>
       <button
         test-id="enable-button"
+        onClick={() => setIsEnabled(!isEnabled)}
       >
-        Options Page
+        {
+          isEnabled ? 'disable' : 'enable'
+        }
       </button>
     </section>
   );
