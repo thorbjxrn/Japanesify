@@ -26,26 +26,33 @@ describe('Japanesify', () => {
         // and decides to install it.
 
         // He opens the extension popup and sees the title 'Japanesify'.
-        const page = await browser.newPage();
-        await page.goto(`chrome-extension://${extensionId}/popup.html`)
+        const [extension] = await browser.pages();
+        await extension.goto(`chrome-extension://${extensionId}/popup.html`)
 
-        const h2 = await page.$eval('h2', el => el.textContent)
+        const h2 = await extension.$eval('h2', el => el.textContent)
         expect(h2).toBe('Japanesify')
 
         // Then he sees an enable button and decides to click it.
-        let enableToggleText = await page.$eval('[test-id="enable-button"]', el => el.textContent)
+        let enableToggleText = await extension.$eval('[test-id="enable-button"]', el => el.textContent)
         expect(enableToggleText).toBe('enable')
-        await page.click('[test-id="enable-button"]')
+        await extension.click('[test-id="enable-button"]')
 
         // After clicking the button he notices the text changes to disable
-        enableToggleText = await page.$eval('[test-id="enable-button"]', el => el.textContent)
+        enableToggleText = await extension.$eval('[test-id="enable-button"]', el => el.textContent)
         expect(enableToggleText).toBe('disable')
 
         // He opens a new page but since none of the conversions are selected nothing happens.
-        fail('Finish the test!')
-
+        const basicPage = await browser.newPage();
+        await basicPage.goto(`file://${path.join(__dirname, '..', 'fixtures', 'basic.html')}`)
+        let body = await basicPage.$eval('body', el => el.textContent)
+        expect(body).not.toContain('ん')
+        
         // He then decides to enable 'ん' character. 
+        await extension.bringToFront()
+        await extension.click('[test-id="ん-switch"]')
+        
         // He goes back to the tab and notices that all the 'n's are replaced by 'ん's
+        fail('Finish the test!')
 
         // He opens a new tab and notices that all the 'n's are also replaced by 'ん's
 
