@@ -41,17 +41,32 @@ describe('Japanesify', () => {
         enableToggleText = await extension.$eval('[test-id="enable-button"]', el => el.textContent)
         expect(enableToggleText).toBe('disable')
 
-        // He opens a new page but since none of the conversions are selected nothing happens.
-        const basicPage = await browser.newPage();
-        await basicPage.goto(`file://${path.join(__dirname, '..', 'fixtures', 'basic.html')}`)
-        let body = await basicPage.$eval('body', el => el.textContent)
+        // He opens a new page but nothing happens.
+        const wikiPage = await browser.newPage();
+        await wikiPage.goto('https://en.wikipedia.org/wiki/Happy_Hacking_Keyboard')
+        let body = await wikiPage.$eval('body', el => el.textContent)
         expect(body).not.toContain('ん')
         
-        // He then decides to enable 'ん' character. 
+        // He goes back and notices none of the conversions are selected, he then decides to enable 'ん' character. 
         await extension.bringToFront()
+        let んswitchStatus = await extension.$eval('[test-id="ん-switch"]', input => {
+            return (input as HTMLInputElement).checked
+        })
+        expect(んswitchStatus).toBe(false)
+
         await extension.click('[test-id="ん-switch"]')
+        んswitchStatus = await extension.$eval('[test-id="ん-switch"]', input => {
+            return (input as HTMLInputElement).checked
+        })
+        expect(んswitchStatus).toBe(true)
         
         // He goes back to the tab and notices that all the 'n's are replaced by 'ん's
+        await wikiPage.bringToFront()
+        body = await wikiPage.$eval('body', el => el.textContent)
+        await extension.waitForTimeout(5000)
+        expect(body).not.toContain('n')
+        expect(body).toContain('ん')
+        
         fail('Finish the test!')
 
         // He opens a new tab and notices that all the 'n's are also replaced by 'ん's
@@ -60,5 +75,5 @@ describe('Japanesify', () => {
 
         // ... continue with the rest of the characters
 
-    })
+    }, 10000)
 })
