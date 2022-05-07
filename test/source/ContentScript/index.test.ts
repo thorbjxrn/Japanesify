@@ -1,4 +1,6 @@
-import {convertText} from '../../../source/ContentScript'
+import { browser } from 'webextension-polyfill-ts'
+import { convertText } from '../../../source/ContentScript/index'
+
 describe('Content Script', () => {
     test('converts n to ん', () => {
         const result = convertText("Sample text to convert to Japanese", {n: true})
@@ -12,5 +14,9 @@ describe('Content Script', () => {
 
         expect(result).toContain('n')
         expect(result).not.toContain('ん')
+    })
+
+    test('adds message listener', async () => {
+        expect(browser.runtime.onMessage.addListener).toBeCalled()
     })
 })

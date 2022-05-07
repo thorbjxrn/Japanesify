@@ -4,5 +4,6 @@ module.exports = {
       '^.+\\.(ts|tsx)?$': 'ts-jest',
       "^.+\\.(js|jsx)$": "babel-jest",
     },
-    testEnvironment: 'jsdom'
+    testEnvironment: 'jsdom',
+    setupFiles: ['./test/jest.setup.ts'],
   };

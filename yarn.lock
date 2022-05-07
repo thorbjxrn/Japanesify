@@ -5155,6 +5155,11 @@
     "jest-util" "^28.0.2"
     "string-length" "^4.0.1"
 
+"jest-webextension-mock@^3.7.22":
+  "integrity" "sha512-ai0S49FU9FjUqtXOpkVj26WGc3Lsh6lBPkQABKtKoLUoR60Z42XBBFyNykaZpWRRfIPxprrahLsedPNAVDkJ3w=="
+  "resolved" "https://registry.npmjs.org/jest-webextension-mock/-/jest-webextension-mock-3.7.22.tgz"
+  "version" "3.7.22"
+
 "jest-worker@^26.5.0":
   "integrity" "sha512-KWYVV1c4i+jbMpaBC+U++4Va0cp8OisU185o73T1vo99hqi7w8tSJfUXYswwqqrjzwxa6KpRK54WhPvwf5w6PQ=="
   "resolved" "https://registry.npmjs.org/jest-worker/-/jest-worker-26.6.2.tgz"

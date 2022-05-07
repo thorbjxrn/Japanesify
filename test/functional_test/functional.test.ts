@@ -63,7 +63,6 @@ describe('Japanesify', () => {
         // He goes back to the tab and notices that all the 'n's are replaced by 'ん's
         await wikiPage.bringToFront()
         body = await wikiPage.$eval('body', el => el.textContent)
-        await extension.waitForTimeout(5000)
         expect(body).not.toContain('n')
         expect(body).toContain('ん')
         
