@@ -1,11 +1,10 @@
 
-export const convertText = (text: string | null): string => {
+export const convertText = (text: string | null, selection: {n:boolean}): string => {
     const nRegex = new RegExp('n', 'gi')
 
-
-    return text ? text.replace(nRegex, 'ん') : ''
+    return text && selection.n ? text.replace(nRegex, 'ん') : text || ''
 }
 
 console.log(document.body)
 
-document.body.innerText = convertText(document.body.innerText)
+document.body.innerText = convertText(document.body.innerText, {n:false})
