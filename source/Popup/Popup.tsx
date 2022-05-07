@@ -3,10 +3,10 @@ import * as React from 'react';
 const Popup: React.FC = () => {
 
   const [isEnabled, setIsEnabled] = React.useState(false)
-  
+
   return (
     <section id="popup">
-      <h2>Japanesify</h2>
+      <h3>Japanesify!</h3>
       <button
         test-id="enable-button"
         onClick={() => setIsEnabled(!isEnabled)}
@@ -15,6 +15,9 @@ const Popup: React.FC = () => {
           isEnabled ? 'disable' : 'enable'
         }
       </button>
+      <br/>
+      <label id="ん-switch">ん</label>
+      <input type="checkbox" id="ん-switch" test-id="ん-switch"/>
     </section>
   );
 };

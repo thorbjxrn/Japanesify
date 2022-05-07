@@ -29,8 +29,8 @@ describe('Japanesify', () => {
         const [extension] = await browser.pages();
         await extension.goto(`chrome-extension://${extensionId}/popup.html`)
 
-        const h2 = await extension.$eval('h2', el => el.textContent)
-        expect(h2).toBe('Japanesify')
+        const h3 = await extension.$eval('h3', el => el.textContent)
+        expect(h3).toBe('Japanesify!')
 
         // Then he sees an enable button and decides to click it.
         let enableToggleText = await extension.$eval('[test-id="enable-button"]', el => el.textContent)
