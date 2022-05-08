@@ -2,11 +2,15 @@ import React from 'react';
 import {fireEvent, render, screen} from '@testing-library/react';
 import Popup from '../../../source/Popup/Popup';
 import "@testing-library/jest-dom/extend-expect"
-import { browser } from 'webextension-polyfill-ts';
+import { browser, Tabs } from 'webextension-polyfill-ts';
+import { act } from 'react-dom/test-utils';
 
 describe('Popup Component', () => {
+    const querySpy = jest.spyOn(browser.tabs, 'query')
+
     beforeEach(() => {
         jest.resetAllMocks()
+        querySpy.mockResolvedValueOnce([{id: 2} as Tabs.Tab])
     })
 
     test('loads with button text enable', async () => {
@@ -32,6 +36,7 @@ describe('Popup Component', () => {
         expect(browser.tabs.sendMessage).toBeCalledWith(1, {enabled: true, n: false})
         
         jest.resetAllMocks()
+        querySpy.mockResolvedValueOnce([{id: 2} as Tabs.Tab])
 
         fireEvent.click(button)
         expect(browser.tabs.sendMessage).toBeCalledWith(1, {enabled: false, n: false})
@@ -42,12 +47,29 @@ describe('Popup Component', () => {
 
         const checkbox = screen.getByTestId('ん-switch')
         
-        fireEvent.click(checkbox)
-        expect(browser.tabs.sendMessage).toBeCalledWith(1, {enabled: false, n: true})
+        await act(async () => {
+            fireEvent.click(checkbox)
+        })
+        expect(browser.tabs.sendMessage).toBeCalledWith(2, {enabled: false, n: true})
         
         jest.resetAllMocks()
+        querySpy.mockResolvedValueOnce([{id: 2} as Tabs.Tab])
 
-        fireEvent.click(checkbox)
-        expect(browser.tabs.sendMessage).toBeCalledWith(1, {enabled: false, n: false})
+        await act(async () => {
+            fireEvent.click(checkbox)
+        })
+        expect(browser.tabs.sendMessage).toBeCalledWith(2, {enabled: false, n: false})
+    })
+
+    test('gets tab id to send the message', async () => {
+        render(<Popup/>)
+
+        const checkbox = screen.getByTestId('ん-switch')
+        
+        await act(async () => {
+            fireEvent.click(checkbox)
+        })
+
+        expect(browser.tabs.query).toBeCalled()
     })
 })

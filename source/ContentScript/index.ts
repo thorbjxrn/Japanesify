@@ -6,6 +6,6 @@ export const convertText = (text: string, selection: { n: boolean }): string => 
     return selection.n ? text.replace(nRegex, 'ん') : text
 }
 
-const togglePluginListener = () => {}
+const togglePluginListener = () => {console.log('hola!')}
 
 browser.runtime.onMessage.addListener(togglePluginListener);
