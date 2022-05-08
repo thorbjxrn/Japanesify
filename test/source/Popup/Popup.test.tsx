@@ -61,7 +61,7 @@ describe('Popup Component', () => {
         expect(browser.tabs.sendMessage).toBeCalledWith(2, {enabled: false, n: false})
     })
 
-    test('gets tab id to send the message', async () => {
+    test('gets tab id to send the message when checkbox is pressed', async () => {
         render(<Popup/>)
 
         const checkbox = screen.getByTestId('ん-switch')
