@@ -1,15 +1,21 @@
 import * as React from 'react';
+import { browser } from 'webextension-polyfill-ts';
 
 const Popup: React.FC = () => {
 
   const [isEnabled, setIsEnabled] = React.useState(false)
+
+  const enableOnClick = () => {
+    browser.tabs.sendMessage(1, {})
+    setIsEnabled(!isEnabled)
+  }
 
   return (
     <section id="popup">
       <h3>Japanesify!</h3>
       <button
         test-id="enable-button"
-        onClick={() => setIsEnabled(!isEnabled)}
+        onClick={enableOnClick}
       >
         {
           isEnabled ? 'disable' : 'enable'
