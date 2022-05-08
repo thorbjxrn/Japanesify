@@ -8,13 +8,13 @@ describe('Popup Component', () => {
     test('loads with button text enable', async () => {
         render(<Popup/>)
 
-        screen.getByText('enable')
+        screen.getByTestId('enable-button')
     })
 
     test('when enable button is clicked text changes to disable', async () => {
         render(<Popup/>)
 
-        const button = screen.getByText('enable')
+        const button = screen.getByTestId('enable-button')
         fireEvent.click(button)
       
         expect(button).toHaveTextContent('disable')
@@ -23,7 +23,7 @@ describe('Popup Component', () => {
     test('when enable button is pressed it sends message to tab', async () => {
         render(<Popup/>)
 
-        const button = screen.getByText('enable')
+        const button = screen.getByTestId('enable-button')
         fireEvent.click(button)
       
         expect(browser.tabs.sendMessage).toBeCalled()

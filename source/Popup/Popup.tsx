@@ -14,7 +14,7 @@ const Popup: React.FC = () => {
     <section id="popup">
       <h3>Japanesify!</h3>
       <button
-        test-id="enable-button"
+        data-testid="enable-button"
         onClick={enableOnClick}
       >
         {
@@ -23,7 +23,7 @@ const Popup: React.FC = () => {
       </button>
       <br/>
       <label id="ん-switch">ん</label>
-      <input type="checkbox" id="ん-switch" test-id="ん-switch"/>
+      <input type="checkbox" id="ん-switch" data-testid="ん-switch"/>
     </section>
   );
 };

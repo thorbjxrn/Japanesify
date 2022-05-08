@@ -33,12 +33,12 @@ describe('Japanesify', () => {
         expect(h3).toBe('Japanesify!')
 
         // Then he sees an enable button and decides to click it.
-        let enableToggleText = await extension.$eval('[test-id="enable-button"]', el => el.textContent)
+        let enableToggleText = await extension.$eval('[data-testid="enable-button"]', el => el.textContent)
         expect(enableToggleText).toBe('enable')
-        await extension.click('[test-id="enable-button"]')
+        await extension.click('[data-testid="enable-button"]')
 
         // After clicking the button he notices the text changes to disable
-        enableToggleText = await extension.$eval('[test-id="enable-button"]', el => el.textContent)
+        enableToggleText = await extension.$eval('[data-testid="enable-button"]', el => el.textContent)
         expect(enableToggleText).toBe('disable')
 
         // He opens a new page but nothing happens.
@@ -49,13 +49,13 @@ describe('Japanesify', () => {
         
         // He goes back and notices none of the conversions are selected, he then decides to enable 'ん' character. 
         await extension.bringToFront()
-        let んswitchStatus = await extension.$eval('[test-id="ん-switch"]', input => {
+        let んswitchStatus = await extension.$eval('[data-testid="ん-switch"]', input => {
             return (input as HTMLInputElement).checked
         })
         expect(んswitchStatus).toBe(false)
 
-        await extension.click('[test-id="ん-switch"]')
-        んswitchStatus = await extension.$eval('[test-id="ん-switch"]', input => {
+        await extension.click('[data-testid="ん-switch"]')
+        んswitchStatus = await extension.$eval('[data-testid="ん-switch"]', input => {
             return (input as HTMLInputElement).checked
         })
         expect(んswitchStatus).toBe(true)
