@@ -1,4 +1,6 @@
 import { browser } from 'webextension-polyfill-ts'
+import path from 'path'
+import * as fs from 'fs';
 import { convertText } from '../../../source/ContentScript/index'
 
 describe('Content Script', () => {
@@ -18,5 +20,13 @@ describe('Content Script', () => {
 
     test('adds message listener', async () => {
         expect(browser.runtime.onMessage.addListener).toBeCalled()
+    })
+
+    test('converts roman character n to hiragana ん', () => {
+        document.body.innerHTML = fs.readFileSync(path.join(__dirname, '..', '..', 'fixtures', 'basic.html'), 'utf8')
+        browser.runtime.sendMessage({enabled: true, n: true})
+
+        expect(document.body.textContent).not.toContain('n')
+        expect(document.body.textContent).toContain('ん')
     })
 })

@@ -1,18 +1,15 @@
 import * as React from 'react';
 import { browser } from 'webextension-polyfill-ts';
+import { getCurrentTabId } from '../utils/utils';
 
 const Popup: React.FC = () => {
 
   const [isEnabled, setIsEnabled] = React.useState(false)
   const [nEnabled, setNEnabled] = React.useState(false)
 
-  const getCurrentTabId = async () => {
-    const currentTab = await browser.tabs.query({active: true, currentWindow: true})
-    return currentTab[0]?.id || 1
-  }
-
-  const enableOnClick = () => {
-    browser.tabs.sendMessage(1, {enabled: !isEnabled, n: nEnabled})
+  const enableOnClick = async () => {
+    const tabId = await getCurrentTabId()
+    browser.tabs.sendMessage(tabId, {enabled: !isEnabled, n: nEnabled})
     setIsEnabled(!isEnabled)
   }
 

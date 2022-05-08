@@ -23,7 +23,9 @@ describe('Popup Component', () => {
         render(<Popup/>)
 
         const button = screen.getByTestId('enable-button')
-        fireEvent.click(button)
+        await act(async () => {
+            fireEvent.click(button)
+        })
       
         expect(button).toHaveTextContent('disable')
     })
@@ -32,14 +34,18 @@ describe('Popup Component', () => {
         render(<Popup/>)
 
         const button = screen.getByTestId('enable-button')
-        fireEvent.click(button)
-        expect(browser.tabs.sendMessage).toBeCalledWith(1, {enabled: true, n: false})
+        await act(async () => {
+            fireEvent.click(button)
+        })
+        expect(browser.tabs.sendMessage).toBeCalledWith(2, {enabled: true, n: false})
         
         jest.resetAllMocks()
         querySpy.mockResolvedValueOnce([{id: 2} as Tabs.Tab])
 
-        fireEvent.click(button)
-        expect(browser.tabs.sendMessage).toBeCalledWith(1, {enabled: false, n: false})
+        await act(async () => {
+            fireEvent.click(button)
+        })
+        expect(browser.tabs.sendMessage).toBeCalledWith(2, {enabled: false, n: false})
     })
     
     test('when ん checkbox is pressed it sends correct message to tab', async () => {
@@ -65,6 +71,18 @@ describe('Popup Component', () => {
         render(<Popup/>)
 
         const checkbox = screen.getByTestId('ん-switch')
+        
+        await act(async () => {
+            fireEvent.click(checkbox)
+        })
+
+        expect(browser.tabs.query).toBeCalled()
+    })
+    
+    test('gets tab id to send the message when enable button is pressed', async () => {
+        render(<Popup/>)
+
+        const checkbox = screen.getByTestId('enable-button')
         
         await act(async () => {
             fireEvent.click(checkbox)
