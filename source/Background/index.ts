@@ -1,6 +1,10 @@
 import 'emoji-log';
 import {browser} from 'webextension-polyfill-ts';
+import { getCurrentTabId } from '../utils/utils';
 
-browser.runtime.onInstalled.addListener((): void => {
-  console.emoji('🦄', 'extension installed');
-});
+export const sendMessage = async () => {
+  const tabId = await getCurrentTabId()
+  browser.tabs.sendMessage(tabId, {enabled: true, n: false})
+}
+
+browser.tabs.onUpdated.addListener(sendMessage);
