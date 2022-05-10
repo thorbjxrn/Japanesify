@@ -2,17 +2,18 @@ import { browser } from 'webextension-polyfill-ts'
 import path from 'path'
 import * as fs from 'fs';
 import { convertText } from '../../../source/ContentScript/index'
+import { JapanesifyState } from '../../../source/utils/types';
 
 describe('Content Script', () => {
     test('converts n to ん', () => {
-        const result = convertText("Sample text to convert to Japanese", {n: true})
+        const result = convertText("Sample text to convert to Japanese", {n: true} as JapanesifyState)
 
         expect(result).not.toContain('n')
         expect(result).toContain('ん')
     })
 
     test('does not converts n to ん', () => {
-        const result = convertText("Sample text to not convert to Japanese", {n: false})
+        const result = convertText("Sample text to not convert to Japanese", {n: false} as JapanesifyState)
 
         expect(result).toContain('n')
         expect(result).not.toContain('ん')

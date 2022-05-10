@@ -10,12 +10,14 @@ const Popup: React.FC = () => {
   const enableOnClick = async () => {
     const tabId = await getCurrentTabId()
     browser.tabs.sendMessage(tabId, {enabled: !isEnabled, n: nEnabled})
+    browser.storage.local.set({state: {enabled: !isEnabled, n: nEnabled}})
     setIsEnabled(!isEnabled)
   }
 
   const checkBoxOnClick = async () => {
     const tabId = await getCurrentTabId()
     browser.tabs.sendMessage(tabId, {enabled: isEnabled, n: !nEnabled})
+    browser.storage.local.set({state: {enabled: isEnabled, n: !nEnabled}})
     setNEnabled(!nEnabled)
   }
 

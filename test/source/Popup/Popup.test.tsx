@@ -82,12 +82,36 @@ describe('Popup Component', () => {
     test('gets tab id to send the message when enable button is pressed', async () => {
         render(<Popup/>)
 
-        const checkbox = screen.getByTestId('enable-button')
+        const button = screen.getByTestId('enable-button')
         
         await act(async () => {
-            fireEvent.click(checkbox)
+            fireEvent.click(button)
         })
 
         expect(browser.tabs.query).toBeCalled()
+    })
+
+    test('saves state to local storage when enable button is pressed', async () => {
+        render(<Popup/>)
+
+        const button = screen.getByTestId('enable-button')
+        
+        await act(async () => {
+            fireEvent.click(button)
+        })
+
+        expect(browser.storage.local.set).toBeCalledWith({state:{enabled: true, n: false}})
+    })
+    
+    test('saves state to local storage when checkbox is pressed', async () => {
+        render(<Popup/>)
+
+        const checkBox = screen.getByTestId('ん-switch')
+        
+        await act(async () => {
+            fireEvent.click(checkBox)
+        })
+
+        expect(browser.storage.local.set).toBeCalledWith({state:{enabled: false, n: true}})
     })
 })
