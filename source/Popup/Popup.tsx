@@ -1,11 +1,18 @@
 import * as React from 'react';
 import { browser } from 'webextension-polyfill-ts';
-import { getCurrentTabId, japanesifyState } from '../utils/utils';
+import { JapanesifyState } from '../utils/types';
+import { defaultJapanesifyState, getCurrentTabId, japanesifyState } from '../utils/utils';
 
 const Popup: React.FC = () => {
 
   const [isEnabled, setIsEnabled] = React.useState(false)
   const [nEnabled, setNEnabled] = React.useState(false)
+
+  React.useEffect(() => {
+    const state = JSON.parse(window.localStorage.getItem(japanesifyState)!) as JapanesifyState || defaultJapanesifyState
+    setIsEnabled(state.enabled)
+    setNEnabled(state.n)
+  }, [])
 
   const enableOnClick = async () => {
     const tabId = await getCurrentTabId()

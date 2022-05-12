@@ -18,7 +18,7 @@ describe('Popup Component', () => {
     test('loads with button text enable', async () => {
         render(<Popup/>)
 
-        screen.getByTestId('enable-button')
+        screen.getByText('enable')
     })
 
     test('when enable button is clicked text changes to disable', async () => {
@@ -119,5 +119,21 @@ describe('Popup Component', () => {
         const state = JSON.parse(window.localStorage.getItem(japanesifyState)!)
 
         expect(state).toEqual({enabled: false, n: true})
+    })
+
+    test('renders button based on localStorage values', async () => {
+        window.localStorage.setItem(japanesifyState, JSON.stringify({enabled: true, n: false}))
+        render(<Popup/>)
+
+        screen.getByText('disable')
+    })
+
+    test('renders check box based on localStorage values', async () => {
+        window.localStorage.setItem(japanesifyState, JSON.stringify({enabled: false, n: true}))
+        render(<Popup/>)
+
+        const checkbox = screen.getByTestId('ん-switch')
+
+        expect(checkbox).toBeChecked()
     })
 })
