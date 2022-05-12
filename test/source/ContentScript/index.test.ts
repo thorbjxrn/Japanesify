@@ -6,10 +6,17 @@ import { JapanesifyState } from '../../../source/utils/types';
 
 describe('Content Script', () => {
     test('converts n to ん', () => {
-        const result = convertText("Sample text to convert to Japanese", {n: true} as JapanesifyState)
+        const result = convertText("Sample text to convert to Japanese", {enabled:true, n: true})
 
         expect(result).not.toContain('n')
         expect(result).toContain('ん')
+    })
+    
+    test('converts ん to n', () => {
+        const result = convertText("Sample text to coんvert to Japanese", {enabled:true, n: false})
+
+        expect(result).not.toContain('ん')
+        expect(result).toContain('n')
     })
 
     test('does not converts n to ん', () => {
@@ -23,11 +30,19 @@ describe('Content Script', () => {
         expect(browser.runtime.onMessage.addListener).toBeCalled()
     })
 
-    test('converts roman character n to hiragana ん', () => {
+    test('converts roman character n to hiragana ん when enabled', () => {
         document.body.innerHTML = fs.readFileSync(path.join(__dirname, '..', '..', 'fixtures', 'basic.html'), 'utf8')
         browser.runtime.sendMessage({enabled: true, n: true})
 
         expect(document.body.textContent).not.toContain('n')
         expect(document.body.textContent).toContain('ん')
+    })
+
+    test('does Not converts roman character n to hiragana ん if not enabled', () => {
+        document.body.innerHTML = fs.readFileSync(path.join(__dirname, '..', '..', 'fixtures', 'basic.html'), 'utf8')
+        browser.runtime.sendMessage({enabled: false, n: true})
+
+        expect(document.body.textContent).toContain('n')
+        expect(document.body.textContent).not.toContain('ん')
     })
 })

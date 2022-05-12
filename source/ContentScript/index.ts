@@ -2,13 +2,20 @@ import { browser } from "webextension-polyfill-ts";
 import { JapanesifyState } from "../utils/types";
 
 export const convertText = (text: string | null, selection: JapanesifyState): string => {
-    const nRegex = new RegExp('n', 'gi')
+    let nRegex = new RegExp('n', 'gi')
+    let newCharacter = 'ん'
+    if(!selection.n) {
+        nRegex = new RegExp('ん', 'gi')
+        newCharacter = 'n'
+    }
 
-    return text && selection.n ? text.replace(nRegex, 'ん') : text || ''
+    return text && selection.enabled ? text.replace(nRegex, newCharacter) : text || ''
 }
 
 const togglePluginListener = (selection: JapanesifyState) => {
-    document.body.textContent = convertText(document.body.textContent, selection)
+    if(selection.enabled) {
+        document.body.textContent = convertText(document.body.textContent, selection)
+    }
 }
 
 browser.runtime.onMessage.addListener(togglePluginListener);
