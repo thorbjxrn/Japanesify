@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { browser } from 'webextension-polyfill-ts';
-import { getCurrentTabId } from '../utils/utils';
+import { getCurrentTabId, japanesifyState } from '../utils/utils';
 
 const Popup: React.FC = () => {
 
@@ -10,14 +10,14 @@ const Popup: React.FC = () => {
   const enableOnClick = async () => {
     const tabId = await getCurrentTabId()
     browser.tabs.sendMessage(tabId, {enabled: !isEnabled, n: nEnabled})
-    browser.storage.local.set({state: {enabled: !isEnabled, n: nEnabled}})
+    localStorage.setItem(japanesifyState, JSON.stringify({enabled: !isEnabled, n: nEnabled}))
     setIsEnabled(!isEnabled)
   }
 
   const checkBoxOnClick = async () => {
     const tabId = await getCurrentTabId()
     browser.tabs.sendMessage(tabId, {enabled: isEnabled, n: !nEnabled})
-    browser.storage.local.set({state: {enabled: isEnabled, n: !nEnabled}})
+    localStorage.setItem(japanesifyState, JSON.stringify({enabled: isEnabled, n: !nEnabled}))
     setNEnabled(!nEnabled)
   }
 

@@ -4,6 +4,7 @@ import Popup from '../../../source/Popup/Popup';
 import "@testing-library/jest-dom/extend-expect"
 import { browser, Tabs } from 'webextension-polyfill-ts';
 import { act } from 'react-dom/test-utils';
+import { japanesifyState } from '../../../source/utils/utils';
 
 describe('Popup Component', () => {
     const querySpy = jest.spyOn(browser.tabs, 'query')
@@ -11,6 +12,7 @@ describe('Popup Component', () => {
     beforeEach(() => {
         jest.resetAllMocks()
         querySpy.mockResolvedValueOnce([{id: 2} as Tabs.Tab])
+        window.localStorage.clear()
     })
 
     test('loads with button text enable', async () => {
@@ -100,7 +102,9 @@ describe('Popup Component', () => {
             fireEvent.click(button)
         })
 
-        expect(browser.storage.local.set).toBeCalledWith({state:{enabled: true, n: false}})
+        const state = JSON.parse(window.localStorage.getItem(japanesifyState)!)
+
+        expect(state).toEqual({enabled: true, n: false})
     })
     
     test('saves state to local storage when checkbox is pressed', async () => {
@@ -112,6 +116,8 @@ describe('Popup Component', () => {
             fireEvent.click(checkBox)
         })
 
-        expect(browser.storage.local.set).toBeCalledWith({state:{enabled: false, n: true}})
+        const state = JSON.parse(window.localStorage.getItem(japanesifyState)!)
+
+        expect(state).toEqual({enabled: false, n: true})
     })
 })
