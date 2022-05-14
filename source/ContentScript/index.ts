@@ -17,7 +17,8 @@ export const convertText = (text: string | null, state: JapanesifyState): string
 }
 
 const togglePluginListener = (state: JapanesifyState) => {
-    if(state.enabled || previousState.enabled) {
+
+    if((state.enabled && state.n) || (previousState.enabled && previousState.n)) {
         document.body.textContent = convertText(document.body.textContent, state)
     }
     previousState = state

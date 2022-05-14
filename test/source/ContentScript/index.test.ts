@@ -1,10 +1,17 @@
 import { browser } from 'webextension-polyfill-ts'
 import path from 'path'
 import * as fs from 'fs';
-import { convertText } from '../../../source/ContentScript/index'
+import * as ContentScript from '../../../source/ContentScript/index'
 import { JapanesifyState } from '../../../source/utils/types';
 
 describe('Content Script', () => {
+    const convertText = ContentScript.convertText
+    const convertSpy = jest.spyOn(ContentScript, 'convertText')
+
+    beforeEach(() => {
+        convertSpy.mockClear()
+    })
+
     test('converts n to ん', () => {
         const result = convertText("Sample text to convert to Japanese", {enabled:true, n: true})
 
@@ -24,6 +31,12 @@ describe('Content Script', () => {
 
         expect(result).toContain('n')
         expect(result).not.toContain('ん')
+    })
+    
+    test('Returns empty string if null is given', () => {
+        const result = convertText(null, {n: false} as JapanesifyState)
+
+        expect(result).toEqual('')
     })
 
     test('adds message listener', async () => {
@@ -46,11 +59,34 @@ describe('Content Script', () => {
         expect(document.body.textContent).not.toContain('ん')
     })
     
+    test('does Not call convertText if no checkBox is selected', async () => {        
+        browser.runtime.sendMessage({enabled: true, n: false})
+
+        expect(convertSpy).not.toBeCalled()
+    })
+    
+    test('converts hiragana character ん to n if it gets disabled enabled', async () => {
+        await browser.runtime.sendMessage({enabled: true, n: false})        
+        await browser.runtime.sendMessage({enabled: false, n: false})
+
+        expect(convertSpy).not.toBeCalled()
+    })
+    
     test('converts hiragana character ん to n if it gets disabled enabled', async () => {
         document.body.innerHTML = fs.readFileSync(path.join(__dirname, '..', '..', 'fixtures', 'basic.html'), 'utf8')
         await browser.runtime.sendMessage({enabled: true, n: true})
         
         await browser.runtime.sendMessage({enabled: false, n: true})
+
+        expect(document.body.textContent).toContain('n')
+        expect(document.body.textContent).not.toContain('ん')
+    })
+    
+    test('converts hiragana character ん to n if it gets disabled enabled', async () => {
+        document.body.innerHTML = fs.readFileSync(path.join(__dirname, '..', '..', 'fixtures', 'basic.html'), 'utf8')
+        await browser.runtime.sendMessage({enabled: true, n: true})
+        
+        await browser.runtime.sendMessage({enabled: false, n: false})
 
         expect(document.body.textContent).toContain('n')
         expect(document.body.textContent).not.toContain('ん')
