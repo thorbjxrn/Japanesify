@@ -45,4 +45,14 @@ describe('Content Script', () => {
         expect(document.body.textContent).toContain('n')
         expect(document.body.textContent).not.toContain('ん')
     })
+    
+    test('converts hiragana character ん to n if it gets disabled enabled', async () => {
+        document.body.innerHTML = fs.readFileSync(path.join(__dirname, '..', '..', 'fixtures', 'basic.html'), 'utf8')
+        await browser.runtime.sendMessage({enabled: true, n: true})
+        
+        await browser.runtime.sendMessage({enabled: false, n: true})
+
+        expect(document.body.textContent).toContain('n')
+        expect(document.body.textContent).not.toContain('ん')
+    })
 })
