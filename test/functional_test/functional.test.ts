@@ -1,4 +1,8 @@
+/*
+* @jest-environment node
+*/
 import puppeteer, { Browser } from 'puppeteer' 
+import looksSame from 'looks-same'
 import path from 'path'
 
 describe('Japanesify', () => {
@@ -44,6 +48,7 @@ describe('Japanesify', () => {
         // He opens a new page but nothing happens.
         const wikiPage = await browser.newPage();
         await wikiPage.goto('https://en.wikipedia.org/wiki/Happy_Hacking_Keyboard')
+        const originalImage = await wikiPage.screenshot();
         let body = await wikiPage.$eval('body', el => el.textContent)
         expect(body).not.toContain('ん')
         
@@ -62,17 +67,44 @@ describe('Japanesify', () => {
         
         // He goes back to the tab and notices that all the 'n's are replaced by 'ん's
         await wikiPage.bringToFront()
+        await wikiPage.waitForTimeout(1000)
         body = await wikiPage.$eval('body', el => el.textContent)
         expect(body).not.toContain('n')
         expect(body).toContain('ん')
-        
-        fail('Finish the test!')
 
         // He opens a new tab and notices that all the 'n's are also replaced by 'ん's
+        const wikiPage2 = await browser.newPage();
+        await wikiPage2.goto('https://en.wikipedia.org/wiki/Empress_Xiaocigao_(Qing_dynasty)')
+        body = await wikiPage2.$eval('body', el => el.textContent)
+        expect(body).not.toContain('n')
+        expect(body).toContain('ん')
 
-        // He goes back to the extension and enables the 'あ' character
+        // He closes the second page and goes back to the extension
+        await wikiPage2.close()
+        await extension.bringToFront()
+        
+        // He goes back to the extension and disables the 'ん' character then goes back to the
+        // first wiki page and sees that the 'n's are back and the page looks the same
+        await extension.click('[data-testid="ん-switch"]')
+        んswitchStatus = await extension.$eval('[data-testid="ん-switch"]', input => {
+            return (input as HTMLInputElement).checked
+        })
+        expect(んswitchStatus).toBe(false)
+        
+        await wikiPage.bringToFront()
+        await wikiPage.waitForTimeout(1000)
+        body = await wikiPage.$eval('body', el => el.textContent)
+        expect(body).not.toContain('ん')
+        expect(body).toContain('n')
 
-        // ... continue with the rest of the characters
+        const restoreImage = await wikiPage.screenshot()
 
+        looksSame(originalImage, restoreImage, {tolerance: 5}, (_, {equal}) => {
+            expect(equal).toBe(true)
+        })
+
+        await wikiPage.waitForTimeout(3000)
+        
+        // Satisfied he goes to sleep
     }, 10000)
 })

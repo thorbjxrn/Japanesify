@@ -78,6 +78,7 @@
     "jest": "^28.0.3",
     "jest-environment-jsdom": "^28.0.2",
     "jest-webextension-mock": "^3.7.22",
+    "looks-same": "^7.3.0",
     "mini-css-extract-plugin": "^1.6.0",
     "node-sass": "^7.0.1",
     "optimize-css-assets-webpack-plugin": "^6.0.1",
