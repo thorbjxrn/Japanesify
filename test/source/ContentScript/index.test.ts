@@ -9,6 +9,7 @@ describe('Content Script', () => {
 
     beforeEach(() => {
         convertSpy.mockClear()
+        document.body.innerHTML = ''
     })
 
     test('converts n to ん', () => {
@@ -58,6 +59,21 @@ describe('Content Script', () => {
         expect(document.body.textContent).toContain('ん')
     })
 
+    test('converts n to ん when enabled on new nodes that get added', async () => {
+        document.body.innerHTML = fs.readFileSync(path.join(__dirname, '..', '..', 'fixtures', 'basic.html'), 'utf8')
+        
+        await browser.runtime.sendMessage({enabled: true, n: true})
+
+        const newDiv = document.createElement("div");
+        newDiv.textContent = "Sample text to convert to Japanese"
+
+        // await does seem to do something ¯\_(ツ)_/¯
+        await document.body.appendChild(newDiv)
+        
+        expect(document.body.textContent).not.toContain('n')
+        expect(document.body.textContent).toContain('ん')
+    })
+
     test('does Not converts roman character n to hiragana ん if not enabled', () => {
         document.body.innerHTML = fs.readFileSync(path.join(__dirname, '..', '..', 'fixtures', 'basic.html'), 'utf8')
         browser.runtime.sendMessage({enabled: false, n: true})
@@ -90,11 +106,11 @@ describe('Content Script', () => {
         expect(document.body.textContent).not.toContain('ん')
     })
     
-    test('converts hiragana character ん to n if it gets disabled enabled', async () => {
+    test('converts hiragana character ん to n if it gets disabled', async () => {
         document.body.innerHTML = fs.readFileSync(path.join(__dirname, '..', '..', 'fixtures', 'basic.html'), 'utf8')
         await browser.runtime.sendMessage({enabled: true, n: true})
         
-        await browser.runtime.sendMessage({enabled: false, n: false})
+        await browser.runtime.sendMessage({enabled: true, n: false})
 
         expect(document.body.textContent).toContain('n')
         expect(document.body.textContent).not.toContain('ん')

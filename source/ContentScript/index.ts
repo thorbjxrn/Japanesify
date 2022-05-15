@@ -8,22 +8,22 @@ export const convertText = (node: Node, state: JapanesifyState) => {
     let nRegex = new RegExp('n', 'gi')
     let newCharacter = 'ん'
 
-    // 'TEXTAREA', 'IFRAME', 'CANVAS', 'LINK', 'META']);
+    // 'TEXTAREA', 'IFRAME', 'CANVAS', 'LINK', 'META'
     const excludeElements: Set<string> = new Set(['SCRIPT', 'STYLE'])
 
-    if(!state.n || (previousState.enabled && !state.enabled)) {
+    if (!state.n || (previousState.enabled && !state.enabled)) {
         nRegex = new RegExp('ん', 'gi')
         newCharacter = 'n'
     }
-    
-    if(node.nodeType === Node.TEXT_NODE) {
+
+    if (node.nodeType === Node.TEXT_NODE) {
         if (node.parentNode && excludeElements.has(node.parentNode.nodeName)) return
-        if((state.enabled || previousState.enabled)) {
+        if ((state.enabled || previousState.enabled)) {
             node.textContent = (node.textContent || '').replace(nRegex, newCharacter)
         }
     }
     else {
-        for(let i = 0; i < node.childNodes.length; ++i) {
+        for (let i = 0; i < node.childNodes.length; ++i) {
             convertText(node.childNodes[i], state)
         }
     }
@@ -31,9 +31,25 @@ export const convertText = (node: Node, state: JapanesifyState) => {
 }
 
 const togglePluginListener = (state: JapanesifyState) => {
+    const observer = new MutationObserver((mutations) => {
+        mutations.forEach((mutation) => {
+            if (mutation.addedNodes && mutation.addedNodes.length > 0) {
+                // This DOM change was new nodes being added. Run our substitution
+                // algorithm on each newly added node.
+                for (let i = 0; i < mutation.addedNodes.length; i++) {
+                    const newNode = mutation.addedNodes[i];
+                    convertText(newNode, state);
+                }
+            }
+        });
+    });
 
-    if((state.enabled && state.n) || (previousState.enabled && previousState.n)) {
+    if ((state.enabled && state.n) || (previousState.enabled && previousState.n)) {
         convertText(document.body, state)
+        observer.observe(document.body, {
+            childList: true,
+            subtree: true
+        });
     }
     previousState = state
 }
