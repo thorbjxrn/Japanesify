@@ -11,11 +11,11 @@ describe('Background script', () => {
     })
     
     test('adds tabs onUpdated listener', () => {
-        expect(browser.tabs.onUpdated.addListener)
+        expect(browser.tabs.onUpdated.addListener).toBeCalledTimes(1)
     })
     
     test('adds tabs onActivated listener', () => {
-        expect(browser.tabs.onActivated.addListener)
+        expect(browser.tabs.onActivated.addListener).toBeCalledTimes(1)
     })
     
     test('calls tabs sendMessage with local storage state', async () => {
