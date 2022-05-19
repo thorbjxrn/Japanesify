@@ -67,7 +67,7 @@ describe('Japanesify', () => {
         
         // He goes back to the tab and notices that all the 'n's are replaced by 'ん's
         await wikiPage.bringToFront()
-        await wikiPage.waitForTimeout(1000)
+        await wikiPage.waitForTimeout(1000) // TODO: fix this
         body = await wikiPage.$eval('body', el => (el as HTMLElement).innerText)
         expect(body).not.toContain('n')
         expect(body).toContain('ん')
@@ -83,27 +83,27 @@ describe('Japanesify', () => {
         await wikiPage2.close()
         await extension.bringToFront()
         
-        // He goes back to the extension and disables the 'ん' character then goes back to the
-        // first wiki page and sees that the 'n's are back and the page looks the same
+        // He goes back to the extension and disables the 'ん' character 
         await extension.click('[data-testid="ん-switch"]')
         んswitchStatus = await extension.$eval('[data-testid="ん-switch"]', input => {
             return (input as HTMLInputElement).checked
         })
         expect(んswitchStatus).toBe(false)
         
+        // then goes back to the first wiki page and sees that the 'n's are back
         await wikiPage.bringToFront()
-        await wikiPage.waitForTimeout(1000)
+        await wikiPage.waitForTimeout(1000) // TODO: fix this
         body = await wikiPage.$eval('body', el => (el as HTMLElement).innerText)
         expect(body).not.toContain('ん')
         expect(body).toContain('n')
 
+        // he also notices the page looks the same as it did before being altered
         const restoredImage = await wikiPage.screenshot(/*{ path: path.join(__dirname, 'restored.png')}*/)
-
         looksSame(originalImage, restoredImage, {tolerance: 50}, (_, {equal}) => {
             expect(equal).toBe(true)
         })
 
-        await wikiPage.waitForTimeout(3000)
+        await wikiPage.waitForTimeout(3000) // TODO: fix this
         
         // Satisfied he goes to sleep
     }, 10000)
