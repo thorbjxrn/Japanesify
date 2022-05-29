@@ -24,8 +24,8 @@
     "build": "yarn run build:chrome && yarn run build:firefox && yarn run build:opera",
     "lint": "eslint . --ext .ts,.tsx",
     "lint:fix": "eslint . --ext .ts,.tsx --fix",
-    "functional:test": "jest --testPathPattern=test/functional_test",
-    "test:watch": "jest --coverage --watch --testPathPattern=test/source"
+    "test:e2e": "jest --config ./test/e2eTest/jest-e2e.json",
+    "test:watch": "jest --coverage --watch --verbose"
   },
   "dependencies": {
     "@babel/runtime": "^7.14.0",

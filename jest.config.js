@@ -5,5 +5,6 @@ module.exports = {
       "^.+\\.(js|jsx)$": "babel-jest",
     },
     testEnvironment: 'jsdom',
+    testRegex: ".*\\.test\\.(ts|tsx)$",
     setupFiles: ['./test/jest.setup.ts'],
   };

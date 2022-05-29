@@ -88,7 +88,7 @@ describe('Content Script', () => {
         expect(convertSpy).not.toBeCalled()
     })
     
-    test('converts hiragana character ん to n if it gets disabled enabled', async () => {
+    test('does not call convert hiragana character ん not enabled', async () => {
         await browser.runtime.sendMessage({enabled: true, n: false})        
         await browser.runtime.sendMessage({enabled: false, n: false})
 

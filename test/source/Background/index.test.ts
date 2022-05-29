@@ -19,10 +19,10 @@ describe('Background script', () => {
     })
     
     test('calls tabs sendMessage with local storage state', async () => {
-        window.localStorage.setItem(japanesifyState, JSON.stringify({enabled: false, n: true}))
+        window.localStorage.setItem(japanesifyState, JSON.stringify({enabled: false, n: true, a: true}))
         await sendMessage()
         
-        expect(browser.tabs.sendMessage).toBeCalledWith(2, {enabled: false, n: true})
+        expect(browser.tabs.sendMessage).toBeCalledWith(2, {enabled: false, n: true, a: true})
     })
 
     test('calls tabs sendMessage with default state', async () => {
