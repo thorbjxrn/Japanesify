@@ -23,6 +23,8 @@ const Popup: React.FC = () => {
     }
   }
 
+  const {enabled, a, n} = japanesifyState
+
   return (
     <section id="popup">
       <h3>Japanesify!</h3>
@@ -31,15 +33,15 @@ const Popup: React.FC = () => {
         onClick={handleAction('enabled')}
       >
         {
-          japanesifyState.enabled ? 'disable' : 'enable'
+          enabled ? 'disable' : 'enable'
         }
       </button>
       <br/>
       <label id="ん-switch">ん</label>
-      <input type="checkbox" id="ん-switch" data-testid="ん-switch" checked={japanesifyState.n} onChange={handleAction('n')}/>
+      <input type="checkbox" id="ん-switch" data-testid="ん-switch" checked={n} onChange={handleAction('n')}/>
       <br/>
       <label id="あ-switch">あ</label>
-      <input type="checkbox" id="あ-switch" data-testid="あ-switch" checked={japanesifyState.a} onChange={handleAction('a')}/>
+      <input type="checkbox" id="あ-switch" data-testid="あ-switch" checked={a} onChange={handleAction('a')}/>
     </section>
   );
 };
