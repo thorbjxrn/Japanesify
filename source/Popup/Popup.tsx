@@ -1,40 +1,26 @@
 import * as React from 'react';
 import { browser } from 'webextension-polyfill-ts';
 import { JapanesifyState } from '../utils/types';
-import { defaultJapanesifyState, getCurrentTabId, japanesifyState } from '../utils/utils';
+import { defaultJapanesifyState, getCurrentTabId, JAPANESIFY_STATE } from '../utils/utils';
 
 const Popup: React.FC = () => {
 
-  const [isEnabled, setIsEnabled] = React.useState(false)
-  const [nEnabled, setNEnabled] = React.useState(false)
-  const [aEnabled, setAEnabled] = React.useState(false)
+  const [japanesifyState, setJapanesifyState] = React.useState(defaultJapanesifyState)
 
   React.useEffect(() => {
-    const state = JSON.parse(window.localStorage.getItem(japanesifyState)!) as JapanesifyState || defaultJapanesifyState
-    setIsEnabled(state.enabled)
-    setNEnabled(state.n)
-    setAEnabled(state.a)
+    const state = JSON.parse(window.localStorage.getItem(JAPANESIFY_STATE)!) as JapanesifyState || defaultJapanesifyState
+    setJapanesifyState(state)
   }, [])
 
-  const enableOnClick = async () => {
-    const tabId = await getCurrentTabId()
-    browser.tabs.sendMessage(tabId, {enabled: !isEnabled, n: nEnabled, a: aEnabled})
-    localStorage.setItem(japanesifyState, JSON.stringify({enabled: !isEnabled, n: nEnabled, a: aEnabled}))
-    setIsEnabled(!isEnabled)
-  }
-
-  const checkBoxOnClick = async () => {
-    const tabId = await getCurrentTabId()
-    browser.tabs.sendMessage(tabId, {enabled: isEnabled, n: !nEnabled, a: aEnabled})
-    localStorage.setItem(japanesifyState, JSON.stringify({enabled: isEnabled, n: !nEnabled, a: aEnabled}))
-    setNEnabled(!nEnabled)
-  }
-
-  const aCheckBoxOnClick = async () => {
-    const tabId = await getCurrentTabId()
-    browser.tabs.sendMessage(tabId, {enabled: isEnabled, n: nEnabled, a: !aEnabled})
-    localStorage.setItem(japanesifyState, JSON.stringify({enabled: isEnabled, n: nEnabled, a: !aEnabled}))
-    setAEnabled(!aEnabled)
+  const handleAction = (key: keyof JapanesifyState) => {
+    return async () => {
+      const newState = {...japanesifyState}
+      newState[key] = !newState[key]
+      const tabId = await getCurrentTabId()
+      browser.tabs.sendMessage(tabId, newState)
+      localStorage.setItem(JAPANESIFY_STATE, JSON.stringify(newState))
+      setJapanesifyState(newState)
+    }
   }
 
   return (
@@ -42,18 +28,18 @@ const Popup: React.FC = () => {
       <h3>Japanesify!</h3>
       <button
         data-testid="enable-button"
-        onClick={enableOnClick}
+        onClick={handleAction('enabled')}
       >
         {
-          isEnabled ? 'disable' : 'enable'
+          japanesifyState.enabled ? 'disable' : 'enable'
         }
       </button>
       <br/>
       <label id="ん-switch">ん</label>
-      <input type="checkbox" id="ん-switch" data-testid="ん-switch" checked={nEnabled} onChange={checkBoxOnClick}/>
+      <input type="checkbox" id="ん-switch" data-testid="ん-switch" checked={japanesifyState.n} onChange={handleAction('n')}/>
       <br/>
       <label id="あ-switch">あ</label>
-      <input type="checkbox" id="あ-switch" data-testid="あ-switch" checked={aEnabled} onChange={aCheckBoxOnClick}/>
+      <input type="checkbox" id="あ-switch" data-testid="あ-switch" checked={japanesifyState.a} onChange={handleAction('a')}/>
     </section>
   );
 };

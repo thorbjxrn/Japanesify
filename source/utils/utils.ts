@@ -1,7 +1,7 @@
 import { browser } from "webextension-polyfill-ts"
 import { JapanesifyState } from "./types"
 
-export const japanesifyState = "JapanesifyState"
+export const JAPANESIFY_STATE = "JapanesifyState"
 
 export const getCurrentTabId = async () => {
     const currentTab = await browser.tabs.query({ active: true, currentWindow: true })
