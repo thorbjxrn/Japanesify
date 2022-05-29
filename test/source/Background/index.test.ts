@@ -28,6 +28,6 @@ describe('Background script', () => {
     test('calls tabs sendMessage with default state', async () => {
         await sendMessage()
 
-        expect(browser.tabs.sendMessage).toBeCalledWith(2, {enabled: false, n: false})
+        expect(browser.tabs.sendMessage).toBeCalledWith(2, {enabled: false, n: false, a: false})
     })
 })

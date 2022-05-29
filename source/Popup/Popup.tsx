@@ -7,25 +7,34 @@ const Popup: React.FC = () => {
 
   const [isEnabled, setIsEnabled] = React.useState(false)
   const [nEnabled, setNEnabled] = React.useState(false)
+  const [aEnabled, setAEnabled] = React.useState(false)
 
   React.useEffect(() => {
     const state = JSON.parse(window.localStorage.getItem(japanesifyState)!) as JapanesifyState || defaultJapanesifyState
     setIsEnabled(state.enabled)
     setNEnabled(state.n)
+    setAEnabled(state.a)
   }, [])
 
   const enableOnClick = async () => {
     const tabId = await getCurrentTabId()
-    browser.tabs.sendMessage(tabId, {enabled: !isEnabled, n: nEnabled})
-    localStorage.setItem(japanesifyState, JSON.stringify({enabled: !isEnabled, n: nEnabled}))
+    browser.tabs.sendMessage(tabId, {enabled: !isEnabled, n: nEnabled, a: aEnabled})
+    localStorage.setItem(japanesifyState, JSON.stringify({enabled: !isEnabled, n: nEnabled, a: aEnabled}))
     setIsEnabled(!isEnabled)
   }
 
   const checkBoxOnClick = async () => {
     const tabId = await getCurrentTabId()
-    browser.tabs.sendMessage(tabId, {enabled: isEnabled, n: !nEnabled})
-    localStorage.setItem(japanesifyState, JSON.stringify({enabled: isEnabled, n: !nEnabled}))
+    browser.tabs.sendMessage(tabId, {enabled: isEnabled, n: !nEnabled, a: aEnabled})
+    localStorage.setItem(japanesifyState, JSON.stringify({enabled: isEnabled, n: !nEnabled, a: aEnabled}))
     setNEnabled(!nEnabled)
+  }
+
+  const aCheckBoxOnClick = async () => {
+    const tabId = await getCurrentTabId()
+    browser.tabs.sendMessage(tabId, {enabled: isEnabled, n: nEnabled, a: !aEnabled})
+    localStorage.setItem(japanesifyState, JSON.stringify({enabled: isEnabled, n: nEnabled, a: !aEnabled}))
+    setAEnabled(!aEnabled)
   }
 
   return (
@@ -42,6 +51,9 @@ const Popup: React.FC = () => {
       <br/>
       <label id="ん-switch">ん</label>
       <input type="checkbox" id="ん-switch" data-testid="ん-switch" checked={nEnabled} onChange={checkBoxOnClick}/>
+      <br/>
+      <label id="あ-switch">あ</label>
+      <input type="checkbox" id="あ-switch" data-testid="あ-switch" checked={aEnabled} onChange={aCheckBoxOnClick}/>
     </section>
   );
 };

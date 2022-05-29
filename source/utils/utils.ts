@@ -10,5 +10,6 @@ export const getCurrentTabId = async () => {
 
 export const defaultJapanesifyState: JapanesifyState = {
     enabled: false,
-    n: false
+    n: false, 
+    a: false
 }

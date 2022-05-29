@@ -15,7 +15,7 @@ describe('Content Script', () => {
     test('converts n to ん', () => {
         const newDiv = document.createElement("div");
         newDiv.textContent = "Sample text to convert to Japanese"
-        convertText(newDiv, {enabled:true, n: true})
+        convertText(newDiv, {enabled:true, n: true, a: false})
 
         expect(newDiv.textContent).not.toContain('n')
         expect(newDiv.textContent).toContain('ん')
@@ -24,7 +24,7 @@ describe('Content Script', () => {
     test('converts ん to n', () => {
         const newDiv = document.createElement("div");
         newDiv.textContent = "Sample text to coんvert to Japanese"
-        convertText(newDiv, {enabled:true, n: false})
+        convertText(newDiv, {enabled:true, n: false, a: false})
 
         expect(newDiv.textContent).not.toContain('ん')
         expect(newDiv.textContent).toContain('n')
@@ -33,7 +33,7 @@ describe('Content Script', () => {
     test('does not converts n to ん', () => {
         const newDiv = document.createElement("div");
         newDiv.innerText = "Sample text to convert to Japanese"
-        convertText(newDiv, {enabled: true, n: false})
+        convertText(newDiv, {enabled: true, n: false, a: false})
 
         expect(newDiv.innerText).toContain('n')
         expect(newDiv.innerText).not.toContain('ん')
@@ -42,7 +42,7 @@ describe('Content Script', () => {
     test('does not converts n to ん', () => {
         const text = document.createTextNode("div");
         text.textContent = null
-        convertText(text, {enabled: true, n: false})
+        convertText(text, {enabled: true, n: false, a: false})
 
         expect(text.textContent).toBe('')
     })

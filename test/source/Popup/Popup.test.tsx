@@ -1,9 +1,8 @@
 import React from 'react';
-import {fireEvent, render, screen} from '@testing-library/react';
+import { fireEvent, render, screen, act } from '@testing-library/react';
 import Popup from '../../../source/Popup/Popup';
 import "@testing-library/jest-dom/extend-expect"
 import { browser, Tabs } from 'webextension-polyfill-ts';
-import { act } from 'react-dom/test-utils';
 import { japanesifyState } from '../../../source/utils/utils';
 
 describe('Popup Component', () => {
@@ -39,7 +38,7 @@ describe('Popup Component', () => {
         await act(async () => {
             fireEvent.click(button)
         })
-        expect(browser.tabs.sendMessage).toBeCalledWith(2, {enabled: true, n: false})
+        expect(browser.tabs.sendMessage).toBeCalledWith(2, {enabled: true, n: false, a: false})
         
         jest.resetAllMocks()
         querySpy.mockResolvedValueOnce([{id: 2} as Tabs.Tab])
@@ -47,7 +46,7 @@ describe('Popup Component', () => {
         await act(async () => {
             fireEvent.click(button)
         })
-        expect(browser.tabs.sendMessage).toBeCalledWith(2, {enabled: false, n: false})
+        expect(browser.tabs.sendMessage).toBeCalledWith(2, {enabled: false, n: false, a: false})
     })
     
     test('when ん checkbox is pressed it sends correct message to tab', async () => {
@@ -58,7 +57,7 @@ describe('Popup Component', () => {
         await act(async () => {
             fireEvent.click(checkbox)
         })
-        expect(browser.tabs.sendMessage).toBeCalledWith(2, {enabled: false, n: true})
+        expect(browser.tabs.sendMessage).toBeCalledWith(2, {enabled: false, n: true, a: false})
         
         jest.resetAllMocks()
         querySpy.mockResolvedValueOnce([{id: 2} as Tabs.Tab])
@@ -66,7 +65,26 @@ describe('Popup Component', () => {
         await act(async () => {
             fireEvent.click(checkbox)
         })
-        expect(browser.tabs.sendMessage).toBeCalledWith(2, {enabled: false, n: false})
+        expect(browser.tabs.sendMessage).toBeCalledWith(2, {enabled: false, n: false, a: false})
+    })
+
+    test('when あ checkbox is pressed it sends correct message to tab', async () => {
+        render(<Popup/>)
+
+        const checkbox = screen.getByTestId('あ-switch')
+        
+        await act(async () => {
+            fireEvent.click(checkbox)
+        })
+        expect(browser.tabs.sendMessage).toBeCalledWith(2, {enabled: false, n: false, a: true})
+        
+        jest.resetAllMocks()
+        querySpy.mockResolvedValueOnce([{id: 2} as Tabs.Tab])
+
+        await act(async () => {
+            fireEvent.click(checkbox)
+        })
+        expect(browser.tabs.sendMessage).toBeCalledWith(2, {enabled: false, n: false, a:false})
     })
 
     test('gets tab id to send the message when checkbox is pressed', async () => {
@@ -104,7 +122,7 @@ describe('Popup Component', () => {
 
         const state = JSON.parse(window.localStorage.getItem(japanesifyState)!)
 
-        expect(state).toEqual({enabled: true, n: false})
+        expect(state).toEqual({enabled: true, n: false, a: false})
     })
     
     test('saves state to local storage when checkbox is pressed', async () => {
@@ -118,21 +136,44 @@ describe('Popup Component', () => {
 
         const state = JSON.parse(window.localStorage.getItem(japanesifyState)!)
 
-        expect(state).toEqual({enabled: false, n: true})
+        expect(state).toEqual({enabled: false, n: true, a: false})
+    })
+    
+    test('saves state to local storage when checkbox is pressed', async () => {
+        render(<Popup/>)
+
+        const checkBox = screen.getByTestId('あ-switch')
+        
+        await act(async () => {
+            fireEvent.click(checkBox)
+        })
+
+        const state = JSON.parse(window.localStorage.getItem(japanesifyState)!)
+
+        expect(state).toEqual({enabled: false, n: false, a: true})
     })
 
     test('renders button based on localStorage values', async () => {
-        window.localStorage.setItem(japanesifyState, JSON.stringify({enabled: true, n: false}))
+        window.localStorage.setItem(japanesifyState, JSON.stringify({enabled: true, n: false, a: false}))
         render(<Popup/>)
 
         screen.getByText('disable')
     })
 
     test('renders check box based on localStorage values', async () => {
-        window.localStorage.setItem(japanesifyState, JSON.stringify({enabled: false, n: true}))
+        window.localStorage.setItem(japanesifyState, JSON.stringify({enabled: false, n: true, a: false}))
         render(<Popup/>)
 
         const checkbox = screen.getByTestId('ん-switch')
+
+        expect(checkbox).toBeChecked()
+    })
+    
+    test('renders あ check box based on localStorage values', async () => {
+        window.localStorage.setItem(japanesifyState, JSON.stringify({enabled: false, n: false, a: true}))
+        render(<Popup/>)
+
+        const checkbox = screen.getByTestId('あ-switch')
 
         expect(checkbox).toBeChecked()
     })
