@@ -11,17 +11,17 @@ export const convertText = (node: Node, state: JapanesifyState): void => {
   // 'TEXTAREA', 'IFRAME', 'CANVAS', 'LINK', 'META'
   const excludeElements: Set<string> = new Set(['SCRIPT', 'STYLE']);
 
-  if (!state.n || (previousState.enabled && !state.enabled)) {
+  if (!state.n || (!state.enabled)) {
     nRegex = new RegExp('ん', 'gi');
     newCharacter = 'n';
   }
 
   if (node.nodeType === Node.TEXT_NODE) {
-    if (node.parentNode && excludeElements.has(node.parentNode.nodeName))
+    if (node.parentNode && excludeElements.has(node.parentNode.nodeName)) {
       return;
-    if (state.enabled || previousState.enabled) {
-      node.textContent = (node.textContent || '').replace(nRegex, newCharacter);
     }
+  
+    node.textContent = (node.textContent || '').replace(nRegex, newCharacter);
   } else {
     node.childNodes.forEach((child) => {
       convertText(child, state);
@@ -43,10 +43,14 @@ const togglePluginListener = (state: JapanesifyState): void => {
   });
 
   if (
+    // TODO: add test case for when hiragana is present and the extension
+    // is not enabled it doesn't convert to roman alphabet.
+    // i.e. Can delete 'state.enabled' and test pass
     (state.enabled && state.n) ||
     (previousState.enabled && previousState.n)
   ) {
     convertText(document.body, state);
+    // TODO: add test case that validate we stop observing when disabled.
     observer.observe(document.body, {
       childList: true,
       subtree: true,
