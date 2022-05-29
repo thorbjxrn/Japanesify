@@ -13,11 +13,10 @@ const Popup: React.FC = () => {
   );
 
   React.useEffect(() => {
-    const state =
-      (JSON.parse(
-        window.localStorage.getItem(JAPANESIFY_STATE) ||
-          JSON.stringify(defaultJapanesifyState)
-      ) as JapanesifyState) || defaultJapanesifyState;
+    const state = JSON.parse(
+      window.localStorage.getItem(JAPANESIFY_STATE) ||
+        JSON.stringify(defaultJapanesifyState)
+    ) as JapanesifyState;
     setJapanesifyState(state);
   }, []);
 
