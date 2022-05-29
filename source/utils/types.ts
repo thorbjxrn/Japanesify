@@ -1,5 +1,5 @@
 export type JapanesifyState = {
-    enabled: boolean,
-    n: boolean,
-    a: boolean
-}
+  enabled: boolean;
+  n: boolean;
+  a: boolean;
+};
