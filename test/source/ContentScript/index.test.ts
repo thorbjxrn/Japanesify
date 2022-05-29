@@ -2,6 +2,7 @@ import { browser } from 'webextension-polyfill-ts'
 import path from 'path'
 import * as fs from 'fs';
 import * as ContentScript from '../../../source/ContentScript/index'
+import { defaultJapanesifyState } from '../../../source/utils/utils';
 
 describe('Content Script', () => {
     const convertText = ContentScript.convertText
@@ -83,14 +84,14 @@ describe('Content Script', () => {
     })
     
     test('does Not call convertText if no checkBox is selected', async () => {        
-        browser.runtime.sendMessage({enabled: true, n: false})
+        browser.runtime.sendMessage({...defaultJapanesifyState, enabled: true})
 
         expect(convertSpy).not.toBeCalled()
     })
     
     test('does not call convert hiragana character ん not enabled', async () => {
-        await browser.runtime.sendMessage({enabled: true, n: false})        
-        await browser.runtime.sendMessage({enabled: false, n: false})
+        await browser.runtime.sendMessage({...defaultJapanesifyState, enabled: true})        
+        await browser.runtime.sendMessage({...defaultJapanesifyState, enabled: false})
 
         expect(convertSpy).not.toBeCalled()
     })
@@ -98,9 +99,9 @@ describe('Content Script', () => {
     test('converts hiragana character ん to n if it gets disabled', async () => {
         document.body.innerHTML = fs.readFileSync(path.join(__dirname, '..', '..', 'fixtures', 'basic.html'), 'utf8')
 
-        await browser.runtime.sendMessage({enabled: true, n: true})
+        await browser.runtime.sendMessage({...defaultJapanesifyState, enabled: true, n: true})
         
-        await browser.runtime.sendMessage({enabled: false, n: true})
+        await browser.runtime.sendMessage({...defaultJapanesifyState, enabled: false, n: true})
 
         expect(document.body.textContent).toContain('n')
         expect(document.body.textContent).not.toContain('ん')
@@ -108,9 +109,9 @@ describe('Content Script', () => {
     
     test('converts hiragana character ん to n if it gets disabled', async () => {
         document.body.innerHTML = fs.readFileSync(path.join(__dirname, '..', '..', 'fixtures', 'basic.html'), 'utf8')
-        await browser.runtime.sendMessage({enabled: true, n: true})
+        await browser.runtime.sendMessage({...defaultJapanesifyState, enabled: true, n: true})
         
-        await browser.runtime.sendMessage({enabled: true, n: false})
+        await browser.runtime.sendMessage({...defaultJapanesifyState, enabled: true, n: false})
 
         expect(document.body.textContent).toContain('n')
         expect(document.body.textContent).not.toContain('ん')
@@ -118,14 +119,14 @@ describe('Content Script', () => {
 
     test('Should not convert script tag contents', async () => {
         document.body.innerHTML = fs.readFileSync(path.join(__dirname, '..', '..', 'fixtures', 'excludedElements.html'), 'utf8')
-        await browser.runtime.sendMessage({enabled: true, n: true})
+        await browser.runtime.sendMessage({...defaultJapanesifyState, enabled: true, n: true})
 
         expect(document.body.textContent).toContain('[].push(\'text with an n\');')
     })
 
     test('Should not convert style tag contents', async () => {
         document.body.innerHTML = fs.readFileSync(path.join(__dirname, '..', '..', 'fixtures', 'excludedElements.html'), 'utf8')
-        await browser.runtime.sendMessage({enabled: true, n: true})
+        await browser.runtime.sendMessage({...defaultJapanesifyState, enabled: true, n: true})
 
         expect(document.body.textContent).toContain('.mw-editfont-monospace{font-family:monospace,monospace}')
     })
