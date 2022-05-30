@@ -197,7 +197,7 @@ describe('Japanesify', () => {
         // Satisfied he goes to sleep
     }, 10000)
 
-    test.only('can convert roman alphabet: i, ki, shi, chi, ni, hi, mi, ri to hiragana: い, き, し, ち, に, ひ, み, り and back', async () => {
+    test('can convert roman alphabet: i, ki, shi, chi, ni, hi, mi, ri to hiragana: い, き, し, ち, に, ひ, み, り and back', async () => {
         // Robert is learning japanese. He stumbles across an extension called Japanesify
         // and decides to install it.
 

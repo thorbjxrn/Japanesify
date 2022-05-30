@@ -66,6 +66,13 @@ describe('Content Script', () => {
         expect(convertSpy).toBeCalledTimes(2)
     })
     
+    test('calls convertText if enabled and い checkbox is clicked', () => {
+        ContentScript.togglePluginListener({...defaultJapanesifyState, enabled: true, i: true})
+        ContentScript.togglePluginListener({...defaultJapanesifyState, enabled: true, i: false})
+
+        expect(convertSpy).toBeCalledTimes(2)
+    })
+    
     test('does not call convert if hiragana character not enabled', () => {
         ContentScript.togglePluginListener({...defaultJapanesifyState, enabled: true})        
         ContentScript.togglePluginListener({...defaultJapanesifyState, enabled: false})
@@ -73,7 +80,7 @@ describe('Content Script', () => {
         expect(convertSpy).not.toBeCalled()
     })
     
-    test('converts hiragana character n to ん and back if extension gets disabled', () => {
+    test('converts ん character to hiragana and back if enable button gets toggled', () => {
         document.body.innerHTML = fs.readFileSync(path.join(__dirname, '..', '..', 'fixtures', 'basic.html'), 'utf8')
 
         ContentScript.togglePluginListener({...defaultJapanesifyState, enabled: true, n: true})
@@ -85,7 +92,7 @@ describe('Content Script', () => {
         expect(document.body.textContent).toContain('n')
     })
 
-    test('converts a syllables to hiragana characters and back if enable button gets toggled', () => {
+    test('converts あ syllables to hiragana characters and back if enable button gets toggled', () => {
         document.body.innerHTML = fs.readFileSync(path.join(__dirname, '..', '..', 'fixtures', 'basic.html'), 'utf8')
 
         ContentScript.togglePluginListener({...defaultJapanesifyState, enabled: true, a: true})
@@ -133,6 +140,46 @@ describe('Content Script', () => {
         expect(document.body.textContent).not.toContain('わ')
     })
     
+    test('converts い syllables to hiragana characters and back if enable button gets toggled', () => {
+        document.body.innerHTML = fs.readFileSync(path.join(__dirname, '..', '..', 'fixtures', 'basic.html'), 'utf8')
+
+        ContentScript.togglePluginListener({...defaultJapanesifyState, enabled: true, i: true})
+        expect(document.body.textContent).not.toContain('i')
+        expect(document.body.textContent).not.toContain('kい')
+        expect(document.body.textContent).not.toContain('shい')
+        expect(document.body.textContent).not.toContain('chい')
+        expect(document.body.textContent).not.toContain('nい')
+        expect(document.body.textContent).not.toContain('hい')
+        expect(document.body.textContent).not.toContain('mい')
+        expect(document.body.textContent).not.toContain('rい')
+        expect(document.body.textContent).toContain('い')
+        expect(document.body.textContent).toContain('き')
+        expect(document.body.textContent).toContain('し')
+        expect(document.body.textContent).toContain('ち')
+        expect(document.body.textContent).toContain('に')
+        expect(document.body.textContent).toContain('ひ')
+        expect(document.body.textContent).toContain('み')
+        expect(document.body.textContent).toContain('り')
+        
+        ContentScript.togglePluginListener({...defaultJapanesifyState, enabled: false, a: true})
+        expect(document.body.textContent).toContain('i')
+        expect(document.body.textContent).toContain('ki')
+        expect(document.body.textContent).toContain('shi')
+        expect(document.body.textContent).toContain('chi')
+        expect(document.body.textContent).toContain('ni')
+        expect(document.body.textContent).toContain('hi')
+        expect(document.body.textContent).toContain('mi')
+        expect(document.body.textContent).toContain('ri')
+        expect(document.body.textContent).not.toContain('い')
+        expect(document.body.textContent).not.toContain('き')
+        expect(document.body.textContent).not.toContain('し')
+        expect(document.body.textContent).not.toContain('ち')
+        expect(document.body.textContent).not.toContain('に')
+        expect(document.body.textContent).not.toContain('ひ')
+        expect(document.body.textContent).not.toContain('み')
+        expect(document.body.textContent).not.toContain('り')
+    })
+    
     test('converts hiragana character ん to n if checkbox gets disabled', () => {
         document.body.innerHTML = fs.readFileSync(path.join(__dirname, '..', '..', 'fixtures', 'basic.html'), 'utf8')
         
@@ -145,7 +192,7 @@ describe('Content Script', () => {
         expect(document.body.textContent).not.toContain('ん')
     })
     
-    test('converts a syllables to hiragana characters and back if a checkbox gets toggled', () => {
+    test('converts あ syllables to hiragana characters and back if a checkbox gets toggled', () => {
         document.body.innerHTML = fs.readFileSync(path.join(__dirname, '..', '..', 'fixtures', 'basic.html'), 'utf8')
 
         ContentScript.togglePluginListener({...defaultJapanesifyState, enabled: true, a: true})
@@ -191,6 +238,46 @@ describe('Content Script', () => {
         expect(document.body.textContent).toContain('ya')
         expect(document.body.textContent).toContain('ra')
         expect(document.body.textContent).toContain('wa')
+    })
+    
+    test('converts い syllables to hiragana characters and back if a checkbox gets toggled', () => {
+        document.body.innerHTML = fs.readFileSync(path.join(__dirname, '..', '..', 'fixtures', 'basic.html'), 'utf8')
+
+        ContentScript.togglePluginListener({...defaultJapanesifyState, enabled: true, i: true})
+        expect(document.body.textContent).not.toContain('i')
+        expect(document.body.textContent).not.toContain('kい')
+        expect(document.body.textContent).not.toContain('shい')
+        expect(document.body.textContent).not.toContain('chい')
+        expect(document.body.textContent).not.toContain('nい')
+        expect(document.body.textContent).not.toContain('hい')
+        expect(document.body.textContent).not.toContain('mい')
+        expect(document.body.textContent).not.toContain('rい')
+        expect(document.body.textContent).toContain('い')
+        expect(document.body.textContent).toContain('き')
+        expect(document.body.textContent).toContain('し')
+        expect(document.body.textContent).toContain('ち')
+        expect(document.body.textContent).toContain('に')
+        expect(document.body.textContent).toContain('ひ')
+        expect(document.body.textContent).toContain('み')
+        expect(document.body.textContent).toContain('り')
+        
+        ContentScript.togglePluginListener({...defaultJapanesifyState, enabled: true, a: false})
+        expect(document.body.textContent).not.toContain('い')
+        expect(document.body.textContent).not.toContain('き')
+        expect(document.body.textContent).not.toContain('し')
+        expect(document.body.textContent).not.toContain('ち')
+        expect(document.body.textContent).not.toContain('に')
+        expect(document.body.textContent).not.toContain('ひ')
+        expect(document.body.textContent).not.toContain('み')
+        expect(document.body.textContent).not.toContain('り')
+        expect(document.body.textContent).toContain('i')
+        expect(document.body.textContent).toContain('ki')
+        expect(document.body.textContent).toContain('shi')
+        expect(document.body.textContent).toContain('chi')
+        expect(document.body.textContent).toContain('ni')
+        expect(document.body.textContent).toContain('hi')
+        expect(document.body.textContent).toContain('mi')
+        expect(document.body.textContent).toContain('ri')
     })
 
     test('Should not convert script tag contents', () => {

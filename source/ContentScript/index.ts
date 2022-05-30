@@ -5,6 +5,19 @@ import {defaultJapanesifyState} from '../utils/utils';
 
 let previousState = defaultJapanesifyState;
 
+const canCovertText = (state: JapanesifyState): boolean => {
+  if (!state.enabled) return false;
+
+  let result = false;
+  Object.entries(state).forEach(([k, value]) => {
+    if (k !== 'enabled' && value) {
+      result = true;
+    }
+  });
+
+  return result;
+};
+
 export const convertText = (node: Node, state: JapanesifyState): void => {
   const substitutions = new Map<RegExp, string>();
 
@@ -61,8 +74,8 @@ export const togglePluginListener = (state: JapanesifyState): void => {
     // TODO: add test case for when hiragana is present and the extension
     // is not enabled it doesn't convert to roman alphabet.
     // i.e. Can delete 'state.enabled' and test pass
-    (state.enabled && (state.n || state.a)) ||
-    (previousState.enabled && (previousState.n || previousState.a))
+    canCovertText(state) ||
+    canCovertText(previousState)
   ) {
     convertText(document.body, state);
     // TODO: add test case that validate we stop observing when disabled.
