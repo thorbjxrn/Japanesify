@@ -16,7 +16,7 @@ describe('Content Script', () => {
     test('sets textContent to empty string if null', () => {
         const text = document.createTextNode("div");
         text.textContent = null
-        convertText(text, {enabled: true, n: true, a: true})
+        convertText(text, {...defaultJapanesifyState, enabled: true, n: true})
 
         expect(text.textContent).toBe('')
     })

@@ -12,4 +12,5 @@ export const hiraganaMaps = {
     ['ka', 'か'],
     ['a', 'あ'],
   ]),
+  i: new Map(),
 };

@@ -31,7 +31,7 @@ const Popup: React.FC = () => {
     };
   };
 
-  const {enabled, a, n} = japanesifyState;
+  const {enabled, a, n, i} = japanesifyState;
 
   return (
     <section id="popup">
@@ -60,6 +60,14 @@ const Popup: React.FC = () => {
         data-testid="あ-switch"
         checked={a}
         onChange={handleAction('a')}
+      />
+      <label id="い-switch">い</label>
+      <input
+        type="checkbox"
+        id="い-switch"
+        data-testid="い-switch"
+        checked={i}
+        onChange={handleAction('i')}
       />
     </section>
   );

@@ -1,6 +1,6 @@
 import { browser, Tabs } from "webextension-polyfill-ts"
 import { sendMessage } from "../../../source/Background/index"
-import { JAPANESIFY_STATE } from "../../../source/utils/utils"
+import { defaultJapanesifyState, JAPANESIFY_STATE } from "../../../source/utils/utils"
 
 describe('Background script', () => {
     const querySpy = jest.spyOn(browser.tabs, 'query')
@@ -19,15 +19,15 @@ describe('Background script', () => {
     })
     
     test('calls tabs sendMessage with local storage state', async () => {
-        window.localStorage.setItem(JAPANESIFY_STATE, JSON.stringify({enabled: false, n: true, a: true}))
+        window.localStorage.setItem(JAPANESIFY_STATE, JSON.stringify({...defaultJapanesifyState, n: true, a: true}))
         await sendMessage()
         
-        expect(browser.tabs.sendMessage).toBeCalledWith(2, {enabled: false, n: true, a: true})
+        expect(browser.tabs.sendMessage).toBeCalledWith(2, {...defaultJapanesifyState, n: true, a: true})
     })
 
     test('calls tabs sendMessage with default state', async () => {
         await sendMessage()
 
-        expect(browser.tabs.sendMessage).toBeCalledWith(2, {enabled: false, n: false, a: false})
+        expect(browser.tabs.sendMessage).toBeCalledWith(2, {...defaultJapanesifyState})
     })
 })

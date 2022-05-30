@@ -15,4 +15,5 @@ export const defaultJapanesifyState: JapanesifyState = {
   enabled: false,
   n: false,
   a: false,
+  i: false,
 };
