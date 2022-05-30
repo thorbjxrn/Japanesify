@@ -8,7 +8,7 @@ let previousState = defaultJapanesifyState;
 export const convertText = (node: Node, state: JapanesifyState): void => {
   const substitutions = new Map<RegExp, string>();
 
-  // iterate over the user object
+  // Make a list of characters to substitute
   Object.entries(state).forEach(([k, value]) => {
     if (k !== 'enabled') {
       const key = k as keyof typeof hiraganaMaps;

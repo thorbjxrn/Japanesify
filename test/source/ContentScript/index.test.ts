@@ -12,24 +12,6 @@ describe('Content Script', () => {
         convertSpy.mockClear()
         document.body.innerHTML = ''
     })
-
-    test('converts n to ん', () => {
-        const newDiv = document.createElement("div");
-        newDiv.textContent = "Sample text to convert to Japanese"
-        convertText(newDiv, {enabled:true, n: true, a: false})
-
-        expect(newDiv.textContent).not.toContain('n')
-        expect(newDiv.textContent).toContain('ん')
-    })
-    
-    test('converts ん to n', () => {
-        const newDiv = document.createElement("div");
-        newDiv.textContent = "Sample text to coんvert to Japanese"
-        convertText(newDiv, {enabled:true, n: false, a: false})
-
-        expect(newDiv.textContent).not.toContain('ん')
-        expect(newDiv.textContent).toContain('n')
-    })
     
     test('converts a, ka, sa to あ, か, さ', () => {
         const newDiv = document.createElement("div");
@@ -57,20 +39,11 @@ describe('Content Script', () => {
         expect(newDiv.textContent).toContain('ka')
         expect(newDiv.textContent).toContain('sa')
     })
-
-    test('does not converts n to ん', () => {
-        const newDiv = document.createElement("div");
-        newDiv.innerText = "Sample text to convert to Japanese"
-        convertText(newDiv, {enabled: true, n: false, a: false})
-
-        expect(newDiv.innerText).toContain('n')
-        expect(newDiv.innerText).not.toContain('ん')
-    })
     
-    test('does not converts n to ん', () => {
+    test('sets textContent to empty string if null', () => {
         const text = document.createTextNode("div");
         text.textContent = null
-        convertText(text, {enabled: true, n: false, a: false})
+        convertText(text, {enabled: true, n: true, a: true})
 
         expect(text.textContent).toBe('')
     })
@@ -79,27 +52,24 @@ describe('Content Script', () => {
         expect(browser.runtime.onMessage.addListener).toBeCalled()
     })
 
-    test('converts roman character n to hiragana ん when enabled', () => {
-        document.body.innerHTML = fs.readFileSync(path.join(__dirname, '..', '..', 'fixtures', 'basic.html'), 'utf8')
-        ContentScript.togglePluginListener({...defaultJapanesifyState, enabled: true, n: true})
-        
-        expect(document.body.textContent).not.toContain('n')
-        expect(document.body.textContent).toContain('ん')
-    })
-
-    test('converts n to ん when enabled on new nodes that get added', async () => {
+    test('executes convertText when new nodes get added', async () => {
         document.body.innerHTML = fs.readFileSync(path.join(__dirname, '..', '..', 'fixtures', 'basic.html'), 'utf8')
         
         ContentScript.togglePluginListener({...defaultJapanesifyState, enabled: true, n: true})
-
+        
+        // Since convertText is called recursively it has 7 executions by the time
+        // this expect ie reached.
+        expect(convertSpy).toBeCalledTimes(7)
+        
         const newDiv = document.createElement("div");
         newDiv.textContent = "Sample text to convert to Japanese"
 
         // await does seem to do something ¯\_(ツ)_/¯
         await document.body.appendChild(newDiv)
         
-        expect(document.body.textContent).not.toContain('n')
-        expect(document.body.textContent).toContain('ん')
+        // convertText is executed 2 more times once for the div
+        // another for the text node.
+        expect(convertSpy).toBeCalledTimes(9)
     })
 
     test('does Not converts roman character n to hiragana ん if not enabled', () => {
@@ -116,7 +86,7 @@ describe('Content Script', () => {
         expect(convertSpy).not.toBeCalled()
     })
     
-    test('calls convertText if あ checkbox is clicked', () => {
+    test('calls convertText if enabled and あ checkbox is clicked', () => {
         ContentScript.togglePluginListener({...defaultJapanesifyState, enabled: true, a: true})
         ContentScript.togglePluginListener({...defaultJapanesifyState, enabled: true, a: false})
 
@@ -130,13 +100,15 @@ describe('Content Script', () => {
         expect(convertSpy).not.toBeCalled()
     })
     
-    test('converts hiragana character ん to n if extension gets disabled', () => {
+    test('converts hiragana character n to ん and back if extension gets disabled', () => {
         document.body.innerHTML = fs.readFileSync(path.join(__dirname, '..', '..', 'fixtures', 'basic.html'), 'utf8')
 
         ContentScript.togglePluginListener({...defaultJapanesifyState, enabled: true, n: true})
+        expect(document.body.textContent).toContain('ん')
         expect(document.body.textContent).not.toContain('n')
         
         ContentScript.togglePluginListener({...defaultJapanesifyState, enabled: false, n: true})
+        expect(document.body.textContent).not.toContain('ん')
         expect(document.body.textContent).toContain('n')
     })
 
@@ -159,10 +131,11 @@ describe('Content Script', () => {
         
         ContentScript.togglePluginListener({...defaultJapanesifyState, enabled: true, n: true})
         expect(document.body.textContent).not.toContain('n')
+        expect(document.body.textContent).toContain('ん')
         
         ContentScript.togglePluginListener({...defaultJapanesifyState, enabled: true, n: false})
         expect(document.body.textContent).toContain('n')
-        
+        expect(document.body.textContent).not.toContain('ん')
     })
     
     test('converts hiragana character あ, か, さ to a, ka, sa checkbox it gets disabled', () => {
