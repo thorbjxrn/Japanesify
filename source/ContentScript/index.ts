@@ -1,35 +1,42 @@
 import {browser} from 'webextension-polyfill-ts';
+import {hiraganaMaps} from '../utils/constants';
 import {JapanesifyState} from '../utils/types';
 import {defaultJapanesifyState} from '../utils/utils';
 
 let previousState = defaultJapanesifyState;
 
 export const convertText = (node: Node, state: JapanesifyState): void => {
-  let nRegex = new RegExp('n', 'gi');
-  let aRegex = new RegExp('a', 'gi')
-  let newNCharacter = 'ん';
-  let newACharacter = 'あ';
+  const substitutions = new Map<RegExp, string>();
+
+  // iterate over the user object
+  Object.entries(state).forEach(([k, value]) => {
+    if (k !== 'enabled') {
+      const key = k as keyof typeof hiraganaMaps;
+      if (value) {
+        hiraganaMaps[key].forEach((replace, find) => {
+          substitutions.set(new RegExp(find, 'gi'), replace);
+        });
+      }
+
+      if (!value || !state.enabled) {
+        hiraganaMaps[key].forEach((find, replace) => {
+          substitutions.set(new RegExp(find, 'gi'), replace);
+        });
+      }
+    }
+  });
 
   // 'TEXTAREA', 'IFRAME', 'CANVAS', 'LINK', 'META'
   const excludeElements: Set<string> = new Set(['SCRIPT', 'STYLE']);
-
-  if (!state.n || !state.enabled) {
-    nRegex = new RegExp('ん', 'gi');
-    newNCharacter = 'n';
-  }
-
-  if(!state.a || !state.enabled) {
-    aRegex = new RegExp('あ', 'gi')
-    newACharacter = 'a';
-  }
 
   if (node.nodeType === Node.TEXT_NODE) {
     if (node.parentNode && excludeElements.has(node.parentNode.nodeName)) {
       return;
     }
-  
-    node.textContent = (node.textContent || '').replace(nRegex, newNCharacter);
-    node.textContent = (node.textContent || '').replace(aRegex, newACharacter);
+
+    substitutions.forEach((val, key) => {
+      node.textContent = (node.textContent || '').replace(key, val);
+    });
   } else {
     node.childNodes.forEach((child) => {
       convertText(child, state);

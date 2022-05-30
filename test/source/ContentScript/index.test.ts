@@ -31,22 +31,31 @@ describe('Content Script', () => {
         expect(newDiv.textContent).toContain('n')
     })
     
-    test('converts a to あ', () => {
+    test('converts a, ka, sa to あ, か, さ', () => {
         const newDiv = document.createElement("div");
-        newDiv.textContent = "Sample text to convert to Japanese"
+        newDiv.textContent = "sample ka text to convert ka to Japanese"
         convertText(newDiv, {enabled:true, n: false, a: true})
 
         expect(newDiv.textContent).not.toContain('a')
+        expect(newDiv.textContent).not.toContain('kあ')
+        expect(newDiv.textContent).not.toContain('sあ')
+
         expect(newDiv.textContent).toContain('あ')
+        expect(newDiv.textContent).toContain('か')
+        expect(newDiv.textContent).toContain('さ')
     })
     
-    test('converts あ to a', () => {
+    test('converts あ, か, さ to a, ka, sa', () => {
         const newDiv = document.createElement("div");
-        newDiv.textContent = "Sあmple text to convert to Jあpあnese"
+        newDiv.textContent = "さmple か text to convert か to Jあpあnese"
         convertText(newDiv, {enabled:true, n: false, a: false})
 
         expect(newDiv.textContent).not.toContain('あ')
+        expect(newDiv.textContent).not.toContain('か')
+        expect(newDiv.textContent).not.toContain('さ')
         expect(newDiv.textContent).toContain('a')
+        expect(newDiv.textContent).toContain('ka')
+        expect(newDiv.textContent).toContain('sa')
     })
 
     test('does not converts n to ん', () => {
@@ -131,14 +140,18 @@ describe('Content Script', () => {
         expect(document.body.textContent).toContain('n')
     })
 
-    test('converts hiragana character あ to a if extension gets disabled', () => {
+    test('converts hiragana character あ, か, さ to a, ka, sa if extension gets disabled', () => {
         document.body.innerHTML = fs.readFileSync(path.join(__dirname, '..', '..', 'fixtures', 'basic.html'), 'utf8')
 
         ContentScript.togglePluginListener({...defaultJapanesifyState, enabled: true, a: true})
         expect(document.body.textContent).not.toContain('a')
+        expect(document.body.textContent).not.toContain('kあ')
+        expect(document.body.textContent).not.toContain('sあ')
         
         ContentScript.togglePluginListener({...defaultJapanesifyState, enabled: false, a: true})
         expect(document.body.textContent).toContain('a')
+        expect(document.body.textContent).toContain('ka')
+        expect(document.body.textContent).toContain('sa')
     })
     
     test('converts hiragana character ん to n if checkbox gets disabled', () => {
@@ -152,14 +165,18 @@ describe('Content Script', () => {
         
     })
     
-    test('converts hiragana character あ to a checkbox it gets disabled', () => {
+    test('converts hiragana character あ, か, さ to a, ka, sa checkbox it gets disabled', () => {
         document.body.innerHTML = fs.readFileSync(path.join(__dirname, '..', '..', 'fixtures', 'basic.html'), 'utf8')
 
         ContentScript.togglePluginListener({...defaultJapanesifyState, enabled: true, a: true})
         expect(document.body.textContent).toContain('あ')
+        expect(document.body.textContent).toContain('か')
+        expect(document.body.textContent).toContain('さ')
         
         ContentScript.togglePluginListener({...defaultJapanesifyState, enabled: true, a: false})
         expect(document.body.textContent).not.toContain('あ')
+        expect(document.body.textContent).not.toContain('か')
+        expect(document.body.textContent).not.toContain('さ')
     })
 
     test('Should not convert script tag contents', () => {
