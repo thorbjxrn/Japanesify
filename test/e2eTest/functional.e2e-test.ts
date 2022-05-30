@@ -133,7 +133,7 @@ describe('Japanesify', () => {
 
         // He opens a new page but nothing happens.
         const wikiPage = await browser.newPage();
-        await wikiPage.goto('https://en.wikipedia.org/wiki/Happy_Hacking_Keyboard')
+        await wikiPage.goto('https://en.wikipedia.org/wiki/Papuan_mountain_pigeon')
         const originalImage = await wikiPage.screenshot(/*{ path: path.join(__dirname, 'original.png')}*/);
         let body = await wikiPage.$eval('body', (el) => (el as HTMLElement).innerText)
         hiraA.forEach((hira) => expect(body).not.toContain(hira))
