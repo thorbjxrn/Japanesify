@@ -24,6 +24,17 @@ export const hiraganaMaps = {
     ['ki', 'き'],
     ['i', 'い'],
   ]),
+  u: new Map([
+    ['tsu', 'つ'],
+    ['su', 'す'],
+    ['nu', 'ぬ'],
+    ['fu', 'ふ'],
+    ['mu', 'む'],
+    ['ru', 'る'],
+    ['yu', 'ゆ'],
+    ['ku', 'く'],
+    ['u', 'う']
+  ]),
 };
 
 export const defaultJapanesifyState: JapanesifyState = {
@@ -31,6 +42,7 @@ export const defaultJapanesifyState: JapanesifyState = {
   n: false,
   a: false,
   i: false,
+  u: false,
 };
 
 export const JAPANESIFY_STATE = 'JapanesifyState';
