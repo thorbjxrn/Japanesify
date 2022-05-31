@@ -1,10 +1,8 @@
 import * as React from 'react';
 import {browser} from 'webextension-polyfill-ts';
-import { defaultJapanesifyState, JAPANESIFY_STATE } from '../utils/constants';
+import {defaultJapanesifyState, JAPANESIFY_STATE} from '../utils/constants';
 import {JapanesifyState} from '../utils/types';
-import {
-  getCurrentTabId,
-} from '../utils/utils';
+import {getCurrentTabId} from '../utils/utils';
 
 const Popup: React.FC = () => {
   const [japanesifyState, setJapanesifyState] = React.useState(
@@ -30,7 +28,7 @@ const Popup: React.FC = () => {
     };
   };
 
-  const {enabled, a, n, i, u} = japanesifyState;
+  const {enabled, a, n, i, u, e} = japanesifyState;
 
   return (
     <section id="popup">
@@ -75,6 +73,14 @@ const Popup: React.FC = () => {
         data-testid="う-switch"
         checked={u}
         onChange={handleAction('u')}
+      />
+      <label id="え-switch">え</label>
+      <input
+        type="checkbox"
+        id="え-switch"
+        data-testid="え-switch"
+        checked={e}
+        onChange={handleAction('e')}
       />
     </section>
   );

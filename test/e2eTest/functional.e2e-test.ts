@@ -374,4 +374,93 @@ describe('Japanesify', () => {
         
         // Satisfied he goes to sleep
     }, 20000)
+    
+    test('can convert roman alphabet: e, ke, se, te, ne, he, me, re to hiragana: え, け, せ, て, ね, へ, め, れ and back', async () => {
+        // Robert is learning japanese. He stumbles across an extension called Japanesify
+        // and decides to install it.
+
+        const hiraU = ['え', 'け', 'せ', 'て', 'ね', 'へ', 'め', 'れ']
+        const romaU = ['e', 'ke', 'se', 'te', 'ne', 'he', 'me', 're']
+
+        // He opens the extension popup and sees the title 'Japanesify'.
+        const [extension] = await browser.pages();
+        await extension.goto(`chrome-extension://${extensionId}/popup.html`)
+
+        const h3 = await extension.$eval('h3', el => el.textContent)
+        expect(h3).toBe('Japanesify!')
+
+        // Then he sees an enable button and decides to click it.
+        let enableToggleText = await extension.$eval('[data-testid="enable-button"]', el => el.textContent)
+        expect(enableToggleText).toBe('enable')
+        await extension.click('[data-testid="enable-button"]')
+
+        // After clicking the button he notices the text changes to disable
+        enableToggleText = await extension.$eval('[data-testid="enable-button"]', el => el.textContent)
+        expect(enableToggleText).toBe('disable')
+
+        // He opens a new page but nothing happens.
+        const wikiPage = await browser.newPage();
+        await wikiPage.goto('https://en.wikipedia.org/wiki/Levantine_Arabic')
+        const originalImage = await wikiPage.screenshot(/*{ path: path.join(__dirname, 'original.png')}*/);
+        let body = await wikiPage.$eval('body', (el) => (el as HTMLElement).innerText)
+        hiraU.forEach((hira) => expect(body).not.toContain(hira))
+        
+        // He goes back and notices none of the conversions are selected, he then decides to enable 'う' character. 
+        await extension.bringToFront()
+        let えswitchStatus = await extension.$eval('[data-testid="え-switch"]', input => {
+            return (input as HTMLInputElement).checked
+        })
+        expect(えswitchStatus).toBe(false)
+
+        await extension.click('[data-testid="え-switch"]')
+        えswitchStatus = await extension.$eval('[data-testid="え-switch"]', input => {
+            return (input as HTMLInputElement).checked
+        })
+        expect(えswitchStatus).toBe(true)
+        
+        // He goes back to the tab and notices that all the e, ke, se, te, ne, he, me, re
+        // are replaced by え, け, せ, て, ね, へ, め, れ
+        await wikiPage.bringToFront()
+        await wikiPage.waitForTimeout(1000) // TODO: fix this
+        body = await wikiPage.$eval('body', el => (el as HTMLElement).innerText)
+        romaU.forEach((roma) => expect(body).not.toContain(roma))
+        hiraU.forEach((hira) => expect(body).toContain(hira))
+
+        // He opens a new tab and notices that all the e, ke, se, te, ne, he, me, re
+        // are also replaced by え, け, せ, て, ね, へ, め, れ
+        const wikiPage2 = await browser.newPage();
+        await wikiPage2.goto('https://en.wikipedia.org/wiki/Japan')
+        body = await wikiPage2.$eval('body', el => (el as HTMLElement).innerText)
+        romaU.forEach((roma) => expect(body).not.toContain(roma))
+        hiraU.forEach((hira) => expect(body).toContain(hira))
+
+        // He closes the second page and goes back to the extension
+        await wikiPage2.close()
+        await extension.bringToFront()
+        
+        // He goes back to the extension and disables the 'え' character 
+        await extension.click('[data-testid="え-switch"]')
+        えswitchStatus = await extension.$eval('[data-testid="え-switch"]', input => {
+            return (input as HTMLInputElement).checked
+        })
+        expect(えswitchStatus).toBe(false)
+        
+        // then goes back to the first wiki page and sees that the 
+        // e, ke, se, te, ne, he, me, re are back
+        await wikiPage.bringToFront()
+        await wikiPage.waitForTimeout(1000) // TODO: fix this
+        body = await wikiPage.$eval('body', el => (el as HTMLElement).innerText)
+        romaU.forEach((roma) => expect(body).toContain(roma))
+        hiraU.forEach((hira) => expect(body).not.toContain(hira))
+
+        // he also notices the page looks the same as it did before being altered
+        const restoredImage = await wikiPage.screenshot(/*{ path: path.join(__dirname, 'restored.png')}*/)
+        looksSame(originalImage, restoredImage, {tolerance: 98}, (_, {equal}) => {
+            expect(equal).toBe(true)
+        })
+
+        await wikiPage.waitForTimeout(3000) // TODO: fix this
+        
+        // Satisfied he goes to sleep
+    }, 20000)
 })

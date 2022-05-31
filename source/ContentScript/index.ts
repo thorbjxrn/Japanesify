@@ -1,7 +1,6 @@
 import {browser} from 'webextension-polyfill-ts';
-import {hiraganaMaps} from '../utils/constants';
+import {hiraganaMaps, defaultJapanesifyState} from '../utils/constants';
 import {JapanesifyState} from '../utils/types';
-import {defaultJapanesifyState} from '../utils/constants';
 
 let previousState = defaultJapanesifyState;
 

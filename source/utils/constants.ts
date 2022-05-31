@@ -1,4 +1,4 @@
-import { JapanesifyState } from "./types";
+import {JapanesifyState} from './types';
 
 export const hiraganaMaps = {
   n: new Map<string, string>([['n', 'ん']]),
@@ -33,7 +33,17 @@ export const hiraganaMaps = {
     ['ru', 'る'],
     ['yu', 'ゆ'],
     ['ku', 'く'],
-    ['u', 'う']
+    ['u', 'う'],
+  ]),
+  e: new Map([
+    ['re', 'れ'],
+    ['me', 'め'],
+    ['he', 'へ'],
+    ['ne', 'ね'],
+    ['te', 'て'],
+    ['se', 'せ'],
+    ['ke', 'け'],
+    ['e', 'え'],
   ]),
 };
 
@@ -43,6 +53,7 @@ export const defaultJapanesifyState: JapanesifyState = {
   a: false,
   i: false,
   u: false,
+  e: false,
 };
 
 export const JAPANESIFY_STATE = 'JapanesifyState';
