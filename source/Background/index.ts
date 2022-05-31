@@ -1,9 +1,8 @@
 import 'emoji-log';
 import {browser} from 'webextension-polyfill-ts';
+import { defaultJapanesifyState, JAPANESIFY_STATE } from '../utils/constants';
 import {
-  defaultJapanesifyState,
   getCurrentTabId,
-  JAPANESIFY_STATE,
 } from '../utils/utils';
 
 export const sendMessage = async (): Promise<void> => {

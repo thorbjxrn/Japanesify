@@ -1,3 +1,5 @@
+import { JapanesifyState } from "./types";
+
 export const hiraganaMaps = {
   n: new Map<string, string>([['n', 'ん']]),
   a: new Map<string, string>([
@@ -23,3 +25,12 @@ export const hiraganaMaps = {
     ['i', 'い'],
   ]),
 };
+
+export const defaultJapanesifyState: JapanesifyState = {
+  enabled: false,
+  n: false,
+  a: false,
+  i: false,
+};
+
+export const JAPANESIFY_STATE = 'JapanesifyState';

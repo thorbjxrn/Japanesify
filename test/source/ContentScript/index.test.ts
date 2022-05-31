@@ -2,7 +2,7 @@ import { browser } from 'webextension-polyfill-ts'
 import path from 'path'
 import * as fs from 'fs';
 import * as ContentScript from '../../../source/ContentScript/index'
-import { defaultJapanesifyState } from '../../../source/utils/utils';
+import { defaultJapanesifyState } from '../../../source/utils/constants';
 
 describe('Content Script', () => {
     const convertText = ContentScript.convertText

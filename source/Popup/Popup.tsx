@@ -1,10 +1,9 @@
 import * as React from 'react';
 import {browser} from 'webextension-polyfill-ts';
+import { defaultJapanesifyState, JAPANESIFY_STATE } from '../utils/constants';
 import {JapanesifyState} from '../utils/types';
 import {
-  defaultJapanesifyState,
   getCurrentTabId,
-  JAPANESIFY_STATE,
 } from '../utils/utils';
 
 const Popup: React.FC = () => {

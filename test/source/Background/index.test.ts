@@ -1,6 +1,6 @@
 import { browser, Tabs } from "webextension-polyfill-ts"
 import { sendMessage } from "../../../source/Background/index"
-import { defaultJapanesifyState, JAPANESIFY_STATE } from "../../../source/utils/utils"
+import { defaultJapanesifyState, JAPANESIFY_STATE } from "../../../source/utils/constants"
 
 describe('Background script', () => {
     const querySpy = jest.spyOn(browser.tabs, 'query')
