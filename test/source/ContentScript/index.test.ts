@@ -59,21 +59,20 @@ describe('Content Script', () => {
         expect(convertSpy).not.toBeCalled()
     })
     
-    test('calls convertText if enabled and あ checkbox is clicked', () => {
-        ContentScript.togglePluginListener({...defaultJapanesifyState, enabled: true, a: true})
-        ContentScript.togglePluginListener({...defaultJapanesifyState, enabled: true, a: false})
+    // TODO: are these tests useful?
+    test.each`
+      hiragana | letter
+      ${'ん'}  | ${'n'}  
+      ${'あ'}  | ${'a'}  
+      ${'い'}  | ${'i'}  
+    `('calls convertText if enabled and $hiragana is clicked', ({letter}) => {
+        ContentScript.togglePluginListener({...defaultJapanesifyState, enabled: true, [letter]: true})
+        ContentScript.togglePluginListener({...defaultJapanesifyState, enabled: true, [letter]: false})
 
         expect(convertSpy).toBeCalledTimes(2)
     })
     
-    test('calls convertText if enabled and い checkbox is clicked', () => {
-        ContentScript.togglePluginListener({...defaultJapanesifyState, enabled: true, i: true})
-        ContentScript.togglePluginListener({...defaultJapanesifyState, enabled: true, i: false})
-
-        expect(convertSpy).toBeCalledTimes(2)
-    })
-    
-    test('does not call convert if hiragana character not enabled', () => {
+    test('does not call convert if hiragana character none are selected', () => {
         ContentScript.togglePluginListener({...defaultJapanesifyState, enabled: true})        
         ContentScript.togglePluginListener({...defaultJapanesifyState, enabled: false})
 

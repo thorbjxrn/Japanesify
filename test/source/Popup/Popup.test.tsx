@@ -31,7 +31,7 @@ describe('Popup Component', () => {
         expect(button).toHaveTextContent('disable')
     })
     
-    test('when enable button is pressed it sends message to tab', async () => {
+    test('when enable button is clicked it sends message to tab', async () => {
         render(<Popup/>)
 
         const button = screen.getByTestId('enable-button')
@@ -49,15 +49,20 @@ describe('Popup Component', () => {
         expect(browser.tabs.sendMessage).toBeCalledWith(2, {...defaultJapanesifyState, enabled: false})
     })
     
-    test('when ん checkbox is pressed it sends correct message to tab', async () => {
+    test.each`
+      hiragana | letter
+      ${'ん'}  | ${'n'}
+      ${'あ'}  | ${'a'}
+      ${'い'}  | ${'i'}
+    `('when $hiragana checkbox is pressed it sends correct message to tab', async ({hiragana, letter}) => {
         render(<Popup/>)
 
-        const checkbox = screen.getByTestId('ん-switch')
+        const checkbox = screen.getByTestId(`${hiragana}-switch`)
         
         await act(async () => {
             fireEvent.click(checkbox)
         })
-        expect(browser.tabs.sendMessage).toBeCalledWith(2, {...defaultJapanesifyState, n: true})
+        expect(browser.tabs.sendMessage).toBeCalledWith(2, {...defaultJapanesifyState, [letter]: true})
         
         jest.resetAllMocks()
         querySpy.mockResolvedValueOnce([{id: 2} as Tabs.Tab])
@@ -65,75 +70,18 @@ describe('Popup Component', () => {
         await act(async () => {
             fireEvent.click(checkbox)
         })
-        expect(browser.tabs.sendMessage).toBeCalledWith(2, {...defaultJapanesifyState, n: false})
+        expect(browser.tabs.sendMessage).toBeCalledWith(2, {...defaultJapanesifyState, [letter]: false})
     })
 
-    test('when あ checkbox is pressed it sends correct message to tab', async () => {
+    test.each`
+      hiragana
+      ${'ん'}
+      ${'あ'}
+      ${'い'}
+    `('gets tab id to send the message when $hiragana checkbox is pressed', async ({hiragana}) => {
         render(<Popup/>)
 
-        const checkbox = screen.getByTestId('あ-switch')
-        
-        await act(async () => {
-            fireEvent.click(checkbox)
-        })
-        expect(browser.tabs.sendMessage).toBeCalledWith(2, {...defaultJapanesifyState, a: true})
-        
-        jest.resetAllMocks()
-        querySpy.mockResolvedValueOnce([{id: 2} as Tabs.Tab])
-
-        await act(async () => {
-            fireEvent.click(checkbox)
-        })
-        expect(browser.tabs.sendMessage).toBeCalledWith(2, {...defaultJapanesifyState, a:false})
-    })
-    
-    test('when い checkbox is pressed it sends correct message to tab', async () => {
-        render(<Popup/>)
-
-        const checkbox = screen.getByTestId('い-switch')
-        
-        await act(async () => {
-            fireEvent.click(checkbox)
-        })
-        expect(browser.tabs.sendMessage).toBeCalledWith(2, {...defaultJapanesifyState, i: true})
-        
-        jest.resetAllMocks()
-        querySpy.mockResolvedValueOnce([{id: 2} as Tabs.Tab])
-
-        await act(async () => {
-            fireEvent.click(checkbox)
-        })
-        expect(browser.tabs.sendMessage).toBeCalledWith(2, {...defaultJapanesifyState, i: false})
-    })
-
-    test('gets tab id to send the message when ん checkbox is pressed', async () => {
-        render(<Popup/>)
-
-        const checkbox = screen.getByTestId('ん-switch')
-        
-        await act(async () => {
-            fireEvent.click(checkbox)
-        })
-
-        expect(browser.tabs.query).toBeCalled()
-    })
-
-    test('gets tab id to send the message when あ checkbox is pressed', async () => {
-        render(<Popup/>)
-
-        const checkbox = screen.getByTestId('あ-switch')
-        
-        await act(async () => {
-            fireEvent.click(checkbox)
-        })
-
-        expect(browser.tabs.query).toBeCalled()
-    })
-    
-    test('gets tab id to send the message when い checkbox is pressed', async () => {
-        render(<Popup/>)
-
-        const checkbox = screen.getByTestId('い-switch')
+        const checkbox = screen.getByTestId(`${hiragana}-switch`)
         
         await act(async () => {
             fireEvent.click(checkbox)
@@ -168,10 +116,15 @@ describe('Popup Component', () => {
         expect(state).toEqual({...defaultJapanesifyState, enabled: true})
     })
     
-    test('saves state to local storage when ん checkbox is pressed', async () => {
+    test.each`
+      hiragana | letter
+      ${'ん'}  | ${'n'}
+      ${'あ'}  | ${'a'}
+      ${'い'}  | ${'i'}
+    `('saves state to local storage when $hiragana checkbox is pressed', async ({hiragana, letter}) => {
         render(<Popup/>)
 
-        const checkBox = screen.getByTestId('ん-switch')
+        const checkBox = screen.getByTestId(`${hiragana}-switch`)
         
         await act(async () => {
             fireEvent.click(checkBox)
@@ -179,35 +132,7 @@ describe('Popup Component', () => {
 
         const state = JSON.parse(window.localStorage.getItem(JAPANESIFY_STATE)!)
 
-        expect(state).toEqual({...defaultJapanesifyState, n: true})
-    })
-    
-    test('saves state to local storage when あ checkbox is pressed', async () => {
-        render(<Popup/>)
-
-        const checkBox = screen.getByTestId('あ-switch')
-        
-        await act(async () => {
-            fireEvent.click(checkBox)
-        })
-
-        const state = JSON.parse(window.localStorage.getItem(JAPANESIFY_STATE)!)
-
-        expect(state).toEqual({...defaultJapanesifyState, a: true})
-    })
-    
-    test('saves state to local storage when い checkbox is pressed', async () => {
-        render(<Popup/>)
-
-        const checkBox = screen.getByTestId('い-switch')
-        
-        await act(async () => {
-            fireEvent.click(checkBox)
-        })
-
-        const state = JSON.parse(window.localStorage.getItem(JAPANESIFY_STATE)!)
-
-        expect(state).toEqual({...defaultJapanesifyState, i: true})
+        expect(state).toEqual({...defaultJapanesifyState, [letter]: true})
     })
 
     test('renders button based on localStorage values', async () => {
@@ -217,29 +142,16 @@ describe('Popup Component', () => {
         screen.getByText('disable')
     })
 
-    test('renders ん check box based on localStorage values', async () => {
-        window.localStorage.setItem(JAPANESIFY_STATE, JSON.stringify({...defaultJapanesifyState, n: true}))
+    test.each`
+      hiragana | letter
+      ${'ん'}  | ${'n'}
+      ${'あ'}  | ${'a'}
+      ${'い'}  | ${'i'}
+    `('renders $hiragana check box based on localStorage values', ({hiragana, letter}) => {
+        window.localStorage.setItem(JAPANESIFY_STATE, JSON.stringify({...defaultJapanesifyState, [letter]: true}))
         render(<Popup/>)
 
-        const checkbox = screen.getByTestId('ん-switch')
-
-        expect(checkbox).toBeChecked()
-    })
-    
-    test('renders あ check box based on localStorage values', async () => {
-        window.localStorage.setItem(JAPANESIFY_STATE, JSON.stringify({...defaultJapanesifyState, a: true}))
-        render(<Popup/>)
-
-        const checkbox = screen.getByTestId('あ-switch')
-
-        expect(checkbox).toBeChecked()
-    })
-    
-    test('renders い check box based on localStorage values', async () => {
-        window.localStorage.setItem(JAPANESIFY_STATE, JSON.stringify({...defaultJapanesifyState, i: true}))
-        render(<Popup/>)
-
-        const checkbox = screen.getByTestId('い-switch')
+        const checkbox = screen.getByTestId(`${hiragana}-switch`)
 
         expect(checkbox).toBeChecked()
     })
