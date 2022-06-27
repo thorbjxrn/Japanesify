@@ -356,4 +356,8 @@ describe('Content Script', () => {
 
         expect(document.body.textContent).toContain('.mw-editfont-monospace{font-family:monospace,monospace}')
     })
+
+    //TODO: Add test case 
+    // when the n is enabled and then a vowel is enabled
+    // we are getting んい and it should be に, etc...
 })
