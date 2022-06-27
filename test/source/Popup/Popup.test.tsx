@@ -56,6 +56,7 @@ describe('Popup Component', () => {
       ${'い'}  | ${'i'}
       ${'う'}  | ${'u'}
       ${'え'}  | ${'e'}
+      ${'お'}  | ${'o'}
     `('when $hiragana checkbox is pressed it sends correct message to tab', async ({hiragana, letter}) => {
         render(<Popup/>)
 
@@ -82,6 +83,7 @@ describe('Popup Component', () => {
       ${'い'}
       ${'う'}
       ${'え'}
+      ${'お'}
     `('gets tab id to send the message when $hiragana checkbox is pressed', async ({hiragana}) => {
         render(<Popup/>)
 
@@ -127,6 +129,7 @@ describe('Popup Component', () => {
       ${'い'}  | ${'i'}
       ${'う'}  | ${'u'}
       ${'え'}  | ${'e'}
+      ${'お'}  | ${'o'}
     `('saves state to local storage when $hiragana checkbox is pressed', async ({hiragana, letter}) => {
         render(<Popup/>)
 
@@ -155,6 +158,7 @@ describe('Popup Component', () => {
       ${'い'}  | ${'i'}
       ${'う'}  | ${'u'}
       ${'え'}  | ${'e'}
+      ${'お'}  | ${'o'}
     `('renders $hiragana check box based on localStorage values', ({hiragana, letter}) => {
         window.localStorage.setItem(JAPANESIFY_STATE, JSON.stringify({...defaultJapanesifyState, [letter]: true}))
         render(<Popup/>)

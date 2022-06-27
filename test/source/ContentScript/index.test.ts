@@ -138,7 +138,7 @@ describe('Content Script', () => {
         expect(document.body.textContent).not.toContain(syllable)
         expect(document.body.textContent).toContain(hiragana)
         
-        ContentScript.togglePluginListener({...defaultJapanesifyState, enabled: false, a: true})
+        ContentScript.togglePluginListener({...defaultJapanesifyState, enabled: false, i: true})
         
         expect(document.body.textContent).toContain(syllable)
         expect(document.body.textContent).not.toContain(hiragana)
@@ -188,18 +188,42 @@ describe('Content Script', () => {
         expect(document.body.textContent).toContain(syllable)
         expect(document.body.textContent).not.toContain(hiragana)
     })
+
+    test.each`
+    syllable | hiragana
+    ${'o'}   | ${'お'}
+    ${'ko'}  | ${'こ'}
+    ${'so'}  | ${'そ'}
+    ${'to'}  | ${'と'}
+    ${'no'}  | ${'の'}
+    ${'ho'}  | ${'ほ'}
+    ${'mo'}  | ${'も'}
+    ${'ro'}  | ${'ろ'}
+    ${'yo'}  | ${'よ'}
+    ${'wo'}  | ${'を'}
+    `('converts "$syllable" to "$hiragana" and back if enable button gets toggled', ({syllable, hiragana}) => {
+        document.body.innerHTML = fs.readFileSync(path.join(__dirname, '..', '..', 'fixtures', 'basic.html'), 'utf8')
+
+        ContentScript.togglePluginListener({...defaultJapanesifyState, enabled: true, o: true})
+        expect(document.body.textContent).not.toContain(syllable)
+        expect(document.body.textContent).toContain(hiragana)
+        
+        ContentScript.togglePluginListener({...defaultJapanesifyState, enabled: false, o: true})
+        expect(document.body.textContent).toContain(syllable)
+        expect(document.body.textContent).not.toContain(hiragana)
+    })
     
     test.each`
     syllable | hiragana
     ${'n'}   | ${'ん'} 
-    `('converts hiragana character ん to n if checkbox gets disabled', ({syllable, hiragana}) => {
+    `('converts "$syllable" to "$hiragana" and back if checkbox gets disabled', ({syllable, hiragana}) => {
         document.body.innerHTML = fs.readFileSync(path.join(__dirname, '..', '..', 'fixtures', 'basic.html'), 'utf8')
         
         ContentScript.togglePluginListener({...defaultJapanesifyState, enabled: true, n: true})
         expect(document.body.textContent).not.toContain(syllable)
         expect(document.body.textContent).toContain(hiragana)
         
-        ContentScript.togglePluginListener({...defaultJapanesifyState, enabled: true, n: false})
+        ContentScript.togglePluginListener({...defaultJapanesifyState, enabled: true})
         expect(document.body.textContent).toContain(syllable)
         expect(document.body.textContent).not.toContain(hiragana)
     })
@@ -223,7 +247,7 @@ describe('Content Script', () => {
         expect(document.body.textContent).not.toContain(syllable)
         expect(document.body.textContent).toContain(hiragana)
         
-        ContentScript.togglePluginListener({...defaultJapanesifyState, enabled: true, a: false})
+        ContentScript.togglePluginListener({...defaultJapanesifyState, enabled: true})
         expect(document.body.textContent).not.toContain(hiragana)
         expect(document.body.textContent).toContain(syllable)
     })
@@ -245,7 +269,7 @@ describe('Content Script', () => {
         expect(document.body.textContent).not.toContain(syllable)
         expect(document.body.textContent).toContain(hiragana)
         
-        ContentScript.togglePluginListener({...defaultJapanesifyState, enabled: true, a: false})
+        ContentScript.togglePluginListener({...defaultJapanesifyState, enabled: true})
         expect(document.body.textContent).not.toContain(hiragana)
         expect(document.body.textContent).toContain(syllable)
     })
@@ -268,7 +292,7 @@ describe('Content Script', () => {
         expect(document.body.textContent).not.toContain(syllable)
         expect(document.body.textContent).toContain(hiragana)
         
-        ContentScript.togglePluginListener({...defaultJapanesifyState, enabled: true, u: false})
+        ContentScript.togglePluginListener({...defaultJapanesifyState, enabled: true})
         expect(document.body.textContent).not.toContain(hiragana)
         expect(document.body.textContent).toContain(syllable)
     })
@@ -290,7 +314,31 @@ describe('Content Script', () => {
         expect(document.body.textContent).not.toContain(syllable)
         expect(document.body.textContent).toContain(hiragana)
         
-        ContentScript.togglePluginListener({...defaultJapanesifyState, enabled: true, e: false})
+        ContentScript.togglePluginListener({...defaultJapanesifyState, enabled: true})
+        expect(document.body.textContent).not.toContain(hiragana)
+        expect(document.body.textContent).toContain(syllable)
+    })
+    
+    test.each`
+    syllable | hiragana
+    ${'o'}   | ${'お'}
+    ${'ko'}  | ${'こ'}
+    ${'so'}  | ${'そ'}
+    ${'to'}  | ${'と'}
+    ${'no'}  | ${'の'}
+    ${'ho'}  | ${'ほ'}
+    ${'mo'}  | ${'も'}
+    ${'ro'}  | ${'ろ'}
+    ${'yo'}  | ${'よ'}
+    ${'wo'}  | ${'を'}
+    `('converts "$syllable" to "$hiragana" and back if a checkbox gets toggled', ({syllable, hiragana}) => {
+        document.body.innerHTML = fs.readFileSync(path.join(__dirname, '..', '..', 'fixtures', 'basic.html'), 'utf8')
+
+        ContentScript.togglePluginListener({...defaultJapanesifyState, enabled: true, o: true})
+        expect(document.body.textContent).not.toContain(syllable)
+        expect(document.body.textContent).toContain(hiragana)
+        
+        ContentScript.togglePluginListener({...defaultJapanesifyState, enabled: true})
         expect(document.body.textContent).not.toContain(hiragana)
         expect(document.body.textContent).toContain(syllable)
     })
