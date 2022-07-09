@@ -1,5 +1,5 @@
 import {browser} from 'webextension-polyfill-ts';
-import {hiraganaMaps, defaultJapanesifyState} from '../utils/constants';
+import {getHiraganaMaps, defaultJapanesifyState} from '../utils/constants';
 import {JapanesifyState} from '../utils/types';
 
 let previousState = defaultJapanesifyState;
@@ -19,19 +19,20 @@ const canCovertText = (state: JapanesifyState): boolean => {
 
 export const convertText = (node: Node, state: JapanesifyState): void => {
   const substitutions = new Map<RegExp, string>();
+  const hiraMap = getHiraganaMaps(state);
 
   // Make a list of characters to substitute
   Object.entries(state).forEach(([k, value]) => {
     if (k !== 'enabled') {
-      const key = k as keyof typeof hiraganaMaps;
+      const key = k as keyof typeof hiraMap;
       if (value) {
-        hiraganaMaps[key].forEach((replace, find) => {
+        hiraMap[key].forEach((replace, find) => {
           substitutions.set(new RegExp(find, 'gi'), replace);
         });
       }
 
       if (!value || !state.enabled) {
-        hiraganaMaps[key].forEach((find, replace) => {
+        hiraMap[key].forEach((find, replace) => {
           substitutions.set(new RegExp(find, 'gi'), replace);
         });
       }

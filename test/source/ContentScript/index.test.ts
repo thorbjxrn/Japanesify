@@ -59,19 +59,6 @@ describe('Content Script', () => {
         expect(convertSpy).not.toBeCalled()
     })
     
-    // TODO: are these tests useful?
-    test.each`
-      hiragana | letter
-      ${'ん'}  | ${'n'}  
-      ${'あ'}  | ${'a'}  
-      ${'い'}  | ${'i'}  
-    `('calls convertText if enabled and $hiragana is clicked', ({letter}) => {
-        ContentScript.togglePluginListener({...defaultJapanesifyState, enabled: true, [letter]: true})
-        ContentScript.togglePluginListener({...defaultJapanesifyState, enabled: true, [letter]: false})
-
-        expect(convertSpy).toBeCalledTimes(2)
-    })
-    
     test('does not call convert if hiragana character none are selected', () => {
         ContentScript.togglePluginListener({...defaultJapanesifyState, enabled: true})        
         ContentScript.togglePluginListener({...defaultJapanesifyState, enabled: false})
@@ -357,7 +344,47 @@ describe('Content Script', () => {
         expect(document.body.textContent).toContain('.mw-editfont-monospace{font-family:monospace,monospace}')
     })
 
-    //TODO: Add test case 
-    // when the n is enabled and then a vowel is enabled
-    // we are getting んい and it should be に, etc...
+    test.each`
+    vowel  | hira    | hiraComb | hiraRoma
+    ${"i"} | ${"に"} | ${"んい"} | ${"んi"}
+    ${"a"} | ${"な"} | ${"んあ"} | ${"んa"}
+    ${"u"} | ${"ぬ"} | ${"んう"} | ${"んu"}
+    ${"e"} | ${"ね"} | ${"んえ"} | ${"んe"}
+    ${"o"} | ${"の"} | ${"んお"} | ${"んo"}
+    `('Should convert "$hiraRoma" to "$hira"', ({hira, hiraComb, hiraRoma, vowel}) => {
+        document.body.innerHTML = fs.readFileSync(path.join(__dirname, '..', '..', 'fixtures', 'basic.html'), 'utf8')
+
+        ContentScript.togglePluginListener({...defaultJapanesifyState, enabled: true, n: true,
+            [vowel]: true})
+
+        expect(document.body.textContent).not.toContain(hiraComb)
+        expect(document.body.textContent).toContain(hira)
+
+        ContentScript.togglePluginListener({...defaultJapanesifyState, enabled: true, n: true})
+
+        expect(document.body.textContent).not.toContain(hira)
+        expect(document.body.textContent).toContain(hiraRoma)
+    })
+    
+    test.each `
+    vowel  | hira    | hiraComb | roma
+    ${"i"} | ${"に"} | ${"んい"} | ${"ni"}
+    ${"a"} | ${"な"} | ${"んあ"} | ${"na"}
+    ${"u"} | ${"ぬ"} | ${"んう"} | ${"nu"}
+    ${"e"} | ${"ね"} | ${"んえ"} | ${"ne"}
+    ${"o"} | ${"の"} | ${"んお"} | ${"no"}
+    `('Should convert "$hira" to "$roma" when n and $vowel enabled and plugin gets disabled', ({hira, hiraComb, roma, vowel}) => {
+        document.body.innerHTML = fs.readFileSync(path.join(__dirname, '..', '..', 'fixtures', 'basic.html'), 'utf8')
+
+        ContentScript.togglePluginListener({...defaultJapanesifyState, enabled: true, n: true,
+            [vowel]: true})
+
+        expect(document.body.textContent).not.toContain(hiraComb)
+        expect(document.body.textContent).toContain(hira)
+
+        ContentScript.togglePluginListener({...defaultJapanesifyState, n: true, [vowel]: true})
+
+        expect(document.body.textContent).not.toContain(hira)
+        expect(document.body.textContent).toContain(roma)
+    })
 })
