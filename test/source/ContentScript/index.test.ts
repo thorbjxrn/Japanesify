@@ -72,13 +72,14 @@ describe('Content Script', () => {
     `('converts "$syllable" to "$hiragana" and back if enable button gets toggled', ({syllable, hiragana}) => {
         document.body.innerHTML = fs.readFileSync(path.join(__dirname, '..', '..', 'fixtures', 'basic.html'), 'utf8')
 
+        const original = document.body.textContent
+
         ContentScript.togglePluginListener({...defaultJapanesifyState, enabled: true, n: true})
         expect(document.body.textContent).toContain(hiragana)
         expect(document.body.textContent).not.toContain(syllable)
         
         ContentScript.togglePluginListener({...defaultJapanesifyState, enabled: false, n: true})
-        expect(document.body.textContent).not.toContain(hiragana)
-        expect(document.body.textContent).toContain(syllable)
+        expect(document.body.textContent).toStrictEqual(original)
     })
 
     test.each`
@@ -95,6 +96,8 @@ describe('Content Script', () => {
     ${'a'}   | ${'あ'}
     `('converts "$syllable" to "$hiragana" and back if enable button gets toggled', ({syllable, hiragana}) => {
         document.body.innerHTML = fs.readFileSync(path.join(__dirname, '..', '..', 'fixtures', 'basic.html'), 'utf8')
+
+        const original = document.body.textContent
 
         ContentScript.togglePluginListener({...defaultJapanesifyState, enabled: true, a: true})
         
@@ -102,9 +105,7 @@ describe('Content Script', () => {
         expect(document.body.textContent).not.toContain(syllable)
         
         ContentScript.togglePluginListener({...defaultJapanesifyState, enabled: false, a: true})
-        
-        expect(document.body.textContent).toContain(syllable)
-        expect(document.body.textContent).not.toContain(hiragana)
+        expect(document.body.textContent).toStrictEqual(original)
     })
     
     test.each`
@@ -120,15 +121,14 @@ describe('Content Script', () => {
     `('converts "$syllable" to "$hiragana" and back if enable button gets toggled', ({syllable, hiragana}) => {
         document.body.innerHTML = fs.readFileSync(path.join(__dirname, '..', '..', 'fixtures', 'basic.html'), 'utf8')
 
+        const original = document.body.textContent
+
         ContentScript.togglePluginListener({...defaultJapanesifyState, enabled: true, i: true})
-        
         expect(document.body.textContent).not.toContain(syllable)
         expect(document.body.textContent).toContain(hiragana)
         
         ContentScript.togglePluginListener({...defaultJapanesifyState, enabled: false, i: true})
-        
-        expect(document.body.textContent).toContain(syllable)
-        expect(document.body.textContent).not.toContain(hiragana)
+        expect(document.body.textContent).toStrictEqual(original)
     })
     
     test.each`
@@ -145,13 +145,14 @@ describe('Content Script', () => {
     `('converts "$syllable" to "$hiragana" and back if enable button gets toggled', ({syllable, hiragana}) => {
         document.body.innerHTML = fs.readFileSync(path.join(__dirname, '..', '..', 'fixtures', 'basic.html'), 'utf8')
 
+        const original = document.body.textContent
+
         ContentScript.togglePluginListener({...defaultJapanesifyState, enabled: true, u: true})
         expect(document.body.textContent).not.toContain(syllable)
         expect(document.body.textContent).toContain(hiragana)
         
         ContentScript.togglePluginListener({...defaultJapanesifyState, enabled: false, u: true})
-        expect(document.body.textContent).toContain(syllable)
-        expect(document.body.textContent).not.toContain(hiragana)
+        expect(document.body.textContent).toStrictEqual(original)
     })
     
     test.each`
@@ -167,13 +168,14 @@ describe('Content Script', () => {
     `('converts "$syllable" to "$hiragana" and back if enable button gets toggled', ({syllable, hiragana}) => {
         document.body.innerHTML = fs.readFileSync(path.join(__dirname, '..', '..', 'fixtures', 'basic.html'), 'utf8')
 
+        const original = document.body.textContent
+
         ContentScript.togglePluginListener({...defaultJapanesifyState, enabled: true, e: true})
         expect(document.body.textContent).not.toContain(syllable)
         expect(document.body.textContent).toContain(hiragana)
         
         ContentScript.togglePluginListener({...defaultJapanesifyState, enabled: false, e: true})
-        expect(document.body.textContent).toContain(syllable)
-        expect(document.body.textContent).not.toContain(hiragana)
+        expect(document.body.textContent).toStrictEqual(original)
     })
 
     test.each`
@@ -191,28 +193,30 @@ describe('Content Script', () => {
     `('converts "$syllable" to "$hiragana" and back if enable button gets toggled', ({syllable, hiragana}) => {
         document.body.innerHTML = fs.readFileSync(path.join(__dirname, '..', '..', 'fixtures', 'basic.html'), 'utf8')
 
+        const original = document.body.textContent
+
         ContentScript.togglePluginListener({...defaultJapanesifyState, enabled: true, o: true})
         expect(document.body.textContent).not.toContain(syllable)
         expect(document.body.textContent).toContain(hiragana)
         
         ContentScript.togglePluginListener({...defaultJapanesifyState, enabled: false, o: true})
-        expect(document.body.textContent).toContain(syllable)
-        expect(document.body.textContent).not.toContain(hiragana)
+        expect(document.body.textContent).toStrictEqual(original)
     })
     
     test.each`
     syllable | hiragana
     ${'n'}   | ${'ん'} 
-    `('converts "$syllable" to "$hiragana" and back if checkbox gets disabled', ({syllable, hiragana}) => {
+    `('converts "$syllable" to "$hiragana" and back if n checkbox gets toggled', ({syllable, hiragana}) => {
         document.body.innerHTML = fs.readFileSync(path.join(__dirname, '..', '..', 'fixtures', 'basic.html'), 'utf8')
+
+        const original = document.body.textContent
         
         ContentScript.togglePluginListener({...defaultJapanesifyState, enabled: true, n: true})
         expect(document.body.textContent).not.toContain(syllable)
         expect(document.body.textContent).toContain(hiragana)
         
         ContentScript.togglePluginListener({...defaultJapanesifyState, enabled: true})
-        expect(document.body.textContent).toContain(syllable)
-        expect(document.body.textContent).not.toContain(hiragana)
+        expect(document.body.textContent).toStrictEqual(original)
     })
     
     test.each`
@@ -230,13 +234,14 @@ describe('Content Script', () => {
     `('converts "$syllable" to "$hiragana" and back if a checkbox gets toggled', ({syllable, hiragana}) => {
         document.body.innerHTML = fs.readFileSync(path.join(__dirname, '..', '..', 'fixtures', 'basic.html'), 'utf8')
 
+        const original = document.body.textContent
+
         ContentScript.togglePluginListener({...defaultJapanesifyState, enabled: true, a: true})
         expect(document.body.textContent).not.toContain(syllable)
         expect(document.body.textContent).toContain(hiragana)
         
         ContentScript.togglePluginListener({...defaultJapanesifyState, enabled: true})
-        expect(document.body.textContent).not.toContain(hiragana)
-        expect(document.body.textContent).toContain(syllable)
+        expect(document.body.textContent).toStrictEqual(original)
     })
     
     test.each`
@@ -252,13 +257,14 @@ describe('Content Script', () => {
     `('converts "$syllable" to "$hiragana" and back if a checkbox gets toggled', ({syllable, hiragana}) => {
         document.body.innerHTML = fs.readFileSync(path.join(__dirname, '..', '..', 'fixtures', 'basic.html'), 'utf8')
 
+        const original = document.body.textContent
+
         ContentScript.togglePluginListener({...defaultJapanesifyState, enabled: true, i: true})
         expect(document.body.textContent).not.toContain(syllable)
         expect(document.body.textContent).toContain(hiragana)
         
         ContentScript.togglePluginListener({...defaultJapanesifyState, enabled: true})
-        expect(document.body.textContent).not.toContain(hiragana)
-        expect(document.body.textContent).toContain(syllable)
+        expect(document.body.textContent).toStrictEqual(original)
     })
     
     test.each`
@@ -275,13 +281,14 @@ describe('Content Script', () => {
     `('converts "$syllable" to "$hiragana" and back if a checkbox gets toggled', ({syllable, hiragana}) => {
         document.body.innerHTML = fs.readFileSync(path.join(__dirname, '..', '..', 'fixtures', 'basic.html'), 'utf8')
 
+        const original = document.body.textContent
+
         ContentScript.togglePluginListener({...defaultJapanesifyState, enabled: true, u: true})
         expect(document.body.textContent).not.toContain(syllable)
         expect(document.body.textContent).toContain(hiragana)
         
         ContentScript.togglePluginListener({...defaultJapanesifyState, enabled: true})
-        expect(document.body.textContent).not.toContain(hiragana)
-        expect(document.body.textContent).toContain(syllable)
+        expect(document.body.textContent).toStrictEqual(original)
     })
     
     test.each`
@@ -297,13 +304,14 @@ describe('Content Script', () => {
     `('converts "$syllable" to "$hiragana" and back if a checkbox gets toggled', ({syllable, hiragana}) => {
         document.body.innerHTML = fs.readFileSync(path.join(__dirname, '..', '..', 'fixtures', 'basic.html'), 'utf8')
 
+        const original = document.body.textContent
+
         ContentScript.togglePluginListener({...defaultJapanesifyState, enabled: true, e: true})
         expect(document.body.textContent).not.toContain(syllable)
         expect(document.body.textContent).toContain(hiragana)
         
         ContentScript.togglePluginListener({...defaultJapanesifyState, enabled: true})
-        expect(document.body.textContent).not.toContain(hiragana)
-        expect(document.body.textContent).toContain(syllable)
+        expect(document.body.textContent).toStrictEqual(original)
     })
     
     test.each`
@@ -321,13 +329,14 @@ describe('Content Script', () => {
     `('converts "$syllable" to "$hiragana" and back if a checkbox gets toggled', ({syllable, hiragana}) => {
         document.body.innerHTML = fs.readFileSync(path.join(__dirname, '..', '..', 'fixtures', 'basic.html'), 'utf8')
 
+        const original = document.body.textContent
+
         ContentScript.togglePluginListener({...defaultJapanesifyState, enabled: true, o: true})
         expect(document.body.textContent).not.toContain(syllable)
         expect(document.body.textContent).toContain(hiragana)
         
         ContentScript.togglePluginListener({...defaultJapanesifyState, enabled: true})
-        expect(document.body.textContent).not.toContain(hiragana)
-        expect(document.body.textContent).toContain(syllable)
+        expect(document.body.textContent).toStrictEqual(original)
     })
 
     test('Should not convert script tag contents', () => {
@@ -356,12 +365,10 @@ describe('Content Script', () => {
 
         ContentScript.togglePluginListener({...defaultJapanesifyState, enabled: true, n: true,
             [vowel]: true})
-
         expect(document.body.textContent).not.toContain(hiraComb)
         expect(document.body.textContent).toContain(hira)
 
         ContentScript.togglePluginListener({...defaultJapanesifyState, enabled: true, n: true})
-
         expect(document.body.textContent).not.toContain(hira)
         expect(document.body.textContent).toContain(hiraRoma)
     })
@@ -373,18 +380,49 @@ describe('Content Script', () => {
     ${"u"} | ${"ぬ"} | ${"んう"} | ${"nu"}
     ${"e"} | ${"ね"} | ${"んえ"} | ${"ne"}
     ${"o"} | ${"の"} | ${"んお"} | ${"no"}
-    `('Should convert "$hira" to "$roma" when n and $vowel enabled and plugin gets disabled', ({hira, hiraComb, roma, vowel}) => {
+    `('Should convert "$hira" to "$roma" when n and $vowel enabled and plugin gets disabled', ({hira, hiraComb, vowel}) => {
         document.body.innerHTML = fs.readFileSync(path.join(__dirname, '..', '..', 'fixtures', 'basic.html'), 'utf8')
+
+        const original = document.body.textContent
 
         ContentScript.togglePluginListener({...defaultJapanesifyState, enabled: true, n: true,
             [vowel]: true})
-
         expect(document.body.textContent).not.toContain(hiraComb)
         expect(document.body.textContent).toContain(hira)
 
         ContentScript.togglePluginListener({...defaultJapanesifyState, n: true, [vowel]: true})
+        expect(document.body.textContent).toStrictEqual(original)
+    })
 
-        expect(document.body.textContent).not.toContain(hira)
-        expect(document.body.textContent).toContain(roma)
+    test('Should convert pa to ぱ and back if enable button gets toggled', () => {
+        document.body.innerHTML = fs.readFileSync(path.join(__dirname, '..', '..', 'fixtures', 'basic.html'), 'utf8')
+
+        ContentScript.togglePluginListener({...defaultJapanesifyState, enabled: true, a: true, han: true})
+        expect(document.body.textContent).not.toContain('pa')
+        expect(document.body.textContent).toContain('ぱ')
+        
+        ContentScript.togglePluginListener({...defaultJapanesifyState, a:true, han: true})
+        expect(document.body.textContent).toContain('pa')
+        expect(document.body.textContent).not.toContain('ぱ')
+    })
+
+    test('Should not convert pa to ぱ if a is not enabled', () => {
+        document.body.innerHTML = fs.readFileSync(path.join(__dirname, '..', '..', 'fixtures', 'basic.html'), 'utf8')
+
+        ContentScript.togglePluginListener({...defaultJapanesifyState, enabled: true, han: true})
+        expect(document.body.textContent).toContain('pa')
+        expect(document.body.textContent).not.toContain('ぱ')
+    })
+
+    test('Should convert ぱ to pa if a gets disabled', () => {
+        document.body.innerHTML = fs.readFileSync(path.join(__dirname, '..', '..', 'fixtures', 'basic.html'), 'utf8')
+
+        ContentScript.togglePluginListener({...defaultJapanesifyState, enabled: true, a:true, han: true})
+        expect(document.body.textContent).not.toContain('pa')
+        expect(document.body.textContent).toContain('ぱ')
+
+        ContentScript.togglePluginListener({...defaultJapanesifyState, enabled: true, han: true})
+        expect(document.body.textContent).toContain('pa')
+        expect(document.body.textContent).not.toContain('ぱ')
     })
 })

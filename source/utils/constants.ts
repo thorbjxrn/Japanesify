@@ -1,6 +1,6 @@
 import {JapanesifyState} from './types';
 
-export const getHiraganaMaps = (state: JapanesifyState) => {
+export const getHiraganaMaps = (state: JapanesifyState, previousState: JapanesifyState) => {
   return {
     n: new Map([['n', 'ん']]),
     a: new Map([
@@ -59,6 +59,9 @@ export const getHiraganaMaps = (state: JapanesifyState) => {
       ['ko', 'こ'],
       ['o', 'お'],
     ]),
+    han:new Map([
+      state.a ? state.enabled ? ['pあ', 'ぱ'] : ['pa', 'ぱ'] : previousState.a && previousState.han ? ['ぱ', 'pa'] : ['', '']
+    ]) 
   };
 };
 
@@ -70,6 +73,7 @@ export const defaultJapanesifyState: JapanesifyState = {
   u: false,
   e: false,
   o: false,
+  han: false,
 };
 
 export const JAPANESIFY_STATE = 'JapanesifyState';

@@ -6,4 +6,5 @@ export type JapanesifyState = {
   u: boolean;
   e: boolean;
   o: boolean;
+  han: boolean;
 };

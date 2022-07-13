@@ -19,7 +19,7 @@ const canCovertText = (state: JapanesifyState): boolean => {
 
 export const convertText = (node: Node, state: JapanesifyState): void => {
   const substitutions = new Map<RegExp, string>();
-  const hiraMap = getHiraganaMaps(state);
+  const hiraMap = getHiraganaMaps(state, previousState);
 
   // Make a list of characters to substitute
   Object.entries(state).forEach(([k, value]) => {
