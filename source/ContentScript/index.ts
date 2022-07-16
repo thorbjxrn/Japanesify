@@ -27,13 +27,18 @@ export const convertText = (node: Node, state: JapanesifyState): void => {
       const key = k as keyof typeof hiraMap;
       if (value) {
         hiraMap[key].forEach((replace, find) => {
-          substitutions.set(new RegExp(find, 'gi'), replace);
+          if(find && replace) {
+            substitutions.set(new RegExp(find, 'gi'), replace);
+          }
         });
       }
 
-      if (!value || !state.enabled) {
+      //TODO: add tests for the previousState parts
+      if ((previousState[key] && !value) || (previousState.enabled && !state.enabled)) {
         hiraMap[key].forEach((find, replace) => {
-          substitutions.set(new RegExp(find, 'gi'), replace);
+          if(find && replace) {
+            substitutions.set(new RegExp(find, 'gi'), replace);
+          }
         });
       }
     }
