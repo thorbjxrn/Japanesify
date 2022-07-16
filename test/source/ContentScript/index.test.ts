@@ -1,8 +1,7 @@
 import { browser } from 'webextension-polyfill-ts'
-import path from 'path'
-import * as fs from 'fs';
 import * as ContentScript from '../../../source/ContentScript/index'
 import { defaultJapanesifyState } from '../../../source/utils/constants';
+import { basic, excludedElements } from '../../fixtures/html';
 
 describe('Content Script', () => {
     const convertText = ContentScript.convertText
@@ -26,13 +25,13 @@ describe('Content Script', () => {
     })
 
     test('executes convertText when new nodes get added', async () => {
-        document.body.innerHTML = fs.readFileSync(path.join(__dirname, '..', '..', 'fixtures', 'basic.html'), 'utf8')
+        document.body.innerHTML = basic
         
         ContentScript.togglePluginListener({...defaultJapanesifyState, enabled: true, n: true})
         
-        // Since convertText is called recursively it has 7 executions by the time
+        // Since convertText is called recursively it has 6 executions by the time
         // this expect ie reached.
-        expect(convertSpy).toBeCalledTimes(7)
+        expect(convertSpy).toBeCalledTimes(6)
         
         const newDiv = document.createElement("div");
         newDiv.textContent = "Sample text to convert to Japanese"
@@ -42,11 +41,11 @@ describe('Content Script', () => {
         
         // convertText is executed 2 more times once for the div
         // another for the text node.
-        expect(convertSpy).toBeCalledTimes(9)
+        expect(convertSpy).toBeCalledTimes(8)
     })
 
     test('does Not converts roman character n to hiragana ん if not enabled', () => {
-        document.body.innerHTML = fs.readFileSync(path.join(__dirname, '..', '..', 'fixtures', 'basic.html'), 'utf8')
+        document.body.innerHTML = basic
         ContentScript.togglePluginListener({...defaultJapanesifyState, enabled: false, n: true})
 
         expect(document.body.textContent).toContain('n')
@@ -70,7 +69,7 @@ describe('Content Script', () => {
     syllable | hiragana
     ${'n'}   | ${'ん'} 
     `('converts "$syllable" to "$hiragana" and back if enable button gets toggled', ({syllable, hiragana}) => {
-        document.body.innerHTML = fs.readFileSync(path.join(__dirname, '..', '..', 'fixtures', 'basic.html'), 'utf8')
+        document.body.innerHTML = basic
 
         const original = document.body.textContent
 
@@ -95,7 +94,7 @@ describe('Content Script', () => {
     ${'ka'}  | ${'か'}
     ${'a'}   | ${'あ'}
     `('converts "$syllable" to "$hiragana" and back if enable button gets toggled', ({syllable, hiragana}) => {
-        document.body.innerHTML = fs.readFileSync(path.join(__dirname, '..', '..', 'fixtures', 'basic.html'), 'utf8')
+        document.body.innerHTML = basic
 
         const original = document.body.textContent
 
@@ -119,7 +118,7 @@ describe('Content Script', () => {
     ${'ki'}  | ${'き'}
     ${'i'}   | ${'い'}
     `('converts "$syllable" to "$hiragana" and back if enable button gets toggled', ({syllable, hiragana}) => {
-        document.body.innerHTML = fs.readFileSync(path.join(__dirname, '..', '..', 'fixtures', 'basic.html'), 'utf8')
+        document.body.innerHTML = basic
 
         const original = document.body.textContent
 
@@ -143,7 +142,7 @@ describe('Content Script', () => {
     ${'ku'}  | ${'く'}
     ${'u'}   | ${'う'}
     `('converts "$syllable" to "$hiragana" and back if enable button gets toggled', ({syllable, hiragana}) => {
-        document.body.innerHTML = fs.readFileSync(path.join(__dirname, '..', '..', 'fixtures', 'basic.html'), 'utf8')
+        document.body.innerHTML = basic
 
         const original = document.body.textContent
 
@@ -166,7 +165,7 @@ describe('Content Script', () => {
     ${'ke'}  | ${'け'}
     ${'e'}   | ${'え'}
     `('converts "$syllable" to "$hiragana" and back if enable button gets toggled', ({syllable, hiragana}) => {
-        document.body.innerHTML = fs.readFileSync(path.join(__dirname, '..', '..', 'fixtures', 'basic.html'), 'utf8')
+        document.body.innerHTML = basic
 
         const original = document.body.textContent
 
@@ -191,7 +190,7 @@ describe('Content Script', () => {
     ${'yo'}  | ${'よ'}
     ${'wo'}  | ${'を'}
     `('converts "$syllable" to "$hiragana" and back if enable button gets toggled', ({syllable, hiragana}) => {
-        document.body.innerHTML = fs.readFileSync(path.join(__dirname, '..', '..', 'fixtures', 'basic.html'), 'utf8')
+        document.body.innerHTML = basic
 
         const original = document.body.textContent
 
@@ -207,7 +206,7 @@ describe('Content Script', () => {
     syllable | hiragana
     ${'n'}   | ${'ん'} 
     `('converts "$syllable" to "$hiragana" and back if n checkbox gets toggled', ({syllable, hiragana}) => {
-        document.body.innerHTML = fs.readFileSync(path.join(__dirname, '..', '..', 'fixtures', 'basic.html'), 'utf8')
+        document.body.innerHTML = basic
 
         const original = document.body.textContent
         
@@ -232,7 +231,7 @@ describe('Content Script', () => {
     ${'ka'}  | ${'か'}
     ${'a'}   | ${'あ'}
     `('converts "$syllable" to "$hiragana" and back if a checkbox gets toggled', ({syllable, hiragana}) => {
-        document.body.innerHTML = fs.readFileSync(path.join(__dirname, '..', '..', 'fixtures', 'basic.html'), 'utf8')
+        document.body.innerHTML = basic
 
         const original = document.body.textContent
 
@@ -255,7 +254,7 @@ describe('Content Script', () => {
     ${'ki'}  | ${'き'}
     ${'i'}   | ${'い'}
     `('converts "$syllable" to "$hiragana" and back if a checkbox gets toggled', ({syllable, hiragana}) => {
-        document.body.innerHTML = fs.readFileSync(path.join(__dirname, '..', '..', 'fixtures', 'basic.html'), 'utf8')
+        document.body.innerHTML = basic
 
         const original = document.body.textContent
 
@@ -279,7 +278,7 @@ describe('Content Script', () => {
     ${'ku'}  | ${'く'}
     ${'u'}   | ${'う'}
     `('converts "$syllable" to "$hiragana" and back if a checkbox gets toggled', ({syllable, hiragana}) => {
-        document.body.innerHTML = fs.readFileSync(path.join(__dirname, '..', '..', 'fixtures', 'basic.html'), 'utf8')
+        document.body.innerHTML = basic
 
         const original = document.body.textContent
 
@@ -302,7 +301,7 @@ describe('Content Script', () => {
     ${'ke'}  | ${'け'}
     ${'e'}   | ${'え'}
     `('converts "$syllable" to "$hiragana" and back if a checkbox gets toggled', ({syllable, hiragana}) => {
-        document.body.innerHTML = fs.readFileSync(path.join(__dirname, '..', '..', 'fixtures', 'basic.html'), 'utf8')
+        document.body.innerHTML = basic
 
         const original = document.body.textContent
 
@@ -327,7 +326,7 @@ describe('Content Script', () => {
     ${'yo'}  | ${'よ'}
     ${'wo'}  | ${'を'}
     `('converts "$syllable" to "$hiragana" and back if a checkbox gets toggled', ({syllable, hiragana}) => {
-        document.body.innerHTML = fs.readFileSync(path.join(__dirname, '..', '..', 'fixtures', 'basic.html'), 'utf8')
+        document.body.innerHTML = basic
 
         const original = document.body.textContent
 
@@ -340,14 +339,14 @@ describe('Content Script', () => {
     })
 
     test('Should not convert script tag contents', () => {
-        document.body.innerHTML = fs.readFileSync(path.join(__dirname, '..', '..', 'fixtures', 'excludedElements.html'), 'utf8')
+        document.body.innerHTML = excludedElements
         ContentScript.togglePluginListener({...defaultJapanesifyState, enabled: true, n: true})
 
         expect(document.body.textContent).toContain('[].push(\'text with an n\');')
     })
 
     test('Should not convert style tag contents', () => {
-        document.body.innerHTML = fs.readFileSync(path.join(__dirname, '..', '..', 'fixtures', 'excludedElements.html'), 'utf8')
+        document.body.innerHTML = excludedElements
         ContentScript.togglePluginListener({...defaultJapanesifyState, enabled: true, n: true})
 
         expect(document.body.textContent).toContain('.mw-editfont-monospace{font-family:monospace,monospace}')
@@ -361,7 +360,7 @@ describe('Content Script', () => {
     ${"e"} | ${"ね"} | ${"んえ"} | ${"んe"}
     ${"o"} | ${"の"} | ${"んお"} | ${"んo"}
     `('Should convert "$hiraRoma" to "$hira"', ({hira, hiraComb, hiraRoma, vowel}) => {
-        document.body.innerHTML = fs.readFileSync(path.join(__dirname, '..', '..', 'fixtures', 'basic.html'), 'utf8')
+        document.body.innerHTML = basic
 
         ContentScript.togglePluginListener({...defaultJapanesifyState, enabled: true, n: true,
             [vowel]: true})
@@ -381,7 +380,7 @@ describe('Content Script', () => {
     ${"e"} | ${"ね"} | ${"んえ"} | ${"ne"}
     ${"o"} | ${"の"} | ${"んお"} | ${"no"}
     `('Should convert "$hira" to "$roma" when n and $vowel enabled and plugin gets disabled', ({hira, hiraComb, vowel}) => {
-        document.body.innerHTML = fs.readFileSync(path.join(__dirname, '..', '..', 'fixtures', 'basic.html'), 'utf8')
+        document.body.innerHTML = basic
 
         const original = document.body.textContent
 
@@ -402,7 +401,7 @@ describe('Content Script', () => {
     ${"e"} | ${"pe"} | ${"ぺ"}
     ${"o"} | ${"po"} | ${"ぽ"}
     `('Should convert "$roma" to "$hira" and back if enable button gets toggled', ({hira, roma, vowel}) => {
-        document.body.innerHTML = fs.readFileSync(path.join(__dirname, '..', '..', 'fixtures', 'basic.html'), 'utf8')
+        document.body.innerHTML = basic
 
         const original = document.body.textContent
 
@@ -423,7 +422,7 @@ describe('Content Script', () => {
     ${"e"} | ${"pe"} | ${"ぺ"}
     ${"o"} | ${"po"} | ${"ぽ"}
     `('Should not convert "$roma" to "$hira" if $vowel is not enabled', () => {
-        document.body.innerHTML = fs.readFileSync(path.join(__dirname, '..', '..', 'fixtures', 'basic.html'), 'utf8')
+        document.body.innerHTML = basic
 
         const original = document.body.textContent
 
@@ -439,7 +438,7 @@ describe('Content Script', () => {
     ${"e"} | ${"pe"} | ${"ぺ"}
     ${"o"} | ${"po"} | ${"ぽ"}
     `('Should convert "$hira" to "$roma" if "$vowel" gets disabled', ({hira, roma, vowel}) => {
-        document.body.innerHTML = fs.readFileSync(path.join(__dirname, '..', '..', 'fixtures', 'basic.html'), 'utf8')
+        document.body.innerHTML = basic
 
         const original = document.body.textContent
 
