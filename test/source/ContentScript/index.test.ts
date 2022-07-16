@@ -394,35 +394,60 @@ describe('Content Script', () => {
         expect(document.body.textContent).toStrictEqual(original)
     })
 
-    test('Should convert pa to ぱ and back if enable button gets toggled', () => {
+    test.each`
+    vowel  | roma    | hira  
+    ${"a"} | ${"pa"} | ${"ぱ"}
+    ${"i"} | ${"pi"} | ${"ぴ"}
+    ${"u"} | ${"pu"} | ${"ぷ"}
+    ${"e"} | ${"pe"} | ${"ぺ"}
+    ${"o"} | ${"po"} | ${"ぽ"}
+    `('Should convert "$roma" to "$hira" and back if enable button gets toggled', ({hira, roma, vowel}) => {
         document.body.innerHTML = fs.readFileSync(path.join(__dirname, '..', '..', 'fixtures', 'basic.html'), 'utf8')
 
-        ContentScript.togglePluginListener({...defaultJapanesifyState, enabled: true, a: true, han: true})
-        expect(document.body.textContent).not.toContain('pa')
-        expect(document.body.textContent).toContain('ぱ')
+        const original = document.body.textContent
+
+        ContentScript.togglePluginListener({...defaultJapanesifyState, enabled: true, [vowel]: true, han: true})
+        expect(document.body.textContent).not.toContain(roma)
+        expect(document.body.textContent).toContain(hira)
         
-        ContentScript.togglePluginListener({...defaultJapanesifyState, a:true, han: true})
-        expect(document.body.textContent).toContain('pa')
-        expect(document.body.textContent).not.toContain('ぱ')
+        ContentScript.togglePluginListener({...defaultJapanesifyState, [vowel]:true, han: true})
+        expect(document.body.textContent).toStrictEqual(original)
     })
 
-    test('Should not convert pa to ぱ if a is not enabled', () => {
+    //TODO: Do we really need a .each here?
+    test.each`
+    vowel  | roma    | hira  
+    ${"a"} | ${"pa"} | ${"ぱ"}
+    ${"i"} | ${"pi"} | ${"ぴ"}
+    ${"u"} | ${"pu"} | ${"ぷ"}
+    ${"e"} | ${"pe"} | ${"ぺ"}
+    ${"o"} | ${"po"} | ${"ぽ"}
+    `('Should not convert "$roma" to "$hira" if $vowel is not enabled', () => {
         document.body.innerHTML = fs.readFileSync(path.join(__dirname, '..', '..', 'fixtures', 'basic.html'), 'utf8')
 
+        const original = document.body.textContent
+
         ContentScript.togglePluginListener({...defaultJapanesifyState, enabled: true, han: true})
-        expect(document.body.textContent).toContain('pa')
-        expect(document.body.textContent).not.toContain('ぱ')
+        expect(document.body.textContent).toStrictEqual(original)
     })
 
-    test('Should convert ぱ to pa if a gets disabled', () => {
+    test.each`
+    vowel  | roma    | hira  
+    ${"a"} | ${"pa"} | ${"ぱ"}
+    ${"i"} | ${"pi"} | ${"ぴ"}
+    ${"u"} | ${"pu"} | ${"ぷ"}
+    ${"e"} | ${"pe"} | ${"ぺ"}
+    ${"o"} | ${"po"} | ${"ぽ"}
+    `('Should convert "$hira" to "$roma" if "$vowel" gets disabled', ({hira, roma, vowel}) => {
         document.body.innerHTML = fs.readFileSync(path.join(__dirname, '..', '..', 'fixtures', 'basic.html'), 'utf8')
 
-        ContentScript.togglePluginListener({...defaultJapanesifyState, enabled: true, a:true, han: true})
-        expect(document.body.textContent).not.toContain('pa')
-        expect(document.body.textContent).toContain('ぱ')
+        const original = document.body.textContent
+
+        ContentScript.togglePluginListener({...defaultJapanesifyState, enabled: true, [vowel]:true, han: true})
+        expect(document.body.textContent).not.toContain(roma)
+        expect(document.body.textContent).toContain(hira)
 
         ContentScript.togglePluginListener({...defaultJapanesifyState, enabled: true, han: true})
-        expect(document.body.textContent).toContain('pa')
-        expect(document.body.textContent).not.toContain('ぱ')
+        expect(document.body.textContent).toStrictEqual(original)
     })
 })

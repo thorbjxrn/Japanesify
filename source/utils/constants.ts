@@ -9,7 +9,6 @@ export const getHiraganaMaps = (state: JapanesifyState, previousState: Japanesif
       ['ya', 'や'],
       ['ma', 'ま'],
       ['ha', 'は'],
-      // TODO: can replace 'んa' with '' and nothing fails
       state.enabled && state.n ? ['んa', 'な'] : ['na', 'な'],
       ['ta', 'た'],
       ['sa', 'さ'],
@@ -59,8 +58,12 @@ export const getHiraganaMaps = (state: JapanesifyState, previousState: Japanesif
       ['ko', 'こ'],
       ['o', 'お'],
     ]),
-    han:new Map([
-      state.a ? state.enabled ? ['pあ', 'ぱ'] : ['pa', 'ぱ'] : previousState.a && previousState.han ? ['ぱ', 'pa'] : ['', '']
+    han: new Map([
+      state.a ? state.enabled ? ['pあ', 'ぱ'] : ['pa', 'ぱ'] : previousState.a && previousState.han ? ['ぱ', 'pa'] : ['hmmm', 'hmmm'],
+      state.i ? state.enabled ? ['pい', 'ぴ'] : ['pi', 'ぴ'] : previousState.i && previousState.han ? ['ぴ', 'pi'] : ['hmmm', 'hmmm'],
+      state.u ? state.enabled ? ['pう', 'ぷ'] : ['pu', 'ぷ'] : previousState.u && previousState.han ? ['ぷ', 'pu'] : ['hmmm', 'hmmm'],
+      state.e ? state.enabled ? ['pえ', 'ぺ'] : ['pe', 'ぺ'] : previousState.e && previousState.han ? ['ぺ', 'pe'] : ['hmmm', 'hmmm'],
+      state.o ? state.enabled ? ['pお', 'ぽ'] : ['po', 'ぽ'] : previousState.o && previousState.han ? ['ぽ', 'po'] : ['hmmm', 'hmmm']
     ]) 
   };
 };
