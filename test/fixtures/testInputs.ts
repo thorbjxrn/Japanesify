@@ -1,4 +1,4 @@
-export const hiraRomaN = ['n']
+export const romaN = ['n']
 export const hiraN = ['ん']
 
 export const hiraRomaA = ['wあ', 'yあ', 'rあ', 'mあ', 'hあ', 'nあ', 'tあ', 'sあ', 'kあ', 'a']
@@ -15,3 +15,8 @@ export const hiraE = ['れ', 'め', 'へ', 'ね', 'て', 'せ', 'け', 'え']
 
 export const hiraRomaO = ['o', 'kお', 'sお', 'tお', 'nお', 'hお', 'mお', 'rお', 'yお', 'wお']
 export const hiraO = ['お', 'こ', 'そ', 'と', 'の', 'ほ', 'も', 'ろ', 'よ', 'を']
+
+export const vowels = ["a", "i", "u", "e", "o"]
+
+export const romaP = ["pa", "pi", "pu", "pe", "po"]
+export const hiraP = ["ぱ", "ぴ", "ぷ", "ぺ", "ぽ"]

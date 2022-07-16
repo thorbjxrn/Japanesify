@@ -59,11 +59,11 @@ export const getHiraganaMaps = (state: JapanesifyState, previousState: Japanesif
       ['o', 'お'],
     ]),
     han: new Map([
-      state.a ? state.enabled ? ['pあ', 'ぱ'] : ['pa', 'ぱ'] : previousState.a && previousState.han ? ['ぱ', 'pa'] : ['', ''],
-      state.i ? state.enabled ? ['pい', 'ぴ'] : ['pi', 'ぴ'] : previousState.i && previousState.han ? ['ぴ', 'pi'] : ['', ''],
-      state.u ? state.enabled ? ['pう', 'ぷ'] : ['pu', 'ぷ'] : previousState.u && previousState.han ? ['ぷ', 'pu'] : ['', ''],
-      state.e ? state.enabled ? ['pえ', 'ぺ'] : ['pe', 'ぺ'] : previousState.e && previousState.han ? ['ぺ', 'pe'] : ['', ''],
-      state.o ? state.enabled ? ['pお', 'ぽ'] : ['po', 'ぽ'] : previousState.o && previousState.han ? ['ぽ', 'po'] : ['', '']
+      state.a ? state.enabled ? ['pあ', 'ぱ'] : ['pa', 'ぱ'] : previousState.a ? ['ぱ', 'pa'] : ['', ''],
+      state.i ? state.enabled ? ['pい', 'ぴ'] : ['pi', 'ぴ'] : previousState.i ? ['ぴ', 'pi'] : ['', ''],
+      state.u ? state.enabled ? ['pう', 'ぷ'] : ['pu', 'ぷ'] : previousState.u ? ['ぷ', 'pu'] : ['', ''],
+      state.e ? state.enabled ? ['pえ', 'ぺ'] : ['pe', 'ぺ'] : previousState.e ? ['ぺ', 'pe'] : ['', ''],
+      state.o ? state.enabled ? ['pお', 'ぽ'] : ['po', 'ぽ'] : previousState.o ? ['ぽ', 'po'] : ['', '']
     ]) 
   };
 };

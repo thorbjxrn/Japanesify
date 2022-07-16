@@ -2,7 +2,7 @@ import { browser } from 'webextension-polyfill-ts'
 import * as ContentScript from '../../../source/ContentScript/index'
 import { defaultJapanesifyState } from '../../../source/utils/constants';
 import { basic, excludedElements } from '../../fixtures/html';
-import { hiraA, hiraE, hiraI, hiraN, hiraO, hiraRomaA, hiraRomaE, hiraRomaI, hiraRomaN, hiraRomaO, hiraRomaU, hiraU } from '../../fixtures/testInputs';
+import { hiraA, hiraE, hiraI, hiraN, hiraO, hiraRomaA, hiraRomaE, hiraRomaI, romaN, hiraRomaO, hiraRomaU, hiraU, vowels, romaP, hiraP } from '../../fixtures/testInputs';
 
 describe('Content Script', () => {
     const convertText = ContentScript.convertText
@@ -68,7 +68,7 @@ describe('Content Script', () => {
 
     test.each`
     checkbox | syllables    | hiraganas
-    ${"n"}   | ${hiraRomaN} | ${hiraN}
+    ${"n"}   | ${romaN}     | ${hiraN}
     ${"a"}   | ${hiraRomaA} | ${hiraA}
     ${"i"}   | ${hiraRomaI} | ${hiraI}
     ${"u"}   | ${hiraRomaU} | ${hiraU}
@@ -92,7 +92,7 @@ describe('Content Script', () => {
     
     test.each`
     checkbox | syllables    | hiraganas
-    ${"n"}   | ${hiraRomaN} | ${hiraN}
+    ${"n"}   | ${romaN}     | ${hiraN}
     ${"a"}   | ${hiraRomaA} | ${hiraA}
     ${"i"}   | ${hiraRomaI} | ${hiraI}
     ${"u"}   | ${hiraRomaU} | ${hiraU}
@@ -126,77 +126,46 @@ describe('Content Script', () => {
 
         expect(document.body.textContent).toContain('.mw-editfont-monospace{font-family:monospace,monospace}')
     })
-
-    test.each`
-    vowel  | hira    | hiraComb | hiraRoma
-    ${"i"} | ${"に"} | ${"んい"} | ${"んi"}
-    ${"a"} | ${"な"} | ${"んあ"} | ${"んa"}
-    ${"u"} | ${"ぬ"} | ${"んう"} | ${"んu"}
-    ${"e"} | ${"ね"} | ${"んえ"} | ${"んe"}
-    ${"o"} | ${"の"} | ${"んお"} | ${"んo"}
-    `('Should convert "$hiraRoma" to "$hira"', ({hira, hiraComb, hiraRoma, vowel}) => {
-        document.body.innerHTML = basic
-
-        ContentScript.togglePluginListener({...defaultJapanesifyState, enabled: true, n: true,
-            [vowel]: true})
-        expect(document.body.textContent).not.toContain(hiraComb)
-        expect(document.body.textContent).toContain(hira)
-
-        ContentScript.togglePluginListener({...defaultJapanesifyState, enabled: true, n: true})
-        expect(document.body.textContent).not.toContain(hira)
-        expect(document.body.textContent).toContain(hiraRoma)
-    })
     
-    test.each `
-    vowel  | hira    | hiraComb | roma
-    ${"i"} | ${"に"} | ${"んい"} | ${"ni"}
-    ${"a"} | ${"な"} | ${"んあ"} | ${"na"}
-    ${"u"} | ${"ぬ"} | ${"んう"} | ${"nu"}
-    ${"e"} | ${"ね"} | ${"んえ"} | ${"ne"}
-    ${"o"} | ${"の"} | ${"んお"} | ${"no"}
-    `('Should convert "$hira" to "$roma" when n and $vowel enabled and plugin gets disabled', ({hira, hiraComb, vowel}) => {
+    test('Should convert n hira ("に", "な", ...) to roma ("ni", "na", ...) when n and $vowel enabled and plugin gets disabled', () => {
         document.body.innerHTML = basic
 
         const original = document.body.textContent
 
-        ContentScript.togglePluginListener({...defaultJapanesifyState, enabled: true, n: true,
-            [vowel]: true})
-        expect(document.body.textContent).not.toContain(hiraComb)
-        expect(document.body.textContent).toContain(hira)
+        const vowels = ["i", "a", "u", "e", "o"]
+        const hiras  = ["に", "な", "ぬ", "ね", "の"]
+        const hirasComb = ["んい", "んあ", "んう", "んえ", "んお"]
 
-        ContentScript.togglePluginListener({...defaultJapanesifyState, n: true, [vowel]: true})
-        expect(document.body.textContent).toStrictEqual(original)
+        vowels.forEach((_: string, i: number) => {
+            ContentScript.togglePluginListener({...defaultJapanesifyState, enabled: true, n: true,
+                [vowels[i]]: true})
+            expect(document.body.textContent).not.toContain(hirasComb[i])
+            expect(document.body.textContent).toContain(hiras[i])
+    
+            ContentScript.togglePluginListener({...defaultJapanesifyState, n: true, [vowels[i]]: true})
+            expect(document.body.textContent).toStrictEqual(original)
+        })
     })
 
     test.each`
-    vowel  | roma    | hira  
-    ${"a"} | ${"pa"} | ${"ぱ"}
-    ${"i"} | ${"pi"} | ${"ぴ"}
-    ${"u"} | ${"pu"} | ${"ぷ"}
-    ${"e"} | ${"pe"} | ${"ぺ"}
-    ${"o"} | ${"po"} | ${"ぽ"}
-    `('Should convert "$roma" to "$hira" and back if enable button gets toggled', ({hira, roma, vowel}) => {
+    vowels     | romas     | hiras 
+    ${vowels} | ${romaP} | ${hiraP}
+    `('Should convert "$romas" to "$hiras" and back if enable button gets toggled', ({hiras, romas, vowels}) => {
         document.body.innerHTML = basic
 
         const original = document.body.textContent
 
-        ContentScript.togglePluginListener({...defaultJapanesifyState, enabled: true, [vowel]: true, han: true})
-        expect(document.body.textContent).not.toContain(roma)
-        expect(document.body.textContent).toContain(hira)
-        
-        ContentScript.togglePluginListener({...defaultJapanesifyState, [vowel]:true, han: true})
-        expect(document.body.textContent).toStrictEqual(original)
+        vowels.forEach((_: string, i: number) => {
+            ContentScript.togglePluginListener({...defaultJapanesifyState, enabled: true, [vowels[i]]: true, han: true})
+            expect(document.body.textContent).not.toContain(romas[i])
+            expect(document.body.textContent).toContain(hiras[i])
+            
+            ContentScript.togglePluginListener({...defaultJapanesifyState, [vowels[i]]:true, han: true})
+            expect(document.body.textContent).toStrictEqual(original)
+        })
     })
 
-    //TODO: Do we really need a .each here?
-    test.each`
-    vowel  | roma    | hira  
-    ${"a"} | ${"pa"} | ${"ぱ"}
-    ${"i"} | ${"pi"} | ${"ぴ"}
-    ${"u"} | ${"pu"} | ${"ぷ"}
-    ${"e"} | ${"pe"} | ${"ぺ"}
-    ${"o"} | ${"po"} | ${"ぽ"}
-    `('Should not convert "$roma" to "$hira" if $vowel is not enabled', () => {
+    test('Should not convert roma to hira if only "han" is checked', () => {
         document.body.innerHTML = basic
 
         const original = document.body.textContent
@@ -206,22 +175,20 @@ describe('Content Script', () => {
     })
 
     test.each`
-    vowel  | roma    | hira  
-    ${"a"} | ${"pa"} | ${"ぱ"}
-    ${"i"} | ${"pi"} | ${"ぴ"}
-    ${"u"} | ${"pu"} | ${"ぷ"}
-    ${"e"} | ${"pe"} | ${"ぺ"}
-    ${"o"} | ${"po"} | ${"ぽ"}
-    `('Should convert "$hira" to "$roma" if "$vowel" gets disabled', ({hira, roma, vowel}) => {
+    vowels    | romas    | hiras 
+    ${vowels} | ${romaP} | ${hiraP}
+    `('Should convert "$hiras" to "$romas" if "$vowels" gets disabled', ({hiras, romas, vowels}) => {
         document.body.innerHTML = basic
 
         const original = document.body.textContent
 
-        ContentScript.togglePluginListener({...defaultJapanesifyState, enabled: true, [vowel]:true, han: true})
-        expect(document.body.textContent).not.toContain(roma)
-        expect(document.body.textContent).toContain(hira)
+        vowels.forEach((_: string, i: number) => {
+            ContentScript.togglePluginListener({...defaultJapanesifyState, enabled: true, [vowels[i]]:true, han: true})
+            expect(document.body.textContent).not.toContain(romas[i])
+            expect(document.body.textContent).toContain(hiras[i])
 
-        ContentScript.togglePluginListener({...defaultJapanesifyState, enabled: true, han: true})
-        expect(document.body.textContent).toStrictEqual(original)
+            ContentScript.togglePluginListener({...defaultJapanesifyState, enabled: true, han: true})
+            expect(document.body.textContent).toStrictEqual(original)
+        })
     })
 })
