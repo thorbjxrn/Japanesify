@@ -1,7 +1,7 @@
 export const basic = 
 `<div>
     <p>
-        Loremwo nahimiro ipsumfu hamuke dolorwa, sitrani sayaku ametyu shiruho consectetur hakoyo adipisicing hi elit.
+        loremwo nahimiro ipsumfu hamuke dolorwa, sitrani sayaku ametyu shiruho consectetur hakoyo adipisicing hi elit.
         maxime kinesopu voluptatibus chifuto reprehenderit kakomo repellat adnuno idtsu exruyo, iure aut culpa error.
         ametpo reiciendis mitsuwo suscipit kakeno eummu yakuhopu dolorto wayune facilis sanuso repellendus shi dolores ki aliquid
         omnispo nachimopa doloremquera!

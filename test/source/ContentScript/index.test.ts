@@ -2,6 +2,7 @@ import { browser } from 'webextension-polyfill-ts'
 import * as ContentScript from '../../../source/ContentScript/index'
 import { defaultJapanesifyState } from '../../../source/utils/constants';
 import { basic, excludedElements } from '../../fixtures/html';
+import { hiraA, hiraE, hiraI, hiraN, hiraO, hiraRomaA, hiraRomaE, hiraRomaI, hiraRomaN, hiraRomaO, hiraRomaU, hiraU } from '../../fixtures/testInputs';
 
 describe('Content Script', () => {
     const convertText = ContentScript.convertText
@@ -64,275 +65,49 @@ describe('Content Script', () => {
 
         expect(convertSpy).not.toBeCalled()
     })
-    
+
     test.each`
-    syllable | hiragana
-    ${'n'}   | ${'ん'} 
-    `('converts "$syllable" to "$hiragana" and back if enable button gets toggled', ({syllable, hiragana}) => {
+    checkbox | syllables    | hiraganas
+    ${"n"}   | ${hiraRomaN} | ${hiraN}
+    ${"a"}   | ${hiraRomaA} | ${hiraA}
+    ${"i"}   | ${hiraRomaI} | ${hiraI}
+    ${"u"}   | ${hiraRomaU} | ${hiraU}
+    ${"e"}   | ${hiraRomaE} | ${hiraE}
+    ${"o"}   | ${hiraRomaO} | ${hiraO}
+    `('converts "$checkbox" syllables to "$hiraganas" and back if enable button gets toggled', ({checkbox, syllables, hiraganas}) => {
         document.body.innerHTML = basic
 
         const original = document.body.textContent
 
-        ContentScript.togglePluginListener({...defaultJapanesifyState, enabled: true, n: true})
-        expect(document.body.textContent).toContain(hiragana)
-        expect(document.body.textContent).not.toContain(syllable)
+        ContentScript.togglePluginListener({...defaultJapanesifyState, enabled: true, [checkbox]: true})
         
-        ContentScript.togglePluginListener({...defaultJapanesifyState, enabled: false, n: true})
-        expect(document.body.textContent).toStrictEqual(original)
-    })
-
-    test.each`
-    syllable | hiragana
-    ${'wa'}  | ${'わ'}
-    ${'ra'}  | ${'ら'}
-    ${'ya'}  | ${'や'}
-    ${'ma'}  | ${'ま'}
-    ${'ha'}  | ${'は'}
-    ${'na'}  | ${'な'}
-    ${'ta'}  | ${'た'}
-    ${'sa'}  | ${'さ'}
-    ${'ka'}  | ${'か'}
-    ${'a'}   | ${'あ'}
-    `('converts "$syllable" to "$hiragana" and back if enable button gets toggled', ({syllable, hiragana}) => {
-        document.body.innerHTML = basic
-
-        const original = document.body.textContent
-
-        ContentScript.togglePluginListener({...defaultJapanesifyState, enabled: true, a: true})
+        hiraganas.forEach((_: string, i: number) => {
+            expect(document.body.textContent).toContain(hiraganas[i])
+            expect(document.body.textContent).not.toContain(syllables[i])
+        })
         
-        expect(document.body.textContent).toContain(hiragana)
-        expect(document.body.textContent).not.toContain(syllable)
-        
-        ContentScript.togglePluginListener({...defaultJapanesifyState, enabled: false, a: true})
+        ContentScript.togglePluginListener({...defaultJapanesifyState, enabled: false, [checkbox]: true})
         expect(document.body.textContent).toStrictEqual(original)
     })
     
     test.each`
-    syllable | hiragana
-    ${'ri'}  | ${'り'}
-    ${'mi'}  | ${'み'}
-    ${'ni'}  | ${'に'}
-    ${'shi'} | ${'し'}
-    ${'chi'} | ${'ち'}
-    ${'hi'}  | ${'ひ'}
-    ${'ki'}  | ${'き'}
-    ${'i'}   | ${'い'}
-    `('converts "$syllable" to "$hiragana" and back if enable button gets toggled', ({syllable, hiragana}) => {
+    checkbox | syllables    | hiraganas
+    ${"n"}   | ${hiraRomaN} | ${hiraN}
+    ${"a"}   | ${hiraRomaA} | ${hiraA}
+    ${"i"}   | ${hiraRomaI} | ${hiraI}
+    ${"u"}   | ${hiraRomaU} | ${hiraU}
+    ${"e"}   | ${hiraRomaE} | ${hiraE}
+    ${"o"}   | ${hiraRomaO} | ${hiraO}
+    `('converts "$checkbox" syllables to "$hiraganas" and back if a checkbox gets toggled', ({checkbox, syllables, hiraganas}) => {
         document.body.innerHTML = basic
 
         const original = document.body.textContent
 
-        ContentScript.togglePluginListener({...defaultJapanesifyState, enabled: true, i: true})
-        expect(document.body.textContent).not.toContain(syllable)
-        expect(document.body.textContent).toContain(hiragana)
-        
-        ContentScript.togglePluginListener({...defaultJapanesifyState, enabled: false, i: true})
-        expect(document.body.textContent).toStrictEqual(original)
-    })
-    
-    test.each`
-    syllable | hiragana
-    ${'tsu'} | ${'つ'}
-    ${'su'}  | ${'す'}
-    ${'nu'}  | ${'ぬ'}
-    ${'fu'}  | ${'ふ'}
-    ${'mu'}  | ${'む'}
-    ${'ru'}  | ${'る'}
-    ${'yu'}  | ${'ゆ'}
-    ${'ku'}  | ${'く'}
-    ${'u'}   | ${'う'}
-    `('converts "$syllable" to "$hiragana" and back if enable button gets toggled', ({syllable, hiragana}) => {
-        document.body.innerHTML = basic
-
-        const original = document.body.textContent
-
-        ContentScript.togglePluginListener({...defaultJapanesifyState, enabled: true, u: true})
-        expect(document.body.textContent).not.toContain(syllable)
-        expect(document.body.textContent).toContain(hiragana)
-        
-        ContentScript.togglePluginListener({...defaultJapanesifyState, enabled: false, u: true})
-        expect(document.body.textContent).toStrictEqual(original)
-    })
-    
-    test.each`
-    syllable | hiragana
-    ${'re'}  | ${'れ'}
-    ${'me'}  | ${'め'}
-    ${'he'}  | ${'へ'}
-    ${'ne'}  | ${'ね'}
-    ${'te'}  | ${'て'}
-    ${'se'}  | ${'せ'}
-    ${'ke'}  | ${'け'}
-    ${'e'}   | ${'え'}
-    `('converts "$syllable" to "$hiragana" and back if enable button gets toggled', ({syllable, hiragana}) => {
-        document.body.innerHTML = basic
-
-        const original = document.body.textContent
-
-        ContentScript.togglePluginListener({...defaultJapanesifyState, enabled: true, e: true})
-        expect(document.body.textContent).not.toContain(syllable)
-        expect(document.body.textContent).toContain(hiragana)
-        
-        ContentScript.togglePluginListener({...defaultJapanesifyState, enabled: false, e: true})
-        expect(document.body.textContent).toStrictEqual(original)
-    })
-
-    test.each`
-    syllable | hiragana
-    ${'o'}   | ${'お'}
-    ${'ko'}  | ${'こ'}
-    ${'so'}  | ${'そ'}
-    ${'to'}  | ${'と'}
-    ${'no'}  | ${'の'}
-    ${'ho'}  | ${'ほ'}
-    ${'mo'}  | ${'も'}
-    ${'ro'}  | ${'ろ'}
-    ${'yo'}  | ${'よ'}
-    ${'wo'}  | ${'を'}
-    `('converts "$syllable" to "$hiragana" and back if enable button gets toggled', ({syllable, hiragana}) => {
-        document.body.innerHTML = basic
-
-        const original = document.body.textContent
-
-        ContentScript.togglePluginListener({...defaultJapanesifyState, enabled: true, o: true})
-        expect(document.body.textContent).not.toContain(syllable)
-        expect(document.body.textContent).toContain(hiragana)
-        
-        ContentScript.togglePluginListener({...defaultJapanesifyState, enabled: false, o: true})
-        expect(document.body.textContent).toStrictEqual(original)
-    })
-    
-    test.each`
-    syllable | hiragana
-    ${'n'}   | ${'ん'} 
-    `('converts "$syllable" to "$hiragana" and back if n checkbox gets toggled', ({syllable, hiragana}) => {
-        document.body.innerHTML = basic
-
-        const original = document.body.textContent
-        
-        ContentScript.togglePluginListener({...defaultJapanesifyState, enabled: true, n: true})
-        expect(document.body.textContent).not.toContain(syllable)
-        expect(document.body.textContent).toContain(hiragana)
-        
-        ContentScript.togglePluginListener({...defaultJapanesifyState, enabled: true})
-        expect(document.body.textContent).toStrictEqual(original)
-    })
-    
-    test.each`
-    syllable | hiragana
-    ${'wa'}  | ${'わ'}
-    ${'ra'}  | ${'ら'}
-    ${'ya'}  | ${'や'}
-    ${'ma'}  | ${'ま'}
-    ${'ha'}  | ${'は'}
-    ${'na'}  | ${'な'}
-    ${'ta'}  | ${'た'}
-    ${'sa'}  | ${'さ'}
-    ${'ka'}  | ${'か'}
-    ${'a'}   | ${'あ'}
-    `('converts "$syllable" to "$hiragana" and back if a checkbox gets toggled', ({syllable, hiragana}) => {
-        document.body.innerHTML = basic
-
-        const original = document.body.textContent
-
-        ContentScript.togglePluginListener({...defaultJapanesifyState, enabled: true, a: true})
-        expect(document.body.textContent).not.toContain(syllable)
-        expect(document.body.textContent).toContain(hiragana)
-        
-        ContentScript.togglePluginListener({...defaultJapanesifyState, enabled: true})
-        expect(document.body.textContent).toStrictEqual(original)
-    })
-    
-    test.each`
-    syllable | hiragana
-    ${'ri'}  | ${'り'}
-    ${'mi'}  | ${'み'}
-    ${'ni'}  | ${'に'}
-    ${'shi'} | ${'し'}
-    ${'chi'} | ${'ち'}
-    ${'hi'}  | ${'ひ'}
-    ${'ki'}  | ${'き'}
-    ${'i'}   | ${'い'}
-    `('converts "$syllable" to "$hiragana" and back if a checkbox gets toggled', ({syllable, hiragana}) => {
-        document.body.innerHTML = basic
-
-        const original = document.body.textContent
-
-        ContentScript.togglePluginListener({...defaultJapanesifyState, enabled: true, i: true})
-        expect(document.body.textContent).not.toContain(syllable)
-        expect(document.body.textContent).toContain(hiragana)
-        
-        ContentScript.togglePluginListener({...defaultJapanesifyState, enabled: true})
-        expect(document.body.textContent).toStrictEqual(original)
-    })
-    
-    test.each`
-    syllable | hiragana
-    ${'tsu'} | ${'つ'}
-    ${'su'}  | ${'す'}
-    ${'nu'}  | ${'ぬ'}
-    ${'fu'}  | ${'ふ'}
-    ${'mu'}  | ${'む'}
-    ${'ru'}  | ${'る'}
-    ${'yu'}  | ${'ゆ'}
-    ${'ku'}  | ${'く'}
-    ${'u'}   | ${'う'}
-    `('converts "$syllable" to "$hiragana" and back if a checkbox gets toggled', ({syllable, hiragana}) => {
-        document.body.innerHTML = basic
-
-        const original = document.body.textContent
-
-        ContentScript.togglePluginListener({...defaultJapanesifyState, enabled: true, u: true})
-        expect(document.body.textContent).not.toContain(syllable)
-        expect(document.body.textContent).toContain(hiragana)
-        
-        ContentScript.togglePluginListener({...defaultJapanesifyState, enabled: true})
-        expect(document.body.textContent).toStrictEqual(original)
-    })
-    
-    test.each`
-    syllable | hiragana
-    ${'re'}  | ${'れ'}
-    ${'me'}  | ${'め'}
-    ${'he'}  | ${'へ'}
-    ${'ne'}  | ${'ね'}
-    ${'te'}  | ${'て'}
-    ${'se'}  | ${'せ'}
-    ${'ke'}  | ${'け'}
-    ${'e'}   | ${'え'}
-    `('converts "$syllable" to "$hiragana" and back if a checkbox gets toggled', ({syllable, hiragana}) => {
-        document.body.innerHTML = basic
-
-        const original = document.body.textContent
-
-        ContentScript.togglePluginListener({...defaultJapanesifyState, enabled: true, e: true})
-        expect(document.body.textContent).not.toContain(syllable)
-        expect(document.body.textContent).toContain(hiragana)
-        
-        ContentScript.togglePluginListener({...defaultJapanesifyState, enabled: true})
-        expect(document.body.textContent).toStrictEqual(original)
-    })
-    
-    test.each`
-    syllable | hiragana
-    ${'o'}   | ${'お'}
-    ${'ko'}  | ${'こ'}
-    ${'so'}  | ${'そ'}
-    ${'to'}  | ${'と'}
-    ${'no'}  | ${'の'}
-    ${'ho'}  | ${'ほ'}
-    ${'mo'}  | ${'も'}
-    ${'ro'}  | ${'ろ'}
-    ${'yo'}  | ${'よ'}
-    ${'wo'}  | ${'を'}
-    `('converts "$syllable" to "$hiragana" and back if a checkbox gets toggled', ({syllable, hiragana}) => {
-        document.body.innerHTML = basic
-
-        const original = document.body.textContent
-
-        ContentScript.togglePluginListener({...defaultJapanesifyState, enabled: true, o: true})
-        expect(document.body.textContent).not.toContain(syllable)
-        expect(document.body.textContent).toContain(hiragana)
+        ContentScript.togglePluginListener({...defaultJapanesifyState, enabled: true, [checkbox]: true})
+        hiraganas.forEach((_: string, i: number) => {
+            expect(document.body.textContent).toContain(hiraganas[i])
+            expect(document.body.textContent).not.toContain(syllables[i])
+        })
         
         ContentScript.togglePluginListener({...defaultJapanesifyState, enabled: true})
         expect(document.body.textContent).toStrictEqual(original)
