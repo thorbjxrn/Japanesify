@@ -18,5 +18,20 @@ export const hiraO = ['お', 'こ', 'そ', 'と', 'の', 'ほ', 'も', 'ろ', '�
 
 export const vowels = ["a", "i", "u", "e", "o"]
 
-export const romaP = ["pa", "pi", "pu", "pe", "po"]
-export const hiraP = ["ぱ", "ぴ", "ぷ", "ぺ", "ぽ"]
+export const romaHanP = ["pa", "pi", "pu", "pe", "po"]
+export const hiraHanP = ["ぱ", "ぴ", "ぷ", "ぺ", "ぽ"]
+
+export const romaDakA = ['ga', 'za', 'da', 'ba']
+export const hiraDakA = ['が', 'ざ', 'だ', 'ば']
+
+export const romaDakI = ['gi', 'ji', 'dji', 'bi']
+export const hiraDakI = ['ぎ', 'じ', 'ぢ', 'び']
+
+export const romaDakU = ['gu', 'zu', 'dzu', 'bu']
+export const hiraDakU = ['ぐ', 'ず', 'づ', 'ぶ']
+
+export const romaDakE = ['ge', 'ze', 'de', 'be']
+export const hiraDakE = ['げ', 'ぜ', 'で', 'べ']
+
+export const romaDakO = ['go', 'zo', 'do', 'bo']
+export const hiraDakO = ['ご', 'ぞ', 'ど', 'ぼ']

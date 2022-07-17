@@ -2,7 +2,7 @@ import { browser } from 'webextension-polyfill-ts'
 import * as ContentScript from '../../../source/ContentScript/index'
 import { defaultJapanesifyState } from '../../../source/utils/constants';
 import { basic, excludedElements } from '../../fixtures/html';
-import { hiraA, hiraE, hiraI, hiraN, hiraO, hiraRomaA, hiraRomaE, hiraRomaI, romaN, hiraRomaO, hiraRomaU, hiraU, vowels, romaP, hiraP } from '../../fixtures/testInputs';
+import { hiraA, hiraE, hiraI, hiraN, hiraO, hiraRomaA, hiraRomaE, hiraRomaI, romaN, hiraRomaO, hiraRomaU, hiraU, vowels, romaHanP, hiraHanP, romaDakA, hiraDakA, romaDakI, hiraDakI, romaDakU, hiraDakU, romaDakE, hiraDakE, hiraDakO, romaDakO } from '../../fixtures/testInputs';
 
 describe('Content Script', () => {
     const convertText = ContentScript.convertText
@@ -147,9 +147,18 @@ describe('Content Script', () => {
         })
     })
 
+    test('Should not convert roma to hira if only "han" is checked', () => {
+        document.body.innerHTML = basic
+
+        const original = document.body.textContent
+
+        ContentScript.togglePluginListener({...defaultJapanesifyState, enabled: true, han: true})
+        expect(document.body.textContent).toStrictEqual(original)
+    })
+
     test.each`
     vowels     | romas     | hiras 
-    ${vowels} | ${romaP} | ${hiraP}
+    ${vowels} | ${romaHanP} | ${hiraHanP}
     `('Should convert "$romas" to "$hiras" and back if enable button gets toggled', ({hiras, romas, vowels}) => {
         document.body.innerHTML = basic
 
@@ -165,18 +174,9 @@ describe('Content Script', () => {
         })
     })
 
-    test('Should not convert roma to hira if only "han" is checked', () => {
-        document.body.innerHTML = basic
-
-        const original = document.body.textContent
-
-        ContentScript.togglePluginListener({...defaultJapanesifyState, enabled: true, han: true})
-        expect(document.body.textContent).toStrictEqual(original)
-    })
-
     test.each`
     vowels    | romas    | hiras 
-    ${vowels} | ${romaP} | ${hiraP}
+    ${vowels} | ${romaHanP} | ${hiraHanP}
     `('Should convert "$hiras" to "$romas" if "$vowels" gets disabled', ({hiras, romas, vowels}) => {
         document.body.innerHTML = basic
 
@@ -190,5 +190,51 @@ describe('Content Script', () => {
             ContentScript.togglePluginListener({...defaultJapanesifyState, enabled: true, han: true})
             expect(document.body.textContent).toStrictEqual(original)
         })
+    })
+
+    test.each`
+    vowel | romas       | hiras 
+    ${"a"} | ${romaDakA} | ${hiraDakA}
+    ${"i"} | ${romaDakI} | ${hiraDakI}
+    ${"u"} | ${romaDakU} | ${hiraDakU}
+    ${"e"} | ${romaDakE} | ${hiraDakE}
+    ${"o"} | ${romaDakO} | ${hiraDakO}
+    `('Should convert "$romas" to "$hiras" and back if enable button gets toggled', ({vowel, romas, hiras}) => {
+        document.body.innerHTML = basic
+
+        const original = document.body.textContent
+        const checkbox = 'dak'
+
+        ContentScript.togglePluginListener({...defaultJapanesifyState, enabled: true, [vowel]: true, [checkbox]: true})
+        romas.forEach((_: string, i: number) => {
+            expect(document.body.textContent).not.toContain(romas[i])
+            expect(document.body.textContent).toContain(hiras[i])
+        })
+        
+        ContentScript.togglePluginListener({...defaultJapanesifyState, [vowel]:true, [checkbox]: true})
+        expect(document.body.textContent).toStrictEqual(original)
+    })
+
+    test.each`
+    vowel | romas       | hiras 
+    ${"a"} | ${romaDakA} | ${hiraDakA}
+    ${"i"} | ${romaDakI} | ${hiraDakI}
+    ${"u"} | ${romaDakU} | ${hiraDakU}
+    ${"e"} | ${romaDakE} | ${hiraDakE}
+    ${"o"} | ${romaDakO} | ${hiraDakO}
+    `('Should convert "$hiras" to "$romas" if "$vowels" gets disabled', ({vowel, romas, hiras}) => {
+        document.body.innerHTML = basic
+
+        const original = document.body.textContent
+        const checkbox = 'dak'
+
+        ContentScript.togglePluginListener({...defaultJapanesifyState, enabled: true, [vowel]:true, [checkbox]: true})
+        romas.forEach((_: string, i: number) => {
+            expect(document.body.textContent).not.toContain(romas[i])
+            expect(document.body.textContent).toContain(hiras[i])
+        })
+
+        ContentScript.togglePluginListener({...defaultJapanesifyState, enabled: true, [checkbox]: true})
+        expect(document.body.textContent).toStrictEqual(original)
     })
 })
