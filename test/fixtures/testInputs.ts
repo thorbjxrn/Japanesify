@@ -16,22 +16,17 @@ export const hiraE = ['れ', 'め', 'へ', 'ね', 'て', 'せ', 'け', 'え']
 export const hiraRomaO = ['o', 'kお', 'sお', 'tお', 'nお', 'hお', 'mお', 'rお', 'yお', 'wお']
 export const hiraO = ['お', 'こ', 'そ', 'と', 'の', 'ほ', 'も', 'ろ', 'よ', 'を']
 
-export const vowels = ["a", "i", "u", "e", "o"]
+export const romaHanDakA = ['ga', 'za', 'da', 'ba', "pa"]
+export const hiraHanDakA = ['が', 'ざ', 'だ', 'ば', "ぱ"]
 
-export const romaHanP = ["pa", "pi", "pu", "pe", "po"]
-export const hiraHanP = ["ぱ", "ぴ", "ぷ", "ぺ", "ぽ"]
+export const romaHanDakI = ['gi', 'ji', 'dji', 'bi', "pi"]
+export const hiraHanDakI = ['ぎ', 'じ', 'ぢ', 'び', "ぴ"]
 
-export const romaDakA = ['ga', 'za', 'da', 'ba']
-export const hiraDakA = ['が', 'ざ', 'だ', 'ば']
+export const romaHanDakU = ['gu', 'zu', 'dzu', 'bu', "pu"]
+export const hiraHanDakU = ['ぐ', 'ず', 'づ', 'ぶ', "ぷ"]
 
-export const romaDakI = ['gi', 'ji', 'dji', 'bi']
-export const hiraDakI = ['ぎ', 'じ', 'ぢ', 'び']
+export const romaHanDakE = ['ge', 'ze', 'de', 'be', "pe"]
+export const hiraHanDakE = ['げ', 'ぜ', 'で', 'べ', "ぺ"]
 
-export const romaDakU = ['gu', 'zu', 'dzu', 'bu']
-export const hiraDakU = ['ぐ', 'ず', 'づ', 'ぶ']
-
-export const romaDakE = ['ge', 'ze', 'de', 'be']
-export const hiraDakE = ['げ', 'ぜ', 'で', 'べ']
-
-export const romaDakO = ['go', 'zo', 'do', 'bo']
-export const hiraDakO = ['ご', 'ぞ', 'ど', 'ぼ']
+export const romaHanDakO = ['go', 'zo', 'do', 'bo', "po"]
+export const hiraHanDakO = ['ご', 'ぞ', 'ど', 'ぼ', "ぽ"]
