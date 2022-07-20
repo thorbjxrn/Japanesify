@@ -16,17 +16,19 @@ export const hiraE = ['れ', 'め', 'へ', 'ね', 'て', 'せ', 'け', 'え']
 export const hiraRomaO = ['o', 'kお', 'sお', 'tお', 'nお', 'hお', 'mお', 'rお', 'yお', 'wお']
 export const hiraO = ['お', 'こ', 'そ', 'と', 'の', 'ほ', 'も', 'ろ', 'よ', 'を']
 
-export const romaHanDakA = ['ga', 'za', 'da', 'ba', "pa"]
-export const hiraHanDakA = ['が', 'ざ', 'だ', 'ば', "ぱ"]
+// hiraYoA.set('rya', 'りゃ'); hiraYoA.set('rや', 'りゃ'); hiraYoA.set('riゃ',  'りゃ');
+
+export const romaHanDakYoonA = ['ga', 'za', 'da', 'ba', "pa", "kya", "sha", 'cha', 'nya', 'hya', 'mya', 'rya']
+export const hiraHanDakYoonA = ['が', 'ざ', 'だ', 'ば', "ぱ", "きゃ", "しゃ", 'ちゃ', 'にゃ', 'ひゃ', 'みゃ', 'りゃ']
 
 export const romaHanDakI = ['gi', 'ji', 'dji', 'bi', "pi"]
 export const hiraHanDakI = ['ぎ', 'じ', 'ぢ', 'び', "ぴ"]
 
-export const romaHanDakU = ['gu', 'zu', 'dzu', 'bu', "pu"]
-export const hiraHanDakU = ['ぐ', 'ず', 'づ', 'ぶ', "ぷ"]
+export const romaHanDakU = ['gu', 'zu', 'dzu', 'bu', "pu", 'kyu', 'shu', 'chu', 'nyu', 'hyu', 'myu', 'ryu']
+export const hiraHanDakU = ['ぐ', 'ず', 'づ', 'ぶ', "ぷ", 'きゅ', 'しゅ', 'ちゅ', 'にゅ', 'ひゅ', 'みゅ', 'りゅ']
 
 export const romaHanDakE = ['ge', 'ze', 'de', 'be', "pe"]
 export const hiraHanDakE = ['げ', 'ぜ', 'で', 'べ', "ぺ"]
 
-export const romaHanDakO = ['go', 'zo', 'do', 'bo', "po"]
-export const hiraHanDakO = ['ご', 'ぞ', 'ど', 'ぼ', "ぽ"]
+export const romaHanDakO = ['go', 'zo', 'do', 'bo', "po", 'kyo', 'sho', 'cho', 'nyo', 'hyo', 'myo', 'ryo']
+export const hiraHanDakO = ['ご', 'ぞ', 'ど', 'ぼ', "ぽ", 'きょ', 'しょ', 'ちょ', 'にょ', 'ひょ', 'みょ', 'りょ']

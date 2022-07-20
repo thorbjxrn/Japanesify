@@ -2,7 +2,7 @@ import { browser } from 'webextension-polyfill-ts'
 import * as ContentScript from '../../../source/ContentScript/index'
 import { defaultJapanesifyState } from '../../../source/utils/constants';
 import { basic, excludedElements } from '../../fixtures/html';
-import { hiraA, hiraE, hiraI, hiraN, hiraO, hiraRomaA, hiraRomaE, hiraRomaI, romaN, hiraRomaO, hiraRomaU, hiraU, romaHanDakA, hiraHanDakA, romaHanDakI, hiraHanDakI, romaHanDakU, hiraHanDakU, romaHanDakE, hiraHanDakE, hiraHanDakO, romaHanDakO } from '../../fixtures/testInputs';
+import { hiraA, hiraE, hiraI, hiraN, hiraO, hiraRomaA, hiraRomaE, hiraRomaI, romaN, hiraRomaO, hiraRomaU, hiraU, romaHanDakYoonA, hiraHanDakYoonA, romaHanDakI, hiraHanDakI, romaHanDakU, hiraHanDakU, romaHanDakE, hiraHanDakE, hiraHanDakO, romaHanDakO } from '../../fixtures/testInputs';
 
 describe('Content Script', () => {
     const convertText = ContentScript.convertText
@@ -152,13 +152,13 @@ describe('Content Script', () => {
 
         const original = document.body.textContent
 
-        ContentScript.togglePluginListener({...defaultJapanesifyState, enabled: true, han: true, dak: true})
+        ContentScript.togglePluginListener({...defaultJapanesifyState, enabled: true, han: true, dak: true, yoon: true })
         expect(document.body.textContent).toStrictEqual(original)
     })
 
     test.each`
     vowel  | romas          | hiras 
-    ${"a"} | ${romaHanDakA} | ${hiraHanDakA}
+    ${"a"} | ${romaHanDakYoonA} | ${hiraHanDakYoonA}
     ${"i"} | ${romaHanDakI} | ${hiraHanDakI}
     ${"u"} | ${romaHanDakU} | ${hiraHanDakU}
     ${"e"} | ${romaHanDakE} | ${hiraHanDakE}
@@ -168,19 +168,19 @@ describe('Content Script', () => {
 
         const original = document.body.textContent
 
-        ContentScript.togglePluginListener({...defaultJapanesifyState, enabled: true, [vowel]: true, dak: true, han: true })
+        ContentScript.togglePluginListener({...defaultJapanesifyState, enabled: true, [vowel]: true, dak: true, han: true, yoon: true })
         romas.forEach((_: string, i: number) => {
             expect(document.body.textContent).not.toContain(romas[i])
             expect(document.body.textContent).toContain(hiras[i])
         })
         
-        ContentScript.togglePluginListener({...defaultJapanesifyState, [vowel]:true, dak: true, han: true })
+        ContentScript.togglePluginListener({...defaultJapanesifyState, [vowel]:true, dak: true, han: true, yoon: true })
         expect(document.body.textContent).toStrictEqual(original)
     })
 
     test.each`
     vowel  | romas          | hiras 
-    ${"a"} | ${romaHanDakA} | ${hiraHanDakA}
+    ${"a"} | ${romaHanDakYoonA} | ${hiraHanDakYoonA}
     ${"i"} | ${romaHanDakI} | ${hiraHanDakI}
     ${"u"} | ${romaHanDakU} | ${hiraHanDakU}
     ${"e"} | ${romaHanDakE} | ${hiraHanDakE}
@@ -190,13 +190,13 @@ describe('Content Script', () => {
 
         const original = document.body.textContent
 
-        ContentScript.togglePluginListener({...defaultJapanesifyState, enabled: true, [vowel]:true, dak: true, han: true})
+        ContentScript.togglePluginListener({...defaultJapanesifyState, enabled: true, [vowel]:true, dak: true, han: true, yoon: true})
         romas.forEach((_: string, i: number) => {
             expect(document.body.textContent).not.toContain(romas[i])
             expect(document.body.textContent).toContain(hiras[i])
         })
 
-        ContentScript.togglePluginListener({...defaultJapanesifyState, enabled: true, dak: true, han: true})
+        ContentScript.togglePluginListener({...defaultJapanesifyState, enabled: true, dak: true, han: true, yoon: true })
         expect(document.body.textContent).toStrictEqual(original)
     })
 })

@@ -8,4 +8,5 @@ export type JapanesifyState = {
   o: boolean;
   dak: boolean;
   han: boolean;
+  yoon: boolean;
 };

@@ -86,7 +86,30 @@ export const getHiraganaMaps = (state: JapanesifyState, previousState: Japanesif
       state.u ? state.enabled ? ['pう', 'ぷ'] : ['pu', 'ぷ'] : previousState.u ? ['ぷ', 'pu'] : ['', ''],
       state.e ? state.enabled ? ['pえ', 'ぺ'] : ['pe', 'ぺ'] : previousState.e ? ['ぺ', 'pe'] : ['', ''],
       state.o ? state.enabled ? ['pお', 'ぽ'] : ['po', 'ぽ'] : previousState.o ? ['ぽ', 'po'] : ['', '']
-    ]) 
+    ]) ,
+    yoon: new Map([
+      state.a ? state.enabled ? ['kや', 'きゃ']  : ['kya', 'kiゃ']  : previousState.a ? ['きゃ', 'kya'] : ['', ''],
+      state.a ? state.enabled ? ['sは', 'しゃ']  : ['sha', 'shiゃ'] : previousState.a ? ['しゃ', 'sha'] : ['', ''],
+      state.a ? state.enabled ? ['cは', 'ちゃ']  : ['cha', 'chiゃ'] : previousState.a ? ['ちゃ', 'cha'] : ['', ''],
+      state.a ? state.enabled ? ['nや', 'にゃ']  : ['nya', 'niゃ']  : previousState.a ? ['にゃ', 'nya'] : ['', ''],
+      state.a ? state.enabled ? ['hや', 'ひゃ']  : ['hya', 'hiゃ']  : previousState.a ? ['ひゃ', 'hya'] : ['', ''],
+      state.a ? state.enabled ? ['mや', 'みゃ']  : ['mya', 'miゃ']  : previousState.a ? ['みゃ', 'mya'] : ['', ''],
+      state.a ? state.enabled ? ['rや', 'りゃ']  : ['rya', 'riゃ']  : previousState.a ? ['りゃ', 'rya'] : ['', ''],
+      state.o ? state.enabled ? ['kよ', 'きょ']  : ['kyo', 'kiょ']  : previousState.o ? ['きょ', 'kyo'] : ['', ''],
+      state.o ? state.enabled ? ['sほ', 'しょ']  : ['sho', 'shiょ'] : previousState.o ? ['しょ', 'sho'] : ['', ''],
+      state.o ? state.enabled ? ['cほ', 'ちょ']  : ['cho', 'chiょ'] : previousState.o ? ['ちょ', 'cho'] : ['', ''],
+      state.o ? state.enabled ? ['nよ', 'にょ']  : ['nyo', 'niょ']  : previousState.o ? ['にょ', 'nyo'] : ['', ''],
+      state.o ? state.enabled ? ['hよ', 'ひょ']  : ['hyo', 'hiょ']  : previousState.o ? ['ひょ', 'hyo'] : ['', ''],
+      state.o ? state.enabled ? ['mよ', 'みょ']  : ['myo', 'miょ']  : previousState.o ? ['みょ', 'myo'] : ['', ''],
+      state.o ? state.enabled ? ['rよ', 'りょ']  : ['ryo', 'riょ']  : previousState.o ? ['りょ', 'ryo'] : ['', ''],
+      state.u ? state.enabled ? ['kゆ', 'きゅ']  : ['kyu', 'kiゅ']  : previousState.u ? ['きゅ', 'kyu'] : ['', ''],
+      state.u ? state.enabled ? ['shう', 'しゅ'] : ['shu', 'shiゅ'] : previousState.u ? ['しゅ', 'shu'] : ['', ''],
+      state.u ? state.enabled ? ['chう', 'ちゅ'] : ['chu', 'chiゅ'] : previousState.u ? ['ちゅ', 'chu'] : ['', ''],
+      state.u ? state.enabled ? ['nゆ', 'にゅ']  : ['nyu', 'niゅ']  : previousState.u ? ['にゅ', 'nyu'] : ['', ''],
+      state.u ? state.enabled ? ['hゆ', 'ひゅ']  : ['hyu', 'hiゅ']  : previousState.u ? ['ひゅ', 'hyu'] : ['', ''],
+      state.u ? state.enabled ? ['mゆ', 'みゅ']  : ['myu', 'miゅ']  : previousState.u ? ['みゅ', 'myu'] : ['', ''],
+      state.u ? state.enabled ? ['rゆ', 'りゅ']  : ['ryu', 'riゅ']  : previousState.u ? ['りゅ', 'ryu'] : ['', ''],
+    ])
   };
 };
 
@@ -100,6 +123,7 @@ export const defaultJapanesifyState: JapanesifyState = {
   o: false,
   dak: false,
   han: false,
+  yoon: false,
 };
 
 export const JAPANESIFY_STATE = 'JapanesifyState';

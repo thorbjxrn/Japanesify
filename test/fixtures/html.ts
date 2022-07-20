@@ -1,10 +1,10 @@
 export const basic = 
 `<div>
     <p>
-        loremwo nahimiro ipsumfugu hamukedji dolorwabidzu, sitraniji sayakuge ametyubu shiruho consectetur hakoyo adipisicing hibezobo elitgo.
-        maximeza kinesopu voluptatibus chifutoba reprehenderit kakomogi repellat adnunodji idtsuda exruyo, iurezebe autgede culpaji errorze.
-        ametpoga reiciendis mitsuwozu suscipitgu kakenoda eummugaba yakuhopu dolortozu wayunegi facilisza sanusodzu repellendus shigo dolores kizobo aliquid
-        omnispobi nachimopa doloremquera!
+        loremwo nahimiro ipsumfugukyu hamukedji dolorwabidzu, sitranijimya sayakuge ametyuburyu shiruhoshu consectetur hakoyoshanyu adipisicing hibezobokyo elitgonyanyo.
+        maximezaryu kinesopumya voluptatibus chifutobaryaryo reprehenderit kakomogihya repellatnyo adnunodjimyu idtsudasha exruyokyachu, iurezebechonyu autgedecha culpajikyo errorzeshohyu.
+        ametpogahya reiciendiskyu mitsuwozuryo suscipitguryu kakenodahyu eummugabaryu yakuhopuhyo dolortozumyu wayunegirya faciliszamyo sanusodzushu repellenduschu shigokyacho dolorescha kizobonya aliquidsho
+        omnispobimyo nachimopahyo doloremquera!
     </p>
 </div>`
 
