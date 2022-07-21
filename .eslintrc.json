@@ -1,9 +1,4 @@
 {
-	"extends": [
-		"@abhijithvijayan/eslint-config/typescript",
-		"@abhijithvijayan/eslint-config/node",
-		"@abhijithvijayan/eslint-config/react"
-	],
 	"parserOptions": {
 		"project": [
 			"./tsconfig.json"
