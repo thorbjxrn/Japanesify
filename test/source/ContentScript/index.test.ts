@@ -1,4 +1,4 @@
-import { browser } from 'webextension-polyfill-ts'
+import browser from 'webextension-polyfill'
 import * as ContentScript from '../../../source/ContentScript/index'
 import { defaultJapanesifyState } from '../../../source/utils/constants';
 import { basic, excludedElements } from '../../fixtures/html';

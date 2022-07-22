@@ -1,4 +1,4 @@
-import {browser} from 'webextension-polyfill-ts';
+import browser from 'webextension-polyfill';
 
 export const getCurrentTabId = async (): Promise<number> => {
   const currentTab = await browser.tabs.query({

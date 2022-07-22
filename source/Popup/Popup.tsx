@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {browser} from 'webextension-polyfill-ts';
+import browser from 'webextension-polyfill';
 import {defaultJapanesifyState, JAPANESIFY_STATE} from '../utils/constants';
 import {JapanesifyState} from '../utils/types';
 import {getCurrentTabId} from '../utils/utils';

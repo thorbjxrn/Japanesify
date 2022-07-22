@@ -1,4 +1,4 @@
-import { browser, Tabs } from "webextension-polyfill-ts"
+import browser, { Tabs } from "webextension-polyfill"
 import { sendMessage } from "../../../source/Background/index"
 import { defaultJapanesifyState, JAPANESIFY_STATE } from "../../../source/utils/constants"
 

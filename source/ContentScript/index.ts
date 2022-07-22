@@ -1,4 +1,4 @@
-import {browser} from 'webextension-polyfill-ts';
+import browser from 'webextension-polyfill';
 import {getHiraganaMaps, defaultJapanesifyState} from '../utils/constants';
 import {JapanesifyState} from '../utils/types';
 

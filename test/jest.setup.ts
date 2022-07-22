@@ -1,5 +1,6 @@
 require('jest-webextension-mock');
-import { browser } from "webextension-polyfill-ts";
+(globalThis as any).chrome.runtime.id = "fake-id"
+import browser from "webextension-polyfill";
 
 browser.tabs.onActivated = {
     addListener: jest.fn(),

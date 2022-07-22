@@ -2,7 +2,7 @@ import React from 'react';
 import { fireEvent, render, screen, act } from '@testing-library/react';
 import Popup from '../../../source/Popup/Popup';
 import "@testing-library/jest-dom/extend-expect"
-import { browser, Tabs } from 'webextension-polyfill-ts';
+import browser, { Tabs } from 'webextension-polyfill';
 import { defaultJapanesifyState, JAPANESIFY_STATE } from '../../../source/utils/constants';
 
 describe('Popup Component', () => {

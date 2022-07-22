@@ -1,5 +1,4 @@
-import 'emoji-log';
-import {browser} from 'webextension-polyfill-ts';
+import browser from "webextension-polyfill";
 import {defaultJapanesifyState, JAPANESIFY_STATE} from '../utils/constants';
 import {getCurrentTabId} from '../utils/utils';
 

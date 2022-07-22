@@ -55,8 +55,8 @@ module.exports = {
   resolve: {
     extensions: ['.ts', '.tsx', '.js', '.json'],
     alias: {
-      'webextension-polyfill-ts': path.resolve(
-        path.join(__dirname, 'node_modules', 'webextension-polyfill-ts')
+      'webextension-polyfill': path.resolve(
+        path.join(__dirname, 'node_modules', 'webextension-polyfill')
       ),
     },
   },
@@ -84,27 +84,6 @@ module.exports = {
         use: [
           {
             loader: MiniCssExtractPlugin.loader, // It creates a CSS file per JS file which contains CSS
-          },
-          {
-            loader: 'css-loader', // Takes the CSS files and returns the CSS with imports and url(...) for Webpack
-            options: {
-              sourceMap: true,
-            },
-          },
-          {
-            loader: 'postcss-loader',
-            options: {
-              postcssOptions: {
-                plugins: [
-                  [
-                    'autoprefixer',
-                    {
-                      // Options
-                    },
-                  ],
-                ],
-              },
-            },
           },
         ],
       },
