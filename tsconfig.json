@@ -17,6 +17,7 @@
 	},
 	"include": [
 		"source",
-		"webpack.config.js"
+		"webpack.config.js",
+		"test"
 	]
 }

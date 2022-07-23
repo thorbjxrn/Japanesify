@@ -1,6 +1,6 @@
 import browser from 'webextension-polyfill';
-import {getHiraganaMaps, defaultJapanesifyState} from '../utils/constants';
-import {JapanesifyState} from '../utils/types';
+import { getHiraganaMaps, defaultJapanesifyState } from '../utils/constants';
+import { JapanesifyState } from '../utils/types';
 
 let previousState = defaultJapanesifyState;
 
@@ -27,16 +27,19 @@ export const convertText = (node: Node, state: JapanesifyState): void => {
       const key = k as keyof typeof hiraMap;
       if (value) {
         hiraMap[key].forEach((replace, find) => {
-          if(find && replace) {
+          if (find && replace) {
             substitutions.set(new RegExp(find, 'gi'), replace);
           }
         });
       }
 
       //TODO: add tests for the previousState parts
-      if ((previousState[key] && !value) || (previousState.enabled && !state.enabled)) {
+      if (
+        (previousState[key] && !value) ||
+        (previousState.enabled && !state.enabled)
+      ) {
         hiraMap[key].forEach((find, replace) => {
-          if(find && replace) {
+          if (find && replace) {
             substitutions.set(new RegExp(find, 'gi'), replace);
           }
         });

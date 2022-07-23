@@ -1,10 +1,11 @@
-import browser from "webextension-polyfill";
-import {defaultJapanesifyState, JAPANESIFY_STATE} from '../utils/constants';
-import {getCurrentTabId} from '../utils/utils';
+import browser from 'webextension-polyfill';
+import { defaultJapanesifyState, JAPANESIFY_STATE } from '../utils/constants';
+import { JapanesifyState } from '../utils/types';
+import { getCurrentTabId } from '../utils/utils';
 
 export const sendMessage = async (): Promise<void> => {
   const tabId = await getCurrentTabId();
-  const state = JSON.parse(
+  const state: JapanesifyState = JSON.parse(
     window.localStorage.getItem(JAPANESIFY_STATE) ||
       JSON.stringify(defaultJapanesifyState)
   );
