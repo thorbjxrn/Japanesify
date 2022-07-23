@@ -1,8 +1,8 @@
 import * as React from 'react';
 import browser from 'webextension-polyfill';
-import {defaultJapanesifyState, JAPANESIFY_STATE} from '../utils/constants';
-import {JapanesifyState} from '../utils/types';
-import {getCurrentTabId} from '../utils/utils';
+import { defaultJapanesifyState, JAPANESIFY_STATE } from '../utils/constants';
+import { JapanesifyState } from '../utils/types';
+import { getCurrentTabId } from '../utils/utils';
 
 const Popup: React.FC = () => {
   const [japanesifyState, setJapanesifyState] = React.useState(
@@ -19,7 +19,7 @@ const Popup: React.FC = () => {
 
   const handleAction = (key: keyof JapanesifyState) => {
     return async (): Promise<void> => {
-      const newState = {...japanesifyState};
+      const newState = { ...japanesifyState };
       newState[key] = !newState[key];
       const tabId = await getCurrentTabId();
       browser.tabs.sendMessage(tabId, newState);
@@ -28,7 +28,7 @@ const Popup: React.FC = () => {
     };
   };
 
-  const {enabled, a, n, i, u, e, o, han, dak, yoon} = japanesifyState;
+  const { enabled, a, n, i, u, e, o, han, dak, yoon } = japanesifyState;
 
   return (
     <section id="popup">
