@@ -1,19 +1,47 @@
 {
-	"extends": "@abhijithvijayan/tsconfig",
 	"compilerOptions": {
-    	"jsx": "react",
-		"target": "es5", // ECMAScript target version: 'ES3' (default), 'ES5', 'ES2015', 'ES2016', 'ES2017','ES2018' or 'ESNEXT'.
-		"module": "esnext", // Module code generation: 'none', 'commonjs', 'amd', 'system', 'umd', 'es2015', or 'ESNext'.
+		/* Visit https://aka.ms/tsconfig.json to read more about this file */
+		/* Basic Options */
+		"target": "ES2018", // ECMAScript target version: Node.js 10
+		"module": "commonjs", // Module code generation
+		"jsx": "react", // JSX code generation
+		"declaration": true, // Generates corresponding '.d.ts' file.
+		"noEmitOnError": true, // Do not emit outputs if any errors were reported.
+		"newLine": "lf", // Use the specified EOF sequence to be used when emitting files: lf -> unix
+		"removeComments": true, // Do not emit comments to output.
+		// "outDir": "dist", // Redirect output structure to the directory.
+		// "allowJs": true, // Allow JavaScript files to be compiled.
 		"lib": [
-			"dom",
-			"dom.iterable",
-			"esnext"
-		],
-		"declaration": false,
-		"isolatedModules": true,
+			"ES2020.Promise" // https://git.io/JTvvo
+		], // List of library files to be included in the compilation.
+		// "skipLibCheck": true, // Skip type checking of all declaration files (*.d.ts).
+		/* Strict Type-Checking Options */
+		"strict": true, // Enable all strict type-checking options.
+		"noImplicitAny": true, // Raise error on expressions and declarations with an implied 'any' type.
+		"strictNullChecks": true, // Enable strict null checks.
+		"strictFunctionTypes": true, // Enable strict checking of function types.
+		"strictBindCallApply": true, // Enable strict 'bind', 'call', and 'apply' methods on functions.
+		// https://stackoverflow.com/a/50241920/9387542
+		"strictPropertyInitialization": false, // Enable strict checking of property initialization in classes.
+		"noImplicitThis": true, // Raise error on 'this' expressions with an implied 'any' type.
+		"alwaysStrict": true, // Parse in strict mode and emit "use strict" for each source file.
 		/* Additional Checks */
-		"useDefineForClassFields": true,
-		"skipLibCheck": true,
+		"noUnusedLocals": true, // Report errors on unused locals.
+		"noUnusedParameters": true, // Report errors on unused parameters.
+		"noImplicitReturns": true, // Report error when not all code paths in function return a value.
+		"noFallthroughCasesInSwitch": true, // Report errors for fallthrough cases in switch statement.
+		/* Module Resolution Options */
+		"moduleResolution": "node", // Module resolution strategy
+		"allowSyntheticDefaultImports": true, // Allow default imports from modules with no default export.
+		"resolveJsonModule": true, // Allow importing, extracting types from and generating .json files.
+		"esModuleInterop": true, // Enables emit interoperability between CommonJS and ES Modules via creation of namespace objects for all imports.
+		// "types": [], // Type declaration files to be included in compilation.
+		/* Experimental Options */
+		"experimentalDecorators": true, // Enables experimental support for ES7 decorators.
+		"emitDecoratorMetadata": true, // Enables experimental support for emitting type metadata for decorators.
+		/* Advanced Options */
+		"forceConsistentCasingInFileNames": true, // Disallow inconsistently-cased references to the same file.
+		"stripInternal": false // Don't emit declarations for internal functions
 	},
 	"include": [
 		"source",
