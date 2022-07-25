@@ -27,7 +27,7 @@
     "test": "jest --coverage --verbose",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "prepare": "ln -s ./git_hooks .git/hooks"
+    "prepare": "ln -s .git/hooks/* git_hooks"
   },
   "dependencies": {
     "@babel/runtime": "^7.14.0",
