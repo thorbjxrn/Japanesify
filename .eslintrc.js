@@ -1,9 +1,10 @@
 module.exports = {
-  extends: ["react-app", "react-app/jest", 'eslint:recommended', 'plugin:@typescript-eslint/recommended'],
+  extends: ['react-app', 'react-app/jest', 'eslint:recommended', 'plugin:@typescript-eslint/recommended'],
   parser: '@typescript-eslint/parser',
-  plugins: ['@typescript-eslint'],
+  plugins: ['@typescript-eslint', ],
   root: true,
   rules: {
-    "testing-library/no-unnecessary-act": "off",
+    'testing-library/no-unnecessary-act': 'off',
+    'quotes': ['error', 'single', { 'allowTemplateLiterals': true, 'avoidEscape': true }]
   },
 }
