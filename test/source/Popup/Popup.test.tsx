@@ -1,7 +1,7 @@
 import React from 'react';
 import { fireEvent, render, screen, act } from '@testing-library/react';
 import Popup from '../../../source/Popup/Popup';
-import "@testing-library/jest-dom/extend-expect"
+import '@testing-library/jest-dom/extend-expect'
 import browser, { Tabs } from 'webextension-polyfill';
 import { defaultJapanesifyState, JAPANESIFY_STATE } from '../../../source/utils/constants';
 
@@ -59,7 +59,7 @@ describe('Popup Component', () => {
       ${'お'}  | ${'o'}
       ${'°'}   | ${'han'}
       ${'"'}   | ${'dak'}
-      ${"きゃ"} | ${"yoon"}
+      ${'きゃ'} | ${'yoon'}
     `('when $hiragana checkbox is pressed it sends correct message to tab', async ({hiragana, letter}: {hiragana: string, letter: string}) => {
         render(<Popup/>)
 
@@ -89,7 +89,7 @@ describe('Popup Component', () => {
       ${'お'}
       ${'°'}
       ${'"'}
-      ${"きゃ"}
+      ${'きゃ'}
     `('gets tab id to send the message when $hiragana checkbox is pressed', async ({hiragana}: {hiragana: string}) => {
         render(<Popup/>)
 
@@ -123,7 +123,7 @@ describe('Popup Component', () => {
             await fireEvent.click(button)
         })
 
-        const state = JSON.parse(window.localStorage.getItem(JAPANESIFY_STATE) || "")
+        const state = JSON.parse(window.localStorage.getItem(JAPANESIFY_STATE) || '')
 
         expect(state).toEqual({...defaultJapanesifyState, enabled: true})
     })
@@ -138,7 +138,7 @@ describe('Popup Component', () => {
       ${'お'}  | ${'o'}
       ${'°'}   | ${'han'}
       ${'"'}   | ${'dak'}
-      ${"きゃ"} | ${"yoon"}
+      ${'きゃ'} | ${'yoon'}
     `('saves state to local storage when $hiragana checkbox is pressed', async ({hiragana, letter}: {hiragana: string, letter: string}) => {
         render(<Popup/>)
 
@@ -148,7 +148,7 @@ describe('Popup Component', () => {
             fireEvent.click(checkBox)
         })
 
-        const state = JSON.parse(window.localStorage.getItem(JAPANESIFY_STATE) || "")
+        const state = JSON.parse(window.localStorage.getItem(JAPANESIFY_STATE) || '')
 
         expect(state).toEqual({...defaultJapanesifyState, [letter]: true})
     })
@@ -170,7 +170,7 @@ describe('Popup Component', () => {
       ${'お'}  | ${'o'}
       ${'°'}   | ${'han'}
       ${'"'}   | ${'dak'}
-      ${"きゃ"} | ${"yoon"}
+      ${'きゃ'} | ${'yoon'}
     `('renders $hiragana check box based on localStorage values', ({hiragana, letter} : {hiragana: string, letter: string}) => {
         window.localStorage.setItem(JAPANESIFY_STATE, JSON.stringify({...defaultJapanesifyState, [letter]: true}))
         render(<Popup/>)
