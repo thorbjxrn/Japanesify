@@ -4,7 +4,6 @@ import Popup from '../../../source/Popup/Popup';
 import "@testing-library/jest-dom/extend-expect"
 import browser, { Tabs } from 'webextension-polyfill';
 import { defaultJapanesifyState, JAPANESIFY_STATE } from '../../../source/utils/constants';
-import { JapanesifyState } from '../../../source/utils/types';
 
 describe('Popup Component', () => {
     const querySpy = jest.spyOn(browser.tabs, 'query')
@@ -124,7 +123,7 @@ describe('Popup Component', () => {
             await fireEvent.click(button)
         })
 
-        const state = JSON.parse(window.localStorage.getItem(JAPANESIFY_STATE)!) as JapanesifyState
+        const state = JSON.parse(window.localStorage.getItem(JAPANESIFY_STATE) || "")
 
         expect(state).toEqual({...defaultJapanesifyState, enabled: true})
     })
@@ -149,7 +148,7 @@ describe('Popup Component', () => {
             fireEvent.click(checkBox)
         })
 
-        const state = JSON.parse(window.localStorage.getItem(JAPANESIFY_STATE)!) as JapanesifyState
+        const state = JSON.parse(window.localStorage.getItem(JAPANESIFY_STATE) || "")
 
         expect(state).toEqual({...defaultJapanesifyState, [letter]: true})
     })
