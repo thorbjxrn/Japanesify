@@ -1,18 +1,20 @@
 {
-  "name": "web-extension-starter",
+  "name": "japanesify",
   "version": "2.0.0",
   "description": "Web extension starter using react and typescript",
   "private": true,
-  "repository": "https://github.com/abhijithvijayan/web-extension-starter.git",
+  "repository": "https://github.com/thorbjxrn/Japanesify",
   "author": {
-    "name": "abhijithvijayan",
-    "email": "email@abhijithvijayan.in",
-    "url": "https://abhijithvijayan.in"
+    "name": "thorbjxrn"
   },
+  "contributors":[
+    {
+      "name": "Hector Ortiz"
+    }
+  ],
   "license": "MIT",
   "engines": {
-    "node": ">=10.0.0",
-    "yarn": ">= 1.0.0"
+    "node": ">=10.0.0"
   },
   "scripts": {
     "dev:chrome": "cross-env NODE_ENV=development cross-env TARGET_BROWSER=chrome webpack --watch",
