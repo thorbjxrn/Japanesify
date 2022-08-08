@@ -3,6 +3,7 @@ import browser from 'webextension-polyfill';
 import { defaultJapanesifyState, JAPANESIFY_STATE } from '../utils/constants';
 import { JapanesifyState } from '../utils/types';
 import { getCurrentTabId } from '../utils/utils';
+import { Button } from 'react-bootstrap';
 
 const Popup: React.FC = () => {
   const [japanesifyState, setJapanesifyState] = React.useState(
@@ -33,13 +34,13 @@ const Popup: React.FC = () => {
   return (
     <section id="popup">
       <h3>Japanesify!</h3>
-      <button
+      <Button
+        variant="success"
         data-testid="enable-button"
-        type="button"
         onClick={handleAction('enabled')}
       >
         {enabled ? 'disable' : 'enable'}
-      </button>
+      </Button>
       <br />
       <label id="ん-switch">ん</label>
       <input

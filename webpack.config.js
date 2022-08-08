@@ -81,11 +81,14 @@ module.exports = {
         exclude: /node_modules/,
       },
       {
-        test: /\.(sa|sc|c)ss$/,
+        test: /\.(sa|sc|c)ss$/i,
         use: [
-          {
-            loader: MiniCssExtractPlugin.loader, // It creates a CSS file per JS file which contains CSS
-          },
+          // Creates `style` nodes from JS strings
+          'style-loader',
+          // Translates CSS into CommonJS
+          'css-loader',
+          // Compiles Sass to CSS
+          'sass-loader',
         ],
       },
     ],
