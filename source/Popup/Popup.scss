@@ -1,2 +1,26 @@
 
+.jumbotron {
+    padding: 2rem 1rem;
+    margin-bottom: 2rem;
+    background-color: #e9ecef;
+    border-radius: .3rem;
+}
+
+html,
+body {
+    border-radius: 5px;
+    width: 240px;
+}
+
+.website {
+    width: 100%;
+    font-size: 1.5em;
+    text-align: center;
+    cursor: pointer;
+}
+
+.website:hover {
+    background-color: #CFF2F2;
+}
+
 @import "~bootstrap/scss/bootstrap";
