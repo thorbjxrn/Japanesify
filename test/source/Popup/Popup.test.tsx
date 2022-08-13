@@ -14,13 +14,14 @@ describe('Popup Component', () => {
         window.localStorage.clear()
     })
 
-    test('loads with button text enable', () => {
+    test('loads with button text disabled', () => {
         render(<Popup/>)
 
-        screen.getByText('enable')
+        const button = screen.getByText('disabled')
+        expect(button).toHaveClass('btn-danger')
     })
 
-    test('when enable button is clicked text changes to disable', async () => {
+    test('when enable button is clicked text changes to enabled', async () => {
         render(<Popup/>)
 
         const button = screen.getByTestId('enable-button')
@@ -28,7 +29,8 @@ describe('Popup Component', () => {
             fireEvent.click(button)
         })
       
-        expect(button).toHaveTextContent('disable')
+        expect(button).toHaveTextContent('enabled')
+        expect(button).toHaveClass('btn-success')
     })
     
     test('when enable button is clicked it sends message to tab', async () => {
@@ -157,7 +159,7 @@ describe('Popup Component', () => {
         window.localStorage.setItem(JAPANESIFY_STATE, JSON.stringify({...defaultJapanesifyState, enabled: true}))
         render(<Popup/>)
 
-        screen.getByText('disable')
+        screen.getByText('enabled')
     })
 
     test.each`
