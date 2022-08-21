@@ -1,5 +1,5 @@
 import browser from 'webextension-polyfill';
-import { getHiraganaMaps, defaultJapanesifyState } from '../utils/constants';
+import { getHiraganaMaps, defaultJapanesifyState, getKatakanaMaps } from '../utils/constants';
 import { JapanesifyState } from '../utils/types';
 
 let previousState = defaultJapanesifyState;
@@ -9,7 +9,7 @@ const canCovertText = (state: JapanesifyState): boolean => {
 
   let result = false;
   Object.entries(state).forEach(([k, value]) => {
-    if (k !== 'enabled' && value) {
+    if (k !== 'enabled' && k !== 'kana' && value) {
       result = true;
     }
   });
@@ -19,14 +19,14 @@ const canCovertText = (state: JapanesifyState): boolean => {
 
 export const convertText = (node: Node, state: JapanesifyState): void => {
   const substitutions = new Map<RegExp, string>();
-  const hiraMap = getHiraganaMaps(state, previousState);
+  const kanaMap = state.kana === 'hiragana' ? getHiraganaMaps(state, previousState) : getKatakanaMaps(state, previousState)
 
   // Make a list of characters to substitute
   Object.entries(state).forEach(([k, value]) => {
-    if (k !== 'enabled') {
-      const key = k as keyof typeof hiraMap;
+    if (k !== 'enabled' && k !== 'kana') {
+      const key = k as keyof typeof kanaMap;
       if (value) {
-        hiraMap[key].forEach((replace, find) => {
+        kanaMap[key].forEach((replace, find) => {
           if (find && replace) {
             substitutions.set(new RegExp(find, 'gi'), replace);
           }
@@ -38,7 +38,7 @@ export const convertText = (node: Node, state: JapanesifyState): void => {
         (previousState[key] && !value) ||
         (previousState.enabled && !state.enabled)
       ) {
-        hiraMap[key].forEach((find, replace) => {
+        kanaMap[key].forEach((find, replace) => {
           if (find && replace) {
             substitutions.set(new RegExp(find, 'gi'), replace);
           }
@@ -91,8 +91,8 @@ export const togglePluginListener = (state: JapanesifyState): void => {
       childList: true,
       subtree: true,
     });
+    previousState = state;
   }
-  previousState = state;
 };
 
 browser.runtime.onMessage.addListener(togglePluginListener);

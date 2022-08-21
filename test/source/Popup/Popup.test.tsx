@@ -3,6 +3,7 @@ import { fireEvent, render, screen, act } from '@testing-library/react';
 import Popup from '../../../source/Popup/Popup';
 import '@testing-library/jest-dom/extend-expect'
 import browser, { Tabs } from 'webextension-polyfill';
+import userEvent from '@testing-library/user-event'
 import { defaultJapanesifyState, JAPANESIFY_STATE } from '../../../source/utils/constants';
 
 describe('Popup Component', () => {
@@ -180,5 +181,35 @@ describe('Popup Component', () => {
         const checkbox = screen.getByTestId(`${hiragana}-switch`)
 
         expect(checkbox).toBeChecked()
+    })
+
+    test('renders dropdown with hiragana', () => {
+        render(<Popup/>)
+        const dropdown = screen.getByRole('combobox')
+
+        expect(dropdown).toHaveValue('hiragana')
+    })
+    
+    test('can select hiragana from dropdown', async () => {
+        window.localStorage.setItem(JAPANESIFY_STATE, JSON.stringify({...defaultJapanesifyState, kana: 'katakana'}))
+        render(<Popup/>)
+
+        const dropdown = screen.getByRole('combobox')
+        const hiragana = screen.getByRole('option', {name: 'Hiragana'})
+        
+        await userEvent.selectOptions(dropdown, hiragana)
+
+        expect(dropdown).toHaveValue('hiragana')
+    })
+    
+    test('can select katakana from dropdown', async () => {
+        render(<Popup/>)
+
+        const dropdown = screen.getByRole('combobox')
+        const katakana = screen.getByRole('option', {name: 'Katakana'})
+        
+        await userEvent.selectOptions(dropdown, katakana)
+
+        expect(dropdown).toHaveValue('katakana')
     })
 })

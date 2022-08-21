@@ -19,12 +19,28 @@ import {
   hiraHanDakYoonA,
   romaHanDakI,
   hiraHanDakI,
-  romaHanDakU,
-  hiraHanDakU,
+  romaHanDakYoonU,
+  hiraHanDakYoonU,
   romaHanDakE,
   hiraHanDakE,
-  hiraHanDakO,
-  romaHanDakO,
+  hiraHanDakYoonO,
+  romaHanDakYoonO,
+  kataN,
+  kataA,
+  kataRomaA,
+  kataI,
+  kataRomaI,
+  kataRomaU,
+  kataU,
+  kataRomaE,
+  kataE,
+  kataO,
+  kataRomaO,
+  kataHanDakYoonA,
+  kataHanDakI,
+  kataHanDakYoonU,
+  kataHanDakE,
+  kataHanDakYoonO,
 } from '../../fixtures/testInputs';
 
 describe('Content Script', () => {
@@ -32,8 +48,10 @@ describe('Content Script', () => {
   const convertSpy = jest.spyOn(ContentScript, 'convertText');
 
   beforeEach(() => {
-    convertSpy.mockClear();
+    ContentScript.togglePluginListener(defaultJapanesifyState);
+    window.localStorage.clear()
     document.body.innerHTML = '';
+    convertSpy.mockClear();
   });
 
   test('sets textContent to empty string if null', () => {
@@ -84,15 +102,6 @@ describe('Content Script', () => {
     expect(document.body.textContent).not.toContain('ん');
   });
 
-  test('does Not call convertText if no vowel is selected', () => {
-    ContentScript.togglePluginListener({
-      ...defaultJapanesifyState,
-      enabled: true,
-    });
-
-    expect(convertSpy).not.toBeCalled();
-  });
-
   test('does not call convert if hiragana character none are selected', () => {
     ContentScript.togglePluginListener({
       ...defaultJapanesifyState,
@@ -141,6 +150,43 @@ describe('Content Script', () => {
     }
   );
 
+    test.each`
+    checkbox | syllables    | katakanas
+    ${'n'}   | ${romaN}     | ${kataN}
+    ${'a'}   | ${kataRomaA} | ${kataA}
+    ${'i'}   | ${kataRomaI} | ${kataI}
+    ${'u'}   | ${kataRomaU} | ${kataU}
+    ${'e'}   | ${kataRomaE} | ${kataE}
+    ${'o'}   | ${kataRomaO} | ${kataO}
+  `(
+    'converts "$checkbox" syllables to "$katakanas" and back if enable button gets toggled',
+    ({ checkbox, syllables, katakanas }) => {
+      document.body.innerHTML = basic;
+
+      const original = document.body.textContent;
+
+      ContentScript.togglePluginListener({
+        ...defaultJapanesifyState,
+        kana: 'katakana',
+        enabled: true,
+        [checkbox]: true,
+      });
+
+      katakanas.forEach((_: string, i: number) => {
+        expect(document.body.textContent).toContain(katakanas[i]);
+        expect(document.body.textContent).not.toContain(syllables[i]);
+      });
+
+      ContentScript.togglePluginListener({
+        ...defaultJapanesifyState,
+        kana: 'katakana',
+        enabled: false,
+        [checkbox]: true,
+      });
+      expect(document.body.textContent).toStrictEqual(original);
+    }
+  );
+
   test.each`
     checkbox | syllables    | hiraganas
     ${'n'}   | ${romaN}     | ${hiraN}
@@ -174,6 +220,41 @@ describe('Content Script', () => {
     }
   );
 
+  test.each`
+    checkbox | syllables    | katakanas
+    ${'n'}   | ${romaN}     | ${kataN}
+    ${'a'}   | ${kataRomaA} | ${kataA}
+    ${'i'}   | ${kataRomaI} | ${kataI}
+    ${'u'}   | ${kataRomaU} | ${kataU}
+    ${'e'}   | ${kataRomaE} | ${kataE}
+    ${'o'}   | ${kataRomaO} | ${kataO}
+  `(
+    'converts "$checkbox" syllables to "$katakanas" and back if a checkbox gets toggled',
+    ({ checkbox, syllables, katakanas }) => {
+      document.body.innerHTML = basic;
+
+      const original = document.body.textContent;
+
+      ContentScript.togglePluginListener({
+        ...defaultJapanesifyState,
+        kana: 'katakana',
+        enabled: true,
+        [checkbox]: true,
+      });
+      katakanas.forEach((_: string, i: number) => {
+        expect(document.body.textContent).toContain(katakanas[i]);
+        expect(document.body.textContent).not.toContain(syllables[i]);
+      });
+
+      ContentScript.togglePluginListener({
+        ...defaultJapanesifyState,
+        kana: 'katakana',
+        enabled: true,
+      });
+      expect(document.body.textContent).toStrictEqual(original);
+    }
+  );
+
   test('Should not convert script tag contents', () => {
     document.body.innerHTML = excludedElements;
     ContentScript.togglePluginListener({
@@ -198,41 +279,91 @@ describe('Content Script', () => {
     );
   });
 
-  test('Should convert n hira ("に", "な", ...) to roma ("ni", "na", ...) when n and $vowel enabled and plugin gets disabled', () => {
-    document.body.innerHTML = basic;
-
-    const original = document.body.textContent;
-
-    const vowels = ['i', 'a', 'u', 'e', 'o'];
-    const hiras = ['に', 'な', 'ぬ', 'ね', 'の'];
-    const hirasComb = ['んい', 'んあ', 'んう', 'んえ', 'んお'];
-
-    vowels.forEach((_: string, i: number) => {
+  // TODO: add tests for n yoon
+  describe.each`
+    vowel | hiras            | hirasComb
+    ${'a'} | ${['な', 'にゃ']} | ${['んあ', 'んや']}
+    ${'i'} | ${['に']}        | ${['んい']}
+    ${'u'} | ${['ぬ', 'にゅ']} | ${['んう', 'んゆ']}
+    ${'e'} | ${['ね']}        | ${['んえ']}
+    ${'o'} | ${['の', 'にょ']} | ${['んお', 'んよ']}
+  `('Should convert to', ({vowel, hiras, hirasComb}) => {
+    test(`${JSON.stringify(hiras)} when n and ${vowel} are enabled`, () => {
+      document.body.innerHTML = basic;
+  
+      const original = document.body.textContent;
+  
       ContentScript.togglePluginListener({
         ...defaultJapanesifyState,
         enabled: true,
         n: true,
-        [vowels[i]]: true,
+        yoon: true,
+        [vowel]: true,
       });
-      expect(document.body.textContent).not.toContain(hirasComb[i]);
-      expect(document.body.textContent).toContain(hiras[i]);
-
+      hiras.forEach((_: string, j: number) => {
+        expect(document.body.textContent).not.toContain(hirasComb[j]);
+        expect(document.body.textContent).toContain(hiras[j]);
+      })
+  
       ContentScript.togglePluginListener({
         ...defaultJapanesifyState,
         n: true,
-        [vowels[i]]: true,
+        yoon: true,
+        [vowel]: true,
+      });
+      expect(document.body.textContent).toStrictEqual(original);
+    })
+  });
+   
+  describe.each`
+    vowel | katas            | katasComb
+    ${'a'} | ${['ナ', 'ニャ']} | ${['ンア', 'ンヤ']}
+    ${'i'} | ${['ニ']}        | ${['ンイ']}
+    ${'u'} | ${['ヌ', 'ニュ']} | ${['ンウ', 'ンユ']}
+    ${'e'} | ${['ネ']}        | ${['ンエ']}
+    ${'o'} | ${['ノ', 'ニョ']} | ${['ンオ', 'ンヨ']}
+  `('Should convert to', ({vowel, katas, katasComb}) => {
+    test(`${JSON.stringify(katas)} when n and ${vowel} are enabled`, () => {
+      document.body.innerHTML = basic;
+
+      const original = document.body.textContent;
+
+      ContentScript.togglePluginListener({
+        ...defaultJapanesifyState,
+        kana: 'katakana',
+        enabled: true,
+        n: true,
+        [vowel]: true,
+        yoon: true,
+      });
+      katas.forEach((_: string, j: number) => {
+        expect(document.body.textContent).not.toContain(katasComb[j]);
+        expect(document.body.textContent).toContain(katas[j]);
+      })
+
+      ContentScript.togglePluginListener({
+        ...defaultJapanesifyState,
+        kana: 'katakana',
+        n: true,
+        [vowel]: true,
+        yoon: true,
       });
       expect(document.body.textContent).toStrictEqual(original);
     });
   });
 
-  test('Should not convert roma to hira if no vowel is checked is checked', () => {
+  test.each`
+  kana
+  ${'hiragana'}
+  ${'katakana'}
+  `('Should not convert roma to $kana if no vowel is checked is checked', ({kana}) => {
     document.body.innerHTML = basic;
 
     const original = document.body.textContent;
 
     ContentScript.togglePluginListener({
       ...defaultJapanesifyState,
+      kana,
       enabled: true,
       han: true,
       dak: true,
@@ -245,9 +376,9 @@ describe('Content Script', () => {
     vowel  | romas              | hiras
     ${'a'} | ${romaHanDakYoonA} | ${hiraHanDakYoonA}
     ${'i'} | ${romaHanDakI}     | ${hiraHanDakI}
-    ${'u'} | ${romaHanDakU}     | ${hiraHanDakU}
+    ${'u'} | ${romaHanDakYoonU} | ${hiraHanDakYoonU}
     ${'e'} | ${romaHanDakE}     | ${hiraHanDakE}
-    ${'o'} | ${romaHanDakO}     | ${hiraHanDakO}
+    ${'o'} | ${romaHanDakYoonO} | ${hiraHanDakYoonO}
   `(
     'Should convert "$romas" to "$hiras" and back if enable button gets toggled',
     ({ vowel, romas, hiras }) => {
@@ -280,12 +411,52 @@ describe('Content Script', () => {
   );
 
   test.each`
+    vowel  | romas              | katas
+    ${'a'} | ${romaHanDakYoonA} | ${kataHanDakYoonA}
+    ${'i'} | ${romaHanDakI}     | ${kataHanDakI}
+    ${'u'} | ${romaHanDakYoonU} | ${kataHanDakYoonU}
+    ${'e'} | ${romaHanDakE}     | ${kataHanDakE}
+    ${'o'} | ${romaHanDakYoonO} | ${kataHanDakYoonO}
+  `(
+    'Should convert "$romas" to "$katas" and back if enable button gets toggled',
+    ({ vowel, romas, katas }) => {
+      document.body.innerHTML = basic;
+
+      const original = document.body.textContent;
+
+      ContentScript.togglePluginListener({
+        ...defaultJapanesifyState,
+        kana: 'katakana',
+        enabled: true,
+        [vowel]: true,
+        dak: true,
+        han: true,
+        yoon: true,
+      });
+      romas.forEach((_: string, i: number) => {
+        expect(document.body.textContent).not.toContain(romas[i]);
+        expect(document.body.textContent).toContain(katas[i]);
+      });
+
+      ContentScript.togglePluginListener({
+        ...defaultJapanesifyState,
+        kana: 'katakana',
+        [vowel]: true,
+        dak: true,
+        han: true,
+        yoon: true,
+      });
+      expect(document.body.textContent).toStrictEqual(original);
+    }
+  );
+
+  test.each`
     vowel  | romas              | hiras
     ${'a'} | ${romaHanDakYoonA} | ${hiraHanDakYoonA}
     ${'i'} | ${romaHanDakI}     | ${hiraHanDakI}
-    ${'u'} | ${romaHanDakU}     | ${hiraHanDakU}
+    ${'u'} | ${romaHanDakYoonU} | ${hiraHanDakYoonU}
     ${'e'} | ${romaHanDakE}     | ${hiraHanDakE}
-    ${'o'} | ${romaHanDakO}     | ${hiraHanDakO}
+    ${'o'} | ${romaHanDakYoonO} | ${hiraHanDakYoonO}
   `(
     'Should convert "$hiras" to "$romas" if "$vowel" gets disabled',
     ({ vowel, romas, hiras }) => {
@@ -314,6 +485,248 @@ describe('Content Script', () => {
         yoon: true,
       });
       expect(document.body.textContent).toStrictEqual(original);
+    }
+  );
+
+    test.each`
+    vowel  | romas              | katas
+    ${'a'} | ${romaHanDakYoonA} | ${kataHanDakYoonA}
+    ${'i'} | ${romaHanDakI}     | ${kataHanDakI}
+    ${'u'} | ${romaHanDakYoonU} | ${kataHanDakYoonU}
+    ${'e'} | ${romaHanDakE}     | ${kataHanDakE}
+    ${'o'} | ${romaHanDakYoonO}     | ${kataHanDakYoonO}
+  `(
+    'Should convert "$katas" to "$romas" if "$vowel" gets disabled',
+    ({ vowel, romas, katas }) => {
+      document.body.innerHTML = basic;
+
+      const original = document.body.textContent;
+
+      ContentScript.togglePluginListener({
+        ...defaultJapanesifyState,
+        kana: 'katakana',
+        enabled: true,
+        [vowel]: true,
+        dak: true,
+        han: true,
+        yoon: true,
+      });
+      romas.forEach((_: string, i: number) => {
+        expect(document.body.textContent).not.toContain(romas[i]);
+        expect(document.body.textContent).toContain(katas[i]);
+      });
+
+      ContentScript.togglePluginListener({
+        ...defaultJapanesifyState,
+        kana: 'katakana',
+        enabled: true,
+        dak: true,
+        han: true,
+        yoon: true,
+      });
+      expect(document.body.textContent).toStrictEqual(original);
+    }
+  );
+
+  test.each`
+    letter | hiras              | katas
+    ${'n'} | ${hiraN}           | ${kataN}
+    ${'a'} | ${hiraA}           | ${kataA}
+    ${'a'} | ${hiraHanDakYoonA} | ${kataHanDakYoonA}
+    ${'i'} | ${hiraI}           | ${kataI}
+    ${'i'} | ${hiraHanDakI}     | ${kataHanDakI}
+    ${'u'} | ${hiraU}           | ${kataU}
+    ${'u'} | ${hiraHanDakYoonU} | ${kataHanDakYoonU}
+    ${'e'} | ${hiraE}           | ${kataE}
+    ${'e'} | ${hiraHanDakE}     | ${kataHanDakE}
+    ${'o'} | ${hiraO}           | ${kataO}
+    ${'o'} | ${hiraHanDakYoonO} | ${kataHanDakYoonO}
+  `(
+    'Should convert "$hiras" to "$katas" if dropdown changes',
+    ({ letter, hiras, katas }) => {
+      document.body.innerHTML = basic;
+
+      ContentScript.togglePluginListener({
+        ...defaultJapanesifyState,
+        kana: 'hiragana',
+        enabled: true,
+        [letter]: true,
+        dak: true,
+        han: true,
+        yoon: true,
+      });
+      hiras.forEach((_: string, i: number) => {
+        expect(document.body.textContent).toContain(hiras[i]);
+        expect(document.body.textContent).not.toContain(katas[i]);
+      });
+
+      ContentScript.togglePluginListener({
+        ...defaultJapanesifyState,
+        kana: 'katakana',
+        [letter]: true,
+        enabled: true,
+        dak: true,
+        han: true,
+        yoon: true,
+      });
+      hiras.forEach((_: string, i: number) => {
+        expect(document.body.textContent).toContain(katas[i]);
+        expect(document.body.textContent).not.toContain(hiras[i]);
+      });
+    }
+  );
+
+  test.each`
+    letter | hiras              | katas
+    ${'n'} | ${hiraN}           | ${kataN}
+    ${'a'} | ${hiraA}           | ${kataA}
+    ${'a'} | ${hiraHanDakYoonA} | ${kataHanDakYoonA}
+    ${'i'} | ${hiraI}           | ${kataI}
+    ${'i'} | ${hiraHanDakI}     | ${kataHanDakI}
+    ${'u'} | ${hiraU}           | ${kataU}
+    ${'u'} | ${hiraHanDakYoonU} | ${kataHanDakYoonU}
+    ${'e'} | ${hiraE}           | ${kataE}
+    ${'e'} | ${hiraHanDakE}     | ${kataHanDakE}
+    ${'o'} | ${hiraO}           | ${kataO}
+    ${'o'} | ${hiraHanDakYoonO} | ${kataHanDakYoonO}
+  `(
+    'Should convert "$katas" to "$hiras" if dropdown changes',
+    ({ letter, hiras, katas }) => {
+      document.body.innerHTML = basic;
+
+      ContentScript.togglePluginListener({
+        ...defaultJapanesifyState,
+        kana: 'katakana',
+        enabled: true,
+        [letter]: true,
+        dak: true,
+        han: true,
+        yoon: true,
+      });
+      katas.forEach((_: string, i: number) => {
+        expect(document.body.textContent).toContain(katas[i]);
+        expect(document.body.textContent).not.toContain(hiras[i]);
+      });
+
+      ContentScript.togglePluginListener({
+        ...defaultJapanesifyState,
+        kana: 'hiragana',
+        [letter]: true,
+        enabled: true,
+        dak: true,
+        han: true,
+        yoon: true,
+      });
+      katas.forEach((_: string, i: number) => {
+        expect(document.body.textContent).toContain(hiras[i]);
+        expect(document.body.textContent).not.toContain(katas[i]);
+      });
+    }
+  );
+
+  test.each`
+    letter | hiras             
+    ${'n'} | ${hiraN}          
+    ${'a'} | ${hiraA}          
+    ${'a'} | ${hiraHanDakYoonA}
+    ${'i'} | ${hiraI}          
+    ${'i'} | ${hiraHanDakI}    
+    ${'u'} | ${hiraU}          
+    ${'u'} | ${hiraHanDakYoonU}
+    ${'e'} | ${hiraE}          
+    ${'e'} | ${hiraHanDakE}    
+    ${'o'} | ${hiraO}          
+    ${'o'} | ${hiraHanDakYoonO}
+  `(
+    `should convert to $hiras when previous state is disabled and we switch kana`,
+    ({ letter, hiras }) => {
+      document.body.innerHTML = basic;
+
+      ContentScript.togglePluginListener({
+        ...defaultJapanesifyState,
+        kana: 'katakana',
+        enabled: true,
+        [letter]: true,
+        dak: true,
+        han: true,
+        yoon: true,
+      });
+      ContentScript.togglePluginListener({
+        ...defaultJapanesifyState,
+        kana: 'katakana',
+        enabled: false,
+        [letter]: true,
+        dak: true,
+        han: true,
+        yoon: true,
+      });
+
+      ContentScript.togglePluginListener({
+        ...defaultJapanesifyState,
+        kana: 'hiragana',
+        [letter]: true,
+        enabled: true,
+        dak: true,
+        han: true,
+        yoon: true,
+      });
+
+      hiras.forEach((_: string, i: number) => {
+        expect(document.body.textContent).toContain(hiras[i]);
+      });
+    }
+  );
+
+  test.each`
+    letter | katas             
+    ${'n'} | ${kataN}          
+    ${'a'} | ${kataA}          
+    ${'a'} | ${kataHanDakYoonA}
+    ${'i'} | ${kataI}          
+    ${'i'} | ${kataHanDakI}    
+    ${'u'} | ${kataU}          
+    ${'u'} | ${kataHanDakYoonU}
+    ${'e'} | ${kataE}          
+    ${'e'} | ${kataHanDakE}    
+    ${'o'} | ${kataO}          
+    ${'o'} | ${kataHanDakYoonO}
+  `(
+    'should convert to $katas when previous state is disabled and we switch kana',
+    ({ letter, katas }) => {
+      document.body.innerHTML = basic;
+
+      ContentScript.togglePluginListener({
+        ...defaultJapanesifyState,
+        kana: 'hiragana',
+        enabled: true,
+        [letter]: true,
+        dak: true,
+        han: true,
+        yoon: true,
+      });
+      ContentScript.togglePluginListener({
+        ...defaultJapanesifyState,
+        kana: 'hiragana',
+        enabled: false,
+        [letter]: true,
+        dak: true,
+        han: true,
+        yoon: true,
+      });
+
+      ContentScript.togglePluginListener({
+        ...defaultJapanesifyState,
+        kana: 'katakana',
+        [letter]: true,
+        enabled: true,
+        dak: true,
+        han: true,
+        yoon: true,
+      });
+
+      katas.forEach((_: string, i: number) => {
+        expect(document.body.textContent).toContain(katas[i]);
+      });
     }
   );
 });
