@@ -1,6 +1,6 @@
 {
   "manifest_version": 2,
-  "name": "Sample WebExtension",
+  "name": "Japanesify",
   "__chrome__key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAsXZxtciMcSTsiPK0BHaGsi1tWO/B4GLx62IfwwYwwkwmB1EI8GPVzy3iahguVzaePldtqhZ8rsf65jTW5VsD5Vx00yvWnjjZDoXZ5C2iN/P3UNZOOtt2qwYsKr2HD/1LDwIiUkymUqfHrz6Lt8/p+mB6Q4y6EsIlkkH+Ee9x8i53dpQP71/anZkUTsL6scT6wbjfMKRMJJIw/rTQPVAb6tJUpZHElme+uxKCr5xETyS1DM00zVXxhp4fSYz4/OMkfTAfguwShIO1MK8HuF98xOCizTVyR865Sq+gPe2iqG0p2DI8u6Oip/8xFx5DhAxaKTv4Uj0iSkebMxZddr89gwIDAQAB",
   "version": "0.0.0",
 
@@ -10,15 +10,14 @@
     "48": "assets/icons/icon-48.png",
     "96": "assets/icons/icon-96.png"
   },
-  "description": "Sample description",
+  "description": "Learn the japanese alphabets by gradually substituting latin letters",
   "homepage_url": "https://github.com/abhijithvijayan/web-extension-starter",
   "short_name": "Sample Name",
 
   "permissions": [
-    "activeTab",
-    "storage",
-    "http://*/*",
-    "https://*/*"
+    "tabs",
+    "<all_urls>",
+    "storage"
   ],
 
   "content_security_policy": "script-src 'self'; object-src 'self'",
@@ -30,7 +29,7 @@
 
   "__firefox__applications": {
     "gecko": {
-      "id": "{754FB1AD-CC3B-4856-B6A0-7786F8CA9D17}"
+      "id": "Japanesify@thorbonvik.com"
     }
   },
 
@@ -45,7 +44,7 @@
       "48": "assets/icons/icon-48.png",
       "96": "assets/icons/icon-96.png"
     },
-    "default_title": "tiny title",
+    "default_title": "Japanesify",
     "__chrome|opera__chrome_style": false,
     "__firefox__browser_style": false
   },
@@ -65,10 +64,7 @@
   },
 
   "content_scripts": [{
-    "matches": [
-      "http://*/*",
-      "https://*/*"
-    ],
+    "matches": ["<all_urls>"],
     "js": [
       "js/contentScript.bundle.js"
     ]
