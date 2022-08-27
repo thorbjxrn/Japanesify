@@ -1,0 +1,72 @@
+{
+  "manifest_version": 2,
+  "name": "Japanesify",
+  "__chrome__key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAsXZxtciMcSTsiPK0BHaGsi1tWO/B4GLx62IfwwYwwkwmB1EI8GPVzy3iahguVzaePldtqhZ8rsf65jTW5VsD5Vx00yvWnjjZDoXZ5C2iN/P3UNZOOtt2qwYsKr2HD/1LDwIiUkymUqfHrz6Lt8/p+mB6Q4y6EsIlkkH+Ee9x8i53dpQP71/anZkUTsL6scT6wbjfMKRMJJIw/rTQPVAb6tJUpZHElme+uxKCr5xETyS1DM00zVXxhp4fSYz4/OMkfTAfguwShIO1MK8HuF98xOCizTVyR865Sq+gPe2iqG0p2DI8u6Oip/8xFx5DhAxaKTv4Uj0iSkebMxZddr89gwIDAQAB",
+  "version": "0.0.0",
+
+  "icons": {
+    "16": "assets/icons/icon-16.png",
+    "32": "assets/icons/icon-32.png",
+    "48": "assets/icons/icon-48.png",
+    "96": "assets/icons/icon-96.png"
+  },
+  "description": "Learn the japanese alphabets by gradually substituting latin letters",
+  "homepage_url": "https://github.com/abhijithvijayan/web-extension-starter",
+  "short_name": "Sample Name",
+
+  "permissions": [
+    "tabs",
+    "<all_urls>",
+    "storage"
+  ],
+
+  "content_security_policy": "script-src 'self'; object-src 'self'",
+
+  "__chrome|firefox__author": "abhijithvijayan",
+  "__opera__developer": {
+    "name": "abhijithvijayan"
+  },
+
+  "__firefox__applications": {
+    "gecko": {
+      "id": "Japanesify@thorbonvik.com"
+    }
+  },
+
+  "__chrome__minimum_chrome_version": "49",
+  "__opera__minimum_opera_version": "36",
+
+  "browser_action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "assets/icons/icon-16.png",
+      "32": "assets/icons/icon-32.png",
+      "48": "assets/icons/icon-48.png",
+      "96": "assets/icons/icon-96.png"
+    },
+    "default_title": "Japanesify",
+    "__chrome|opera__chrome_style": false,
+    "__firefox__browser_style": false
+  },
+
+  "__chrome|opera__options_page": "options.html",
+  "options_ui": {
+    "page": "options.html",
+    "open_in_tab": true,
+    "__chrome__chrome_style": false
+  },
+
+  "background": {
+    "scripts": [
+      "js/background.bundle.js"
+    ],
+    "__chrome|opera__persistent": false
+  },
+
+  "content_scripts": [{
+    "matches": ["<all_urls>"],
+    "js": [
+      "js/contentScript.bundle.js"
+    ]
+  }]
+}
