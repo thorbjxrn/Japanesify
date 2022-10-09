@@ -1,6 +1,6 @@
 {
   "name": "japanesify",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Web extension starter using react and typescript",
   "private": true,
   "repository": "https://github.com/thorbjxrn/Japanesify",
@@ -23,7 +23,7 @@
     "build:chrome": "cross-env NODE_ENV=production cross-env TARGET_BROWSER=chrome webpack",
     "build:firefox": "cross-env NODE_ENV=production cross-env TARGET_BROWSER=firefox webpack",
     "build:opera": "cross-env NODE_ENV=production cross-env TARGET_BROWSER=opera webpack",
-    "build": "yarn run build:chrome && yarn run build:firefox && yarn run build:opera",
+    "build": "npm run build:chrome && npm run build:firefox && npm run build:opera",
     "test:e2e": "jest --config ./test/e2eTest/jest-e2e.json",
     "test:watch": "jest --coverage --watch --verbose",
     "test": "jest --coverage --verbose",

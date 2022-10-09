@@ -4,15 +4,17 @@ import Popup from '../../../source/Popup/Popup';
 import '@testing-library/jest-dom/extend-expect'
 import browser, { Tabs } from 'webextension-polyfill';
 import userEvent from '@testing-library/user-event'
-import { defaultJapanesifyState, JAPANESIFY_STATE } from '../../../source/utils/constants';
+import { defaultJapanesifyState } from '../../../source/utils/constants';
 
 describe('Popup Component', () => {
     const querySpy = jest.spyOn(browser.tabs, 'query')
 
     beforeEach(() => {
-        jest.resetAllMocks()
-        querySpy.mockResolvedValueOnce([{id: 2} as Tabs.Tab])
-        window.localStorage.clear()
+        jest.resetAllMocks();
+        (browser.storage.local.get as jest.Mock).mockReset();
+        (browser.storage.local.set as jest.Mock).mockReset();
+        querySpy.mockResolvedValueOnce([{id: 2} as Tabs.Tab]);
+        (browser.storage.local.get as jest.Mock).mockResolvedValueOnce(defaultJapanesifyState)
     })
 
     test('loads with button text disabled', () => {
@@ -126,9 +128,7 @@ describe('Popup Component', () => {
             await fireEvent.click(button)
         })
 
-        const state = JSON.parse(window.localStorage.getItem(JAPANESIFY_STATE) || '')
-
-        expect(state).toEqual({...defaultJapanesifyState, enabled: true})
+        expect(browser.storage.local.set).toBeCalledWith({...defaultJapanesifyState, enabled: true})
     })
     
     test.each`
@@ -151,14 +151,15 @@ describe('Popup Component', () => {
             fireEvent.click(checkBox)
         })
 
-        const state = JSON.parse(window.localStorage.getItem(JAPANESIFY_STATE) || '')
-
-        expect(state).toEqual({...defaultJapanesifyState, [letter]: true})
+        expect(browser.storage.local.set).toBeCalledWith({...defaultJapanesifyState, [letter]: true})
     })
 
-    test('renders button based on localStorage values', () => {
-        window.localStorage.setItem(JAPANESIFY_STATE, JSON.stringify({...defaultJapanesifyState, enabled: true}))
-        render(<Popup/>)
+    test('renders button based on localStorage values', async () => {
+        (browser.storage.local.get as jest.Mock).mockReset();
+        (browser.storage.local.get as jest.Mock).mockResolvedValueOnce({...defaultJapanesifyState, enabled: true});
+        await act(async () => {
+            render(<Popup/>)
+        })
 
         screen.getByText('enabled')
     })
@@ -174,9 +175,13 @@ describe('Popup Component', () => {
       ${'°'}   | ${'han'}
       ${'"'}   | ${'dak'}
       ${'きゃ'} | ${'yoon'}
-    `('renders $hiragana check box based on localStorage values', ({hiragana, letter} : {hiragana: string, letter: string}) => {
-        window.localStorage.setItem(JAPANESIFY_STATE, JSON.stringify({...defaultJapanesifyState, [letter]: true}))
-        render(<Popup/>)
+    `('renders $hiragana check box based on localStorage values', async ({hiragana, letter} : {hiragana: string, letter: string}) => {
+        (browser.storage.local.get as jest.Mock).mockReset();
+        (browser.storage.local.get as jest.Mock).mockResolvedValueOnce({...defaultJapanesifyState, [letter]: true});
+
+        await act(async () => {
+            render(<Popup/>)
+        })
 
         const checkbox = screen.getByTestId(`${hiragana}-switch`)
 
@@ -191,7 +196,7 @@ describe('Popup Component', () => {
     })
     
     test('can select hiragana from dropdown', async () => {
-        window.localStorage.setItem(JAPANESIFY_STATE, JSON.stringify({...defaultJapanesifyState, kana: 'katakana'}))
+        (browser.storage.local.get as jest.Mock).mockResolvedValueOnce({...defaultJapanesifyState, kana: 'katakana'})
         render(<Popup/>)
 
         const dropdown = screen.getByRole('combobox')

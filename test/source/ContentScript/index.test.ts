@@ -75,9 +75,29 @@ describe('Content Script', () => {
       n: true,
     });
 
-    // Since convertText is called recursively it has 6 executions by the time
-    // this expect ie reached.
-    expect(convertSpy).toBeCalledTimes(6);
+    const newDiv = document.createElement('div');
+    newDiv.textContent = 'Sample text to convert to Japanese';
+
+    // await does seem to do something ¯\_(ツ)_/¯
+    await document.body.appendChild(newDiv);
+
+    expect(newDiv.textContent).toStrictEqual('Sample text to coんvert to Japaんese');
+  });
+  
+  test('does not execute convertText when new nodes get added after its disabled', async () => {
+    document.body.innerHTML = basic;
+
+    ContentScript.togglePluginListener({
+      ...defaultJapanesifyState,
+      enabled: true,
+      n: true,
+    });
+
+    ContentScript.togglePluginListener({
+      ...defaultJapanesifyState,
+      enabled: false,
+      n: true,
+    });
 
     const newDiv = document.createElement('div');
     newDiv.textContent = 'Sample text to convert to Japanese';
@@ -85,9 +105,7 @@ describe('Content Script', () => {
     // await does seem to do something ¯\_(ツ)_/¯
     await document.body.appendChild(newDiv);
 
-    // convertText is executed 2 more times once for the div
-    // another for the text node.
-    expect(convertSpy).toBeCalledTimes(8);
+    expect(newDiv.textContent).toStrictEqual('Sample text to convert to Japanese')
   });
 
   test('does Not converts roman character n to hiragana ん if not enabled', () => {
@@ -279,7 +297,6 @@ describe('Content Script', () => {
     );
   });
 
-  // TODO: add tests for n yoon
   describe.each`
     vowel | hiras            | hirasComb
     ${'a'} | ${['な', 'にゃ']} | ${['んあ', 'んや']}
