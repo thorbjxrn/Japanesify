@@ -2,7 +2,6 @@ import browser, { Tabs } from 'webextension-polyfill';
 import { sendMessage } from '../../../source/Background/index';
 import {
   defaultJapanesifyState,
-  JAPANESIFY_STATE,
 } from '../../../source/utils/constants';
 
 describe('Background script', () => {
@@ -22,10 +21,7 @@ describe('Background script', () => {
   });
 
   test('calls tabs sendMessage with local storage state', async () => {
-    window.localStorage.setItem(
-      JAPANESIFY_STATE,
-      JSON.stringify({ ...defaultJapanesifyState, n: true, a: true })
-    );
+    (browser.storage.local.get as jest.Mock).mockResolvedValueOnce({ ...defaultJapanesifyState, n: true, a: true });
     await sendMessage();
 
     expect(browser.tabs.sendMessage).toBeCalledWith(2, {
@@ -36,6 +32,7 @@ describe('Background script', () => {
   });
 
   test('calls tabs sendMessage with default state', async () => {
+    (browser.storage.local.get as jest.Mock).mockResolvedValueOnce(defaultJapanesifyState);
     await sendMessage();
 
     expect(browser.tabs.sendMessage).toBeCalledWith(2, {

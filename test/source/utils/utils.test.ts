@@ -1,5 +1,6 @@
 import browser, { Tabs } from 'webextension-polyfill';
-import { getCurrentTabId } from '../../../source/utils/utils';
+import { defaultJapanesifyState } from '../../../source/utils/constants';
+import { getCurrentTabId, getState } from '../../../source/utils/utils';
 
 describe('getCurrentTabId', () => {
   const querySpy = jest.spyOn(browser.tabs, 'query');
@@ -24,3 +25,16 @@ describe('getCurrentTabId', () => {
     expect(id).toEqual(4);
   });
 });
+
+describe('getState', () => {
+  beforeEach(() => {
+    jest.resetAllMocks();
+  });
+
+  test('returns default state when nothing is found', async () => {
+    (browser.storage.local.get as jest.Mock).mockResolvedValueOnce({})
+    const state = await getState();
+
+    expect(state).toEqual(defaultJapanesifyState)
+  })
+})

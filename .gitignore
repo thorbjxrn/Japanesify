@@ -203,3 +203,4 @@ dist/
 !.yarn/plugins
 .pnp.*
 key.pem
+.DS_Store
